@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+  "name": "Snellman Prettification",
+  "version": "1.0",
+
+  "description": "Modifies the display of games at terra.snellman.net by adding images from the board game",
+
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://terra.snellman.net/faction/*",
+        "https://terra.snellman.net/game/*"
+      ],
+      "js": [
+        "content_scripts/game.js"
+      ]
+    }
+  ],
+
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+
+  "web_accessible_resources": [
+    "images/*"
+  ]
+
+}
