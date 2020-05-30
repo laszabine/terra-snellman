@@ -1,65 +1,3 @@
-/*
-const urls = {
-    "cult_track": 'images/cult_track.jpg',
-    'ACT1': 'images/action1.png',
-    'ACT2': 'images/action2.png',
-    'ACT3': 'images/action3.png',
-    'ACT4': 'images/action4.png',
-    'ACT5': 'images/action5.png',
-    'ACT6': 'images/action6.png',
-    'BON1': 'images/bonus01.png',
-    'BON2': 'images/bonus02.png',
-    'BON3': 'images/bonus03.png',
-    'BON4': 'images/bonus04.png',
-    'BON5': 'images/bonus05.png',
-    'BON6': 'images/bonus06.png',
-    'BON7': 'images/bonus07.png',
-    'BON8': 'images/bonus08.png',
-    'BON9': 'images/bonus09.png',
-    "FAV1": 'images/favor01.png',
-    "FAV2": 'images/favor02.png',
-    "FAV3": 'images/favor03.png',
-    "FAV4": 'images/favor04.png',
-    "FAV5": 'images/favor05.png',
-    "FAV6": 'images/favor06.png',
-    "FAV7": 'images/favor07.png',
-    "FAV8": 'images/favor08.png',
-    "FAV9": 'images/favor09.png',
-    "FAV10": 'images/favor10.png',
-    "FAV11": 'images/favor11.png',
-    "FAV12": 'images/favor12.png',
-    "TW1": 'images/town1.png',
-    "TW2": 'images/town2.png',
-    "TW3": 'images/town3.png',
-    "TW4": 'images/town4.png',
-    "TW5": 'images/town5.png',
-    'coin5': 'images/coin5.png',
-    'coin2': 'images/coin2.png',
-    'coin1': 'images/coin1.png',
-    'worker': 'images/worker.png',
-    'priest_green': 'images/priest_green.png',
-    'priest_yellow': 'images/priest_yellow.png',
-    'priest_blue': 'images/priest_blue.png',
-    'priest_brown': 'images/priest_brown.png',
-    'priest_red': 'images/priest_red.png',
-    'priest_black': 'images/priest_black.png',
-    'priest_gray': 'images/priest_gray.png',
-    'faction_alchemists': 'images/faction_alchemists.jpg',
-    'faction_auren': 'images/faction_auren.jpg',
-    'faction_chaosmagicians': 'images/faction_chaosmagicians.jpg',
-    'faction_cultists': 'images/faction_cultists.jpg',
-    'faction_darklings': 'images/faction_darklings.jpg',
-    'faction_dwarves': 'images/faction_dwarves.jpg',
-    'faction_engineers': 'images/faction_engineers.jpg',
-    'faction_fakirs': 'images/faction_fakirs.jpg',
-    'faction_giants': 'images/faction_giants.jpg',
-    'faction_halflings': 'images/faction_halflings.jpg',
-    'faction_mermaids': 'images/faction_mermaids.jpg',
-    'faction_nomads': 'images/faction_nomads.jpg',
-    'faction_swarmlings': 'images/faction_swarmlings.jpg',
-    'faction_witches': 'images/faction_witches.jpg',
-};
-*/
 
 renderTreasuryTile = function(board, faction, name, count) {
     if (count < 1) {
@@ -106,7 +44,9 @@ renderTile = function(tile, name, record, faction, count) {
         let imgDiv = new Element('div');
         tile.insert(imgDiv);
         let tileCanvas = new Element('canvas');
-        if (['BON1', 'BON2', 'FAV6'].includes(name)) {
+        if (['BON1', 'BON2', 'FAV6'].includes(name) ||
+            (name.startsWith('BON') && faction == 'pool'))
+        {
             tileCanvas.id = 'action/' + name + '/' + faction;
         }
         imgDiv.insert(tileCanvas);
@@ -456,6 +396,61 @@ drawRealFaction = function(faction, board) {
     }
 }
 
+drawScoringTiles = function() {
+    var container = $("scoring");
+    container.clearContent();
+
+    state.score_tiles.each(function(record, index) {
+        var style = '';
+        if (index == (state.round - 1)) {
+            style = 'background-color: #d0ffd0';
+        } else if (index < state.round) {
+            style = 'opacity: 0.5';
+        }
+        var tile = new Element('div', {'class': 'scoring', 'style': style});
+        tile.insert(new Element('div', {'style': 'float: right; border-style: solid; border-width: 1px; '}).updateText("r" + (index + 1)));
+
+        {
+            var row = new Element("div");
+            row.insert(new Element("div", { "class": "scoring-head" }).updateText("vp:"));
+            row.insert(new Element("div").updateText(record.vp_display));
+            tile.insert(row);
+        }
+
+        if (index < 5) {
+            var style = cultStyle(record.cult);
+            var row = new Element('div');
+            row.insert(new Element("div", { "class": "scoring-head" }).updateText("income:"));
+            row.insert(new Element("div").insert(
+                new Element("span", { style: style }).updateText(
+                    record.income_display)));
+            tile.insert(row);
+          }
+        container.prepend(tile);
+    });
+
+    {
+        var tile = new Element('div', {'class': 'final-scoring' });
+        var table = new Element('table', {'class': 'final-scoring'});
+        tile.insert(table);
+        table.insert(new Element("tr").insert(
+            new Element("td", {"style": "font-weight: bold", "colspan": 2}).updateText(
+                "Final vp")));
+        $H(state.final_scoring).sortBy(naturalSortKey).each(function (elem) {
+            var type = elem.value.label || elem.key;
+            var desc = elem.value.description;
+            var points = elem.value.points;
+            var row = new Element("tr");
+            var label = new Element("span", { "title": desc });
+            label.updateText(type);
+            row.insert(new Element("td").insert(label));
+            row.insert(new Element("td").updateText(points.join('/')));
+            table.insert(row);
+        });
+        container.prepend(tile);
+    }
+}
+
 toggleIncome = function(id) {
     var table = $(id);
 
@@ -471,8 +466,8 @@ renderColorCycle = function(faction, parent) {}
 renderAction = function(canvas, name, key, border_color) {
     if (!canvas.getContext) return;
     let ctx = canvas.getContext("2d");
-    let width = 120;
-    let height = 60;
+    let width = 145;
+    let height = 73;
     canvas.width = width;
     canvas.height = height;
     canvas.style.width = width+'px';
@@ -485,6 +480,15 @@ renderAction = function(canvas, name, key, border_color) {
     img.src = urls[key];
     img.onload = () => {
         ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, width, height);
+
+        if (state.map[key].blocked == 1) {
+          ctx.save();
+          ctx.fillStyle = '#000000' + '77';
+          ctx.beginPath();
+          ctx.arc(101,39,25,0,2*Math.PI); // getestet fuer ACTW
+          ctx.fill();
+          ctx.restore();
+        }
     };
 }
 
@@ -494,6 +498,7 @@ markActionAsPossible = function(canvas, name, key) {
     ctx.save();
     ctx.strokeStyle = colors.activeUI;
     ctx.lineWidth = 4;
+    ctx.beginPath();
 
     if (name.match(/ACT[A-Z]/i)) { // faction action
         let left = 125;
@@ -508,7 +513,7 @@ markActionAsPossible = function(canvas, name, key) {
             let y = event.clientY - position.top;
             // create context menu
             let title = "Special action";
-            let loc = '';
+            let loc = 'Action';
             let menu_items;
             if (left<x && x<right && top<y && y<bottom) {
                 switch (name) {
@@ -568,7 +573,7 @@ markActionAsPossible = function(canvas, name, key) {
         ctx.rect(left, top, right-left, bottom-top);
         ctx.stroke();
         let factionName = key.substring(5); // e.g., key = 'ADV1/nomads'
-        let faction = state.factions[faction];
+        let faction = state.factions[factionName];
         menu_items = {
                 "Advance": {
                     "fun": function() { appendAndPreview('advance '+trackName); },
@@ -580,7 +585,6 @@ markActionAsPossible = function(canvas, name, key) {
             let x = event.clientX - position.left;
             let y = event.clientY - position.top;
             // create context menu
-            let loc = '';
             if (left<x && x<right && top<y && y<bottom) {
                 menuClickHandler(title, loc, menu_items)(loc, event);
             }
@@ -598,4 +602,86 @@ addAdvanceToMovePicker = function(picker, faction){
         markActionAsPossible(canvas, "ADV2", "ADV2/"+faction.name);
     }
     return row;
+}
+
+var addPassToMovePicker_ = addPassToMovePicker;
+addPassToMovePicker = function(picker, faction) {
+    let row = addPassToMovePicker_(picker, faction);
+
+    return row;
+}
+
+init = function(root) {
+  root.innerHTML += ' \
+  <table style="border-style: none" id="main-data"> \
+    <tr> \
+      <td rowspan=3> \
+        <div id="scoring" style="width:90px"></div> \
+      <td> \
+        <div id="map-container"> \
+          <canvas id="map" width="1600" height="1000"> \
+            Browser not supported. \
+          </canvas> \
+        </div> \
+      <td> \
+        <div id="cult-container"> \
+          <canvas id="cults" width="500" height="1000"> \
+            Browser not supported. \
+          </canvas> \
+        </div> \
+    <tr> \
+      <td> \
+        <td> <a style="color: black" href="#" onclick="toggleColorBlindMode()">Toggle color blind mode</a> \
+    <tr> \
+      <td colspan=2> \
+        <div style="display: inline-block; vertical-align: top"> \
+          <div id="shared-actions"></div> \
+          <div id="turn-order"></div> \
+        </div> \
+  </table> \
+  <div id="menu" class="menu" style="display: none"></div> \
+  <div id="preview_status"></div> \
+  <pre id="preview_commands"></pre> \
+  <div id="error"></div> \
+  <div id="action_required"></div> \
+  <div id="next_game"></div> \
+  <div id="data_entry"></div> \
+  <div id="factions"></div> \
+  <table id="ledger"> \
+    <col></col> \
+    <col span=2 ></col> \
+    <col span=2 style="background-color: #e0e0f0"></col> \
+    <col span=2 ></col> \
+    <col span=2 style="background-color: #e0e0f0"></col> \
+    <col span=2 ></col> \
+    <col span=2 style="background-color: #e0e0f0"></col> \
+  </table>';
+
+  loadGame(document.location.host, document.location.pathname);
+  fetchGames($("user-info"), "user", "running", showActiveGames);
+
+  setInterval(function() {
+    fetchGames($("user-info"), "user", "running", showActiveGames);
+  }, 5*60*1000);
+
+  /*
+  let audio = new Audio(urls.action_required_audio);
+  let readyToPlay = false;
+  audio.addEventListener('loadeddata', function() {
+    readyToPlay = true;
+    audio.play();
+  });
+  setInterval(function() {
+    fetchGames($("user-info"), "user", "running",
+      function(games) {
+        games.each(function (elem) {
+          if (elem.action_required) {
+            //alert(urls.action_required_audio);
+            audio.play();
+          }
+        });
+      }
+    );
+  }, 30*1000);
+  */
 }
