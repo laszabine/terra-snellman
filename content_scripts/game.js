@@ -52,6 +52,7 @@ function overwrite() {
           board.insert(resourcesDiv);
           // 1.1 coins
           let coinsDiv = new Element('span');
+          coinsDiv.style['margin-right'] = '5px';
           resourcesDiv.appendChild(coinsDiv);
           let coins5 = Math.floor(state.factions[name].C / 5);
           let coins2 = Math.floor((state.factions[name].C - coins5*5) / 2);
@@ -59,12 +60,18 @@ function overwrite() {
           let coin5Img = new Element('img');
           coin5Img.src = urls.coin5;
           coin5Img.alt = '5c';
+          coin5Img.style['max-height'] = '50px';
+          coin5Img.style['margin-right'] = '2px';
           let coin2Img = new Element('img');
           coin2Img.src = urls.coin2;
           coin2Img.alt = '2c';
+          coin2Img.style['max-height'] = '40px';
+          coin2Img.style['margin-right'] = '2px';
           let coin1Img = new Element('img');
           coin1Img.src = urls.coin1;
           coin1Img.alt = '1c';
+          coin1Img.style['max-height'] = '30px';
+          coin1Img.style['margin-right'] = '2px';
           for (let f=0; f<coins5; f++) {
               coinsDiv.appendChild(coin5Img.cloneNode());
           }
@@ -76,11 +83,13 @@ function overwrite() {
           }
           // 1.2 workers
           let workersDiv = new Element('span');
+          workersDiv.style['margin-right'] = '5px';
           resourcesDiv.appendChild(workersDiv);
           let workerImg = new Element('img');
           workerImg.src = urls.worker;
           workerImg.alt = '1w';
           workerImg.height = '40';
+          workerImg.style['margin-right'] = '3px';
           for (let f=0; f<state.factions[name].W; f++) {
               workersDiv.appendChild(workerImg.cloneNode());
           }
@@ -464,13 +473,18 @@ function overwrite() {
       img.onload = () => {
           ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, width, height);
 
-          if (state.map[key] && state.map[key].blocked == 1) {
-            ctx.save();
-            ctx.fillStyle = '#000000' + '77';
+          if (state.map[key] && state.map[key].blocked == 1) { // TODO
+            let tileImgTaken = new Image();
+            tileImgTaken.src = urls['ACTTAKEN'];
+            tileImgTaken.onload = () => {
+                ctx.drawImage(tileImgTaken, 78, 13, 49, 49);
+            }
+            // ctx.save();
+            /*ctx.fillStyle = '#000000' + '77';
             ctx.beginPath();
             ctx.arc(101,39,25,0,2*Math.PI); // getestet fuer ACTW
             ctx.fill();
-            ctx.restore();
+            ctx.restore();*/
           }
       };
   }
@@ -533,8 +547,8 @@ function overwrite() {
           if (name.startsWith('BON')) {
               tileCanvas.height = 205;
               tileCanvas.width = 68;
-              actionTakenHeight = 63;
-              actionTakenWidth = 35;
+              actionTakenHeight = 50;
+              actionTakenWidth = 50;
           } else if (name.startsWith('FAV')) {
               tileCanvas.height = 85;
               tileCanvas.width = 128;
@@ -550,10 +564,15 @@ function overwrite() {
               ctx.drawImage(tileImg, 0, 0, tileCanvas.width, tileCanvas.height);
               // draw action-is-taken marker over image
               if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
-                  ctx.fillStyle = '#000000' + '77';
+                let tileImgTaken = new Image();
+                tileImgTaken.src = urls['ACTTAKEN'];
+                tileImgTaken.onload = () => {
+                    ctx.drawImage(tileImgTaken, 9, 39, actionTakenWidth, actionTakenHeight);
+                }
+                  /*ctx.fillStyle = '#000000' + '77';
                   ctx.beginPath();
                   ctx.arc(actionTakenWidth, actionTakenHeight, 25, 0, 2*Math.PI);
-                  ctx.fill();
+                  ctx.fill();*/
               }
           };
       }

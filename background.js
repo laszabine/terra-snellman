@@ -3,12 +3,13 @@ function getImageUrls() {
   let str = 'const urls = {';
   let urls = {
       "cult_track": 'images/cult_track.jpg',
-      'ACT1': 'images/action1.png',
-      'ACT2': 'images/action2.png',
-      'ACT3': 'images/action3.png',
-      'ACT4': 'images/action4.png',
-      'ACT5': 'images/action5.png',
-      'ACT6': 'images/action6.png',
+      'ACT1': 'images/src/action1.svg',
+      'ACT2': 'images/src/action2.svg',
+      'ACT3': 'images/src/action3.svg',
+      'ACT4': 'images/src/action4.svg',
+      'ACT5': 'images/src/action5.svg',
+      'ACT6': 'images/src/action6.svg',
+      'ACTTAKEN': 'images/src/action_taken.svg',
       'BON1': 'images/bonus01.png',
       'BON2': 'images/bonus02.png',
       'BON3': 'images/bonus03.png',
@@ -45,17 +46,17 @@ function getImageUrls() {
       'SCORE8': 'images/scoring8.png',
       'scoring_bg': 'images/scoring_bg.png',
       'scoring_final': 'images/scoring_final.jpg',
-      'coin5': 'images/coin5.png',
-      'coin2': 'images/coin2.png',
-      'coin1': 'images/coin1.png',
-      'worker': 'images/worker.png',
-      'priest_green': 'images/priest_green.png',
-      'priest_yellow': 'images/priest_yellow.png',
-      'priest_blue': 'images/priest_blue.png',
-      'priest_brown': 'images/priest_brown.png',
-      'priest_red': 'images/priest_red.png',
-      'priest_black': 'images/priest_black.png',
-      'priest_gray': 'images/priest_gray.png',
+      'coin5': 'images/src/coin5.svg',
+      'coin2': 'images/src/coin2.svg',
+      'coin1': 'images/src/coin1.svg',
+      'worker': 'images/src/worker.svg',
+      'priest_green': 'images/src/priest_green.svg',
+      'priest_yellow': 'images/src/priest_yellow.svg',
+      'priest_blue': 'images/src/priest_blue.svg',
+      'priest_brown': 'images/src/priest_brown.svg',
+      'priest_red': 'images/src/priest_red.svg',
+      'priest_black': 'images/src/priest_black.svg',
+      'priest_gray': 'images/src/priest_gray.svg',
       'faction_alchemists': 'images/faction_alchemists.jpg',
       'faction_auren': 'images/faction_auren.jpg',
       'faction_chaosmagicians': 'images/faction_chaosmagicians.jpg',
@@ -80,7 +81,7 @@ function getImageUrls() {
 
 function overwriteFunctions(details) {
   console.log(details.url + " was requested")
-  let filename = details.url.match(/[^/\.]*\.js/i)[0];
+  let filename = details.url.match(/[^/\.]*\.(js|css)/i)[0];
   console.log(filename);
 
   let filter = browser.webRequest.filterResponseData(details.requestId);
@@ -135,6 +136,10 @@ function overwriteFunctions(details) {
 
 browser.webRequest.onBeforeRequest.addListener(
   overwriteFunctions,
-  {urls: ["https://terra.snellman.net/stc/game.js*"]},
+  {
+    urls: [
+    "*://terra.snellman.net/stc/game.js*"
+    ]
+  },
   ["blocking"]
 );

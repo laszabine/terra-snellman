@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="power.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg1448"
+   version="1.1"
+   viewBox="0 0 132.29165 123.55809"
+   height="123.5581mm"
+   width="132.29166mm">
+  <defs
+     id="defs1442" />
+  <sodipodi:namedview
+     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:window-height="2096"
+     inkscape:window-width="3840"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="714.81472"
+     inkscape:cx="1612.5519"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata1445">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(320.82103,40.961394)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Ebene 1">
+    <g
+       transform="matrix(1.1192374,0,0,1.1192374,-504.31311,-263.1445)"
+       id="g2906">
+      <path
+         sodipodi:nodetypes="csssssc"
+         d="m 282.14188,274.57341 c 0,18.96239 -26.45476,34.33443 -59.08836,34.33443 -32.63359,0 -58.93376,-16.5957 -58.93376,-35.55808 0,-9.4812 -0.0236,-28.40355 0.0485,-41.18401 0.0739,-13.10649 42.56841,8.07323 58.88521,8.07323 16.3168,0 58.69346,-21.2646 58.8103,-8.89814 0.12641,13.37856 0.27805,33.75138 0.27805,43.23257"
+         style="fill:#4e1968;fill-opacity:1;stroke:none;stroke-width:0.359955;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.52549"
+         id="ellipse1424" />
+      <ellipse
+         ry="34.334427"
+         rx="59.088352"
+         cy="232.84737"
+         cx="223.0322"
+         id="path1422"
+         style="fill:#6e2e7f;fill-opacity:1;stroke:none;stroke-width:0.359955;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.52549" />
+    </g>
+  </g>
+</svg>
