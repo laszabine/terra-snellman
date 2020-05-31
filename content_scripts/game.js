@@ -644,6 +644,46 @@ function overwrite() {
           canvas.addEventListener('click', function(event) {
               menuClickHandler(tileName, "Pass & choose", menu_items)("Pass & choose", event);
           });
+      } else if (name.startsWith('CONV')) {
+        let left = 191;
+        let right = 245;
+        let top = 132;
+        let bottom = 199;
+        ctx.rect(left, top, right-left, bottom-top);
+        ctx.stroke();
+        canvas.addEventListener('click', function(event) {
+          let position = canvas.getBoundingClientRect();
+          let x = event.clientX - position.left;
+          let y = event.clientY - position.top;
+          //alert('x='+x+', y='+y);
+          if (left<x && x<right && top<y && y<bottom) {
+              let factionName = key.substring(5); // e.g., key = 'CONV/nomads'
+              let faction = state.factions[factionName];
+              let menu_items = {};
+              var rates = $H(faction.exchange_rates);
+                // usually {W: {C: 1}, P: {W: 1, C: 1}, PW: {P: 5, W: 3, C: 1}, C: {VP: 3}}
+              rates.sortBy(naturalSortKey).reverse().each(function (from_elem) {
+                  var from = from_elem.key;
+                  var from_type = from;
+                  var to = $H(from_elem.value);
+                  to.sortBy(naturalSortKey).reverse().each(function (to_elem) {
+                      var to_type = to_elem.key;
+                      var rate = to_elem.value;
+                      if (faction[from] >= rate) {
+                          convert_possible = true;
+                          for (let i = 1; rate * i <= faction[from_type] && i < 10; i++) {
+                              let command = 'Convert ' + (i*rate) + from_type + ' to ' + i + to_type;
+                              menu_items[command] = {
+                                  "fun": () => { appendAndPreview(command); },
+                                  "label": '',
+                              };
+                          }
+                      }
+                  });
+              });
+              menuClickHandler("Convert", "Resources", menu_items)("Resources", event);
+          }
+        });
       }
       ctx.restore();
   }
@@ -673,6 +713,16 @@ function overwrite() {
             markActionAsPossible(canvas, "PASS", "PASS/" + tile);
           }
         }
+      }
+      return row;
+  }
+
+  let addConvertToMovePicker_ = addConvertToMovePicker;
+  addConvertToMovePicker = function(picker, faction) {
+      let row = addConvertToMovePicker_(picker, faction);
+      let canvas = document.getElementById(faction.name).getElementsByTagName('canvas')[0];
+      if (faction.allowed_actions) {
+        markActionAsPossible(canvas, "CONV", "CONV/" + faction.name);
       }
       return row;
   }
