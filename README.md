@@ -11,9 +11,13 @@ To install, you have to clone this repository and install it as temporary add-on
 ### Clone this repo
 
 Use the big green button in the top right corner that says `Clone or download`.
-We recommend to clone the repository so you can get updates easily.
-If you are unfamiliar with that, either look it up or download as zip.
-Then unpack to a folder of your choice.
+We recommend to "clone" the repository so you can get updates easily (by "pulling").
+If you are unfamiliar with cloning, either
+- read up on it here: https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository, or
+- download the repository as zip file.
+Then unpack to a folder of your choice. 
+
+In either case, remember to check back for updates regularly!
 
 ### Add to Firefox
 
@@ -21,5 +25,7 @@ Then unpack to a folder of your choice.
 - On the left, select `This Firefox`.
 - Click `Load temporary Add-on ...`
 - Navigate to the folder where you cloned or unpacked this repo.
+
+You can find more information here: https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/
 
 You're all set!
