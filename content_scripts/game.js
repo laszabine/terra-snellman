@@ -349,9 +349,51 @@ function overwrite() {
 
   /* tiles */
   drawScoringTiles = function() {
+
+      scoringTileIds = [];
+      for (x in state.ledger) {
+        let y = state.ledger[x];
+        if (y.comment) {
+          let found = y.comment.match(/round ([1-6]) scoring: (score\d+),/i);
+          if (found) {
+            let round = found[1];
+            let id = found[2];
+            scoringTileIds[round-1] = id;
+          }
+        }
+      }
+      console.log(scoringTileIds);
+
       var container = $("scoring");
+      container.width = 140;
+      container.style.width = container.width + 'px';
       container.clearContent();
 
+      scoringTileIds.push('scoring_final');
+
+      let roundNum = 0;
+      let curRound = state.round;
+      scoringTileIds.each(function (elem) {
+          roundNum++;
+          console.log(elem);
+          let img = new Image();
+          let img_fg;
+          if (roundNum < curRound) {
+            img.src = urls.scoring_bg;
+            img.onmouseover = function(event) {
+              this.src = urls[elem];
+            }
+            img.onmouseout = function(event) {
+              this.src = urls.scoring_bg; 
+            }
+          } else {
+            img.src = urls[elem];
+          }
+          img.width = 140;
+          img.alt = elem;
+          container.prepend(img);
+      });
+/*
       state.score_tiles.each(function(record, index) {
           var style = '';
           if (index == (state.round - 1)) {
@@ -401,6 +443,7 @@ function overwrite() {
           });
           container.prepend(tile);
       }
+      */
   }
 
   renderAction = function(canvas, name, key, border_color) {
