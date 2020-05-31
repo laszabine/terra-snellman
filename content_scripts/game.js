@@ -49,10 +49,106 @@ function overwrite() {
           container.style.opacity = 0.5;
       }
       let name = faction.name;
+      let factionBoardCanvasWidth = 620;
+      let factionBoardCanvasHeight = 399;
+      // 2. faction board
+      {
+          let factionBoardCanvas = new Element('canvas');
+          board.insert(factionBoardCanvas);
+          //factionBoardCanvas.style.float = 'left';
+          factionBoardCanvas.style.background = 'url(' + urls['faction_'+name] + ')';
+          factionBoardCanvas.style.opacity = 1;
+          factionBoardCanvas.style['margin-top'] = '5px';
+          factionBoardCanvas.width = factionBoardCanvasWidth;
+          factionBoardCanvas.height = factionBoardCanvasHeight;
+          let ctx = factionBoardCanvas.getContext('2d');
+          ctx.save();
+          ctx.fillStyle = colors[faction.color] + 'aa';
+          // 2.1. dwellings
+          for (let dw=faction.buildings.D.max_level; dw>faction.buildings.D.level; dw--) {
+              ctx.fillRect(87+(dw-1)*29,345,25,35);
+          }
+          // 2.2. trading posts
+          for (let tp=faction.buildings.TP.max_level; tp>faction.buildings.TP.level; tp--) {
+              ctx.fillRect(60+(tp-1)*30,280,25,50);
+          }
+          // 2.3. temples
+          for (let te=faction.buildings.TE.max_level; te>faction.buildings.TE.level; te--) {
+              ctx.beginPath();
+              ctx.arc(269+(te-1)*45,305,21,0,2*Math.PI);
+              ctx.fill();
+          }
+          // 2.4. stronghold
+          if (faction.buildings.SH.max_level > 0 && faction.buildings.SH.level == 0) {
+              ctx.fillRect(62,208,55,55);
+          }
+          // 2.5. sanctuary
+          if (faction.buildings.SA.max_level > 0 & faction.buildings.SA.level == 0) {
+              ctx.fillRect(245,215,60,40);
+          }
+          ctx.fillStyle = colors[faction.color] + 'ff';
+          // 2.6. shipping
+          if (faction.ship.max_level > 0) {
+              let offset = 487;
+              if (name == "mermaids") {
+                  offset = 445;
+              }
+              let ship = faction.ship.level;
+              ctx.beginPath();
+              ctx.arc(offset+ship*28,237,10,0,2*Math.PI);
+              ctx.fill();
+          }
+          // 2.7. digging
+          if (faction.dig && faction.dig.max_level > 0) {
+              let dig = faction.dig.level;
+              ctx.beginPath();
+              ctx.arc(519,151-dig*31,10,0,2*Math.PI);
+              ctx.fill();
+          }
+          ctx.restore();
+          // 2.8. stronghold action
+          ctx.save();
+          //ctx.fillStyle = colors[state.factions[name].color] + '99';
+          ctx.fillStyle = '#000000' + '77';
+          let factionAction = {
+              'auren': 'ACTA',
+              'chaosmagicians': 'ACTC',
+              'giants': 'ACTG',
+              'nomads': 'ACTN',
+              'swarmlings': 'ACTS',
+              'witches': 'ACTW',
+          }
+          if (name in factionAction && factionAction[name] in state.map) {
+              factionBoardCanvas.id = 'action/' + factionAction[name];
+              if (state.map[factionAction[name]].blocked == 1) {
+                /*
+                  ctx.beginPath();
+                  ctx.arc(152,237,25,0,2*Math.PI); // getestet fuer ACTW
+                  ctx.fill();
+                */
+                let actionTakenImg = new Image();
+                actionTakenImg.src = urls.ACTTAKEN;
+                actionTakenImg.onload = function (event) {
+                  ctx.drawImage(actionTakenImg, 127, 212, 50, 50);
+                };
+              }
+          }
+          ctx.restore();
+          // 2.9 power
+          ctx.save();
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '30px Arial';
+          ctx.fillText(faction.P1, 75, 150);
+          ctx.fillText(faction.P2, 75, 65);
+          ctx.fillText(faction.P3, 200, 110);
+          ctx.restore();
+      }
       // 1. resources
       {
-          let resourcesDiv = new Element('div', {'class': 'resources'});
-          board.insert(resourcesDiv);
+          let resourcesDiv = new Element('div');
+          //resourcesDiv.style.width = (max_width - factionBoardCanvasWidth - 10) + 'px'; // same as faction board image
+          //resourcesDiv.style.float = 'right';
+          container.insert(resourcesDiv);
           // 1.1 coins
           let coinsDiv = new Element('span');
           coinsDiv.style['margin-right'] = '5px';
@@ -202,100 +298,10 @@ function overwrite() {
               income.insert(row);
           }
       }
-      // 2. faction board
-      {
-          let factionBoardCanvas = new Element('canvas', {'style': 'opacity: 0;'});
-          board.insert(factionBoardCanvas);
-          factionBoardCanvas.style.background = 'url(' + urls['faction_'+name] + ')';
-          factionBoardCanvas.style.opacity = 1;
-          factionBoardCanvas.width = 620;
-          factionBoardCanvas.height = 399;
-          let ctx = factionBoardCanvas.getContext('2d');
-          ctx.save();
-          ctx.fillStyle = colors[state.factions[name].color] + 'aa';
-          // 2.1. dwellings
-          for (let dw=state.factions[name].buildings.D.max_level; dw>state.factions[name].buildings.D.level; dw--) {
-              ctx.fillRect(87+(dw-1)*29,345,25,35);
-          }
-          // 2.2. trading posts
-          for (let tp=state.factions[name].buildings.TP.max_level; tp>state.factions[name].buildings.TP.level; tp--) {
-              ctx.fillRect(60+(tp-1)*30,280,25,50);
-          }
-          // 2.3. temples
-          for (let te=state.factions[name].buildings.TE.max_level; te>state.factions[name].buildings.TE.level; te--) {
-              ctx.beginPath();
-              ctx.arc(269+(te-1)*45,305,21,0,2*Math.PI);
-              ctx.fill();
-          }
-          // 2.4. stronghold
-          if (state.factions[name].buildings.SH.max_level > 0 && state.factions[name].buildings.SH.level == 0) {
-              ctx.fillRect(62,208,55,55);
-          }
-          // 2.5. sanctuary
-          if (state.factions[name].buildings.SA.max_level > 0 & state.factions[name].buildings.SA.level == 0) {
-              ctx.fillRect(245,215,60,40);
-          }
-          ctx.fillStyle = colors[state.factions[name].color] + 'ff';
-          // 2.6. shipping
-          if (state.factions[name].ship.max_level > 0) {
-              let offset = 487;
-              if (name == "mermaids") {
-                  offset = 445;
-              }
-              let ship = state.factions[name].ship.level;
-              ctx.beginPath();
-              ctx.arc(offset+ship*28,237,10,0,2*Math.PI);
-              ctx.fill();
-          }
-          // 2.7. digging
-          if (faction.dig && faction.dig.max_level > 0) {
-              let dig = state.factions[name].dig.level;
-              ctx.beginPath();
-              ctx.arc(519,151-dig*31,10,0,2*Math.PI);
-              ctx.fill();
-          }
-          ctx.restore();
-          // 2.8. stronghold action
-          ctx.save();
-          //ctx.fillStyle = colors[state.factions[name].color] + '99';
-          ctx.fillStyle = '#000000' + '77';
-          let factionAction = {
-              'auren': 'ACTA',
-              'chaosmagicians': 'ACTC',
-              'giants': 'ACTG',
-              'nomads': 'ACTN',
-              'swarmlings': 'ACTS',
-              'witches': 'ACTW',
-          }
-          if (name in factionAction && factionAction[name] in state.map) {
-              factionBoardCanvas.id = 'action/' + factionAction[name];
-              if (state.map[factionAction[name]].blocked == 1) {
-                /*
-                  ctx.beginPath();
-                  ctx.arc(152,237,25,0,2*Math.PI); // getestet fuer ACTW
-                  ctx.fill();
-                */
-                let actionTakenImg = new Image();
-                actionTakenImg.src = urls.ACTTAKEN;
-                actionTakenImg.onload = function (event) {
-                  ctx.drawImage(actionTakenImg, 127, 212, 50, 50);
-                };
-              }
-          }
-          ctx.restore();
-          // 2.9 power
-          ctx.save();
-          ctx.fillStyle = '#ffffff';
-          ctx.font = '30px Arial';
-          ctx.fillText(state.factions[name].P1, 75, 150);
-          ctx.fillText(state.factions[name].P2, 75, 65);
-          ctx.fillText(state.factions[name].P3, 200, 110);
-          ctx.restore();
-      }
       // 3. status
       {
           let statusDiv = new Element('div');
-          container.insert(statusDiv);
+          board.insert(statusDiv);
           // 3.1. victory points
           let vp_id = faction.name + "/vp";
           let link = makeToggleLink(faction.VP, function() { toggleVP(vp_id); });
@@ -398,7 +404,7 @@ function overwrite() {
           console.log(elem);
           let img = new Image();
           let img_fg;
-          if (roundNum < curRound) {
+          if (roundNum < curRound || (roundNum == 6 && state.finished)) {
             img.src = urls.scoring_bg;
             img.onmouseover = function(event) {
               this.src = urls[elem];
@@ -456,7 +462,7 @@ function overwrite() {
       if (faction == 'pool') {
         board.style.width = max_width + 'px'; // because I don't know where else to put it
       }
-      
+
       if (name.startsWith("ACT")) {
           // remove the ACT-tiles for faction-specific actions; (keep the power actions!)
           if (name.match(/ACT[A-Z]/i)) return;
