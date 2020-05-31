@@ -35,12 +35,15 @@ init = function(root) {
 }
 
 function overwrite() {
-  console.log("overwriting functions!")
+  console.log("overwriting functions!");
+
+  var max_width = 1190;
 
   /* faction board */
   drawRealFaction = function(faction, board) {
       let container = board.parentNode;
       container.id = faction.name;
+      container.style.width = max_width + 'px';
       if (faction.passed) {
           board.style.opacity = 1;
           container.style.opacity = 0.5;
@@ -54,9 +57,9 @@ function overwrite() {
           let coinsDiv = new Element('span');
           coinsDiv.style['margin-right'] = '5px';
           resourcesDiv.appendChild(coinsDiv);
-          let coins5 = Math.floor(state.factions[name].C / 5);
-          let coins2 = Math.floor((state.factions[name].C - coins5*5) / 2);
-          let coins1 = state.factions[name].C - coins5*5 - coins2*2;
+          let coins5 = Math.floor(faction.C / 5);
+          let coins2 = Math.floor((faction.C - coins5*5) / 2);
+          let coins1 = faction.C - coins5*5 - coins2*2;
           let coin5Img = new Element('img');
           coin5Img.src = urls.coin5;
           coin5Img.alt = '5c';
@@ -90,16 +93,17 @@ function overwrite() {
           workerImg.alt = '1w';
           workerImg.height = '40';
           workerImg.style['margin-right'] = '3px';
-          for (let f=0; f<state.factions[name].W; f++) {
+          for (let f=0; f<faction.W; f++) {
               workersDiv.appendChild(workerImg.cloneNode());
           }
           // 1.3 priests
           let priestsDiv = new Element('span');
           resourcesDiv.appendChild(priestsDiv);
           let priestImg = new Element('img');
-          priestImg.src = urls['priest_'+state.factions[name].color];
+          priestImg.src = urls['priest_'+faction.color];
           priestImg.alt = '1p';
-          for (let f=0; f<state.factions[name].P; f++) {
+          priestImg.height = 45;
+          for (let f=0; f<faction.P; f++) {
               priestsDiv.appendChild(priestImg.cloneNode());
           }
           // 1.4. table overview (resources & income)
@@ -266,9 +270,16 @@ function overwrite() {
           if (name in factionAction && factionAction[name] in state.map) {
               factionBoardCanvas.id = 'action/' + factionAction[name];
               if (state.map[factionAction[name]].blocked == 1) {
+                /*
                   ctx.beginPath();
                   ctx.arc(152,237,25,0,2*Math.PI); // getestet fuer ACTW
                   ctx.fill();
+                */
+                let actionTakenImg = new Image();
+                actionTakenImg.src = urls.ACTTAKEN;
+                actionTakenImg.onload = function (event) {
+                  ctx.drawImage(actionTakenImg, 127, 212, 50, 50);
+                };
               }
           }
           ctx.restore();
@@ -291,7 +302,7 @@ function overwrite() {
           statusDiv.insert(link);
           statusDiv.insertTextSpan(" vp, ");
           // 3.2. priests available
-          statusDiv.insertTextSpan(faction.MAX_P + " p available, ");
+          statusDiv.insertTextSpan((faction.MAX_P - faction.P) + " p available, ");
           // 3.3. bridges available
           statusDiv.insertTextSpan(faction.BRIDGE_COUNT + " bridges left");
           // 3.4. VP details (onclick)
@@ -442,6 +453,10 @@ function overwrite() {
       if (count < 1) {
           return;
       }
+      if (faction == 'pool') {
+        board.style.width = max_width + 'px'; // because I don't know where else to put it
+      }
+      
       if (name.startsWith("ACT")) {
           // remove the ACT-tiles for faction-specific actions; (keep the power actions!)
           if (name.match(/ACT[A-Z]/i)) return;
@@ -784,6 +799,9 @@ function overwrite() {
       <col span=2 ></col> \
       <col span=2 style="background-color: #e0e0f0"></col> \
     </table>';
+
+    $('header').style['max-width'] = max_width + 'px';
+    $('action_required').style['max-width'] = max_width + 'px';
 
     preview();
   }
