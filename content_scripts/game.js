@@ -37,107 +37,7 @@ init = function(root) {
 function overwrite() {
   console.log("overwriting functions!")
 
-  renderTreasuryTile = function(board, faction, name, count) {
-      if (count < 1) {
-          return;
-      }
-      if (name.startsWith("ACT")) {
-          // remove the ACT-tiles for faction-specific actions; (keep the power actions!)
-          if (name.match(/ACT[A-Z]/i)) return;
-
-          var elem = insertAction(board, name, name);
-          if (state.actions[name] &&
-              state.actions[name].show_if &&
-              !state.factions[faction][state.actions[name].show_if]) {
-              elem.hide();
-          }
-          return;
-      } else if (name.startsWith("BON")) {
-          board.insert(new Element('div', {'class': 'bonus', 'style': 'height:220px; width:70px;'}));
-          let div = board.childElements().last();
-          renderBonus(div, name, faction);
-      } else if (name.startsWith("FAV")) {
-          board.insert(new Element('div', {'class': 'favor', 'style': 'height:103px; width:130px;'}));
-          let div = board.childElements().last();
-          renderFavor(div, name, faction, count);
-          return;
-      } else if (name.startsWith("TW")) {
-          board.insert(new Element('div', {'class': 'town', 'style': 'height:103px;'}));
-          let div = board.childElements().last();
-          renderTown(div, name, faction, count);
-          return;
-      }
-  }
-
-  renderTile = function(tile, name, record, faction, count) {
-      tile.insertTextSpan(name);
-      if (state.bonus_coins[name] && state.bonus_coins[name].C) {
-          tile.insertTextSpan(" [#{C}c]".interpolate(state.bonus_coins[name]));
-      }
-      if (count > 1) {
-          tile.insertTextSpan(" (x" + count + ")");
-      }
-      // hier kommt die sabine
-      if (name in urls) {
-          let imgDiv = new Element('div');
-          tile.insert(imgDiv);
-          let tileCanvas = new Element('canvas');
-          if (['BON1', 'BON2', 'FAV6'].includes(name)) {
-              tileCanvas.id = 'action/' + name + '/' + faction;
-          }
-          if (name.startsWith('BON') && faction == 'pool') {
-              tileCanvas.id = 'action/PASS/' + name;
-          }
-          imgDiv.insert(tileCanvas);
-          //tileCanvas.style = 'background: url(' + urls[name] + ')';
-          let actionTakenHeight = 0;
-          let actionTakenWidth = 0;
-          if (name.startsWith('BON')) {
-              tileCanvas.height = 205;
-              tileCanvas.width = 68;
-              actionTakenHeight = 63;
-              actionTakenWidth = 35;
-          } else if (name.startsWith('FAV')) {
-              tileCanvas.height = 85;
-              tileCanvas.width = 128;
-              actionTakenHeight = 41;
-              actionTakenWidth = 79;
-          } else {
-              alert(name);
-          }
-          let ctx = tileCanvas.getContext('2d');
-          let tileImg = new Image();
-          tileImg.src = urls[name];
-          tileImg.onload = () => {
-              ctx.drawImage(tileImg, 0, 0, tileCanvas.width, tileCanvas.height);
-              // draw action-is-taken marker over image
-              if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
-                  ctx.fillStyle = '#000000' + '77';
-                  ctx.beginPath();
-                  ctx.arc(actionTakenWidth, actionTakenHeight, 25, 0, 2*Math.PI);
-                  ctx.fill();
-              }
-          };
-      }
-  }
-
-  renderTown = function(tile, name, faction, count) {
-      if (count != 1) {
-          tile.insertTextSpan(name + " (x" + count + ")");
-      } else {
-          tile.insertTextSpan(name);
-      }
-      // hier kommt die sabine
-      if (name in urls) {
-          let tileImg = new Element('img');
-          tileImg.src = urls[name];
-          tileImg.height = 90;
-          let imgDiv = new Element('div');
-          imgDiv.insert(tileImg);
-          tile.insert(imgDiv);
-      }
-  }
-
+  /* faction board */
   drawRealFaction = function(faction, board) {
       let container = board.parentNode;
       container.id = faction.name;
@@ -435,6 +335,19 @@ function overwrite() {
       }
   }
 
+  toggleIncome = function(id) {
+      var table = $(id);
+
+      table.childElements().each(function (elem, index) {
+          if (index != 0 && index != 1 && index != table.childElements().length-1) {
+              elem.style.display = (elem.style.display == 'none' ? '' : 'none');
+          }
+      });
+  }
+
+  renderColorCycle = function(faction, parent) {}
+
+  /* tiles */
   drawScoringTiles = function() {
       var container = $("scoring");
       container.clearContent();
@@ -490,18 +403,6 @@ function overwrite() {
       }
   }
 
-  toggleIncome = function(id) {
-      var table = $(id);
-
-      table.childElements().each(function (elem, index) {
-          if (index != 0 && index != 1 && index != table.childElements().length-1) {
-              elem.style.display = (elem.style.display == 'none' ? '' : 'none');
-          }
-      });
-  }
-
-  renderColorCycle = function(faction, parent) {}
-
   renderAction = function(canvas, name, key, border_color) {
       if (!canvas.getContext) return;
       let ctx = canvas.getContext("2d");
@@ -531,6 +432,108 @@ function overwrite() {
       };
   }
 
+  renderTreasuryTile = function(board, faction, name, count) {
+      if (count < 1) {
+          return;
+      }
+      if (name.startsWith("ACT")) {
+          // remove the ACT-tiles for faction-specific actions; (keep the power actions!)
+          if (name.match(/ACT[A-Z]/i)) return;
+
+          var elem = insertAction(board, name, name);
+          if (state.actions[name] &&
+              state.actions[name].show_if &&
+              !state.factions[faction][state.actions[name].show_if]) {
+              elem.hide();
+          }
+          return;
+      } else if (name.startsWith("BON")) {
+          board.insert(new Element('div', {'class': 'bonus', 'style': 'height:220px; width:70px;'}));
+          let div = board.childElements().last();
+          renderBonus(div, name, faction);
+      } else if (name.startsWith("FAV")) {
+          board.insert(new Element('div', {'class': 'favor', 'style': 'height:103px; width:130px;'}));
+          let div = board.childElements().last();
+          renderFavor(div, name, faction, count);
+          return;
+      } else if (name.startsWith("TW")) {
+          board.insert(new Element('div', {'class': 'town', 'style': 'height:103px;'}));
+          let div = board.childElements().last();
+          renderTown(div, name, faction, count);
+          return;
+      }
+  }
+
+  renderTile = function(tile, name, record, faction, count) {
+      tile.insertTextSpan(name);
+      if (state.bonus_coins[name] && state.bonus_coins[name].C) {
+          tile.insertTextSpan(" [#{C}c]".interpolate(state.bonus_coins[name]));
+      }
+      if (count > 1) {
+          tile.insertTextSpan(" (x" + count + ")");
+      }
+      // hier kommt die sabine
+      if (name in urls) {
+          let imgDiv = new Element('div');
+          tile.insert(imgDiv);
+          let tileCanvas = new Element('canvas');
+          if (['BON1', 'BON2', 'FAV6'].includes(name)) {
+              tileCanvas.id = 'action/' + name + '/' + faction;
+          }
+          if (name.startsWith('BON') && faction == 'pool') {
+              tileCanvas.id = 'action/PASS/' + name;
+          }
+          imgDiv.insert(tileCanvas);
+          //tileCanvas.style = 'background: url(' + urls[name] + ')';
+          let actionTakenHeight = 0;
+          let actionTakenWidth = 0;
+          if (name.startsWith('BON')) {
+              tileCanvas.height = 205;
+              tileCanvas.width = 68;
+              actionTakenHeight = 63;
+              actionTakenWidth = 35;
+          } else if (name.startsWith('FAV')) {
+              tileCanvas.height = 85;
+              tileCanvas.width = 128;
+              actionTakenHeight = 41;
+              actionTakenWidth = 79;
+          } else {
+              alert(name);
+          }
+          let ctx = tileCanvas.getContext('2d');
+          let tileImg = new Image();
+          tileImg.src = urls[name];
+          tileImg.onload = () => {
+              ctx.drawImage(tileImg, 0, 0, tileCanvas.width, tileCanvas.height);
+              // draw action-is-taken marker over image
+              if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
+                  ctx.fillStyle = '#000000' + '77';
+                  ctx.beginPath();
+                  ctx.arc(actionTakenWidth, actionTakenHeight, 25, 0, 2*Math.PI);
+                  ctx.fill();
+              }
+          };
+      }
+  }
+
+  renderTown = function(tile, name, faction, count) {
+      if (count != 1) {
+          tile.insertTextSpan(name + " (x" + count + ")");
+      } else {
+          tile.insertTextSpan(name);
+      }
+      // hier kommt die sabine
+      if (name in urls) {
+          let tileImg = new Element('img');
+          tileImg.src = urls[name];
+          tileImg.height = 90;
+          let imgDiv = new Element('div');
+          imgDiv.insert(tileImg);
+          tile.insert(imgDiv);
+      }
+  }
+
+  /* actions */
   markActionAsPossible = function(canvas, name, key) {
       if (!canvas.getContext) return;
       let ctx = canvas.getContext("2d");
@@ -674,6 +677,7 @@ function overwrite() {
       return row;
   }
 
+  /* init */
   init_mod = function(root) {
     root.innerHTML = ' \
     <table style="border-style: none" id="main-data"> \
