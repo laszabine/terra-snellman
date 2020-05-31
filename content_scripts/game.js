@@ -393,7 +393,7 @@ function overwrite() {
               this.src = urls[elem];
             }
             img.onmouseout = function(event) {
-              this.src = urls.scoring_bg; 
+              this.src = urls.scoring_bg;
             }
           } else {
             img.src = urls[elem];
@@ -402,57 +402,6 @@ function overwrite() {
           img.alt = elem;
           container.prepend(img);
       });
-/*
-      state.score_tiles.each(function(record, index) {
-          var style = '';
-          if (index == (state.round - 1)) {
-              style = 'background-color: #d0ffd0';
-          } else if (index < state.round) {
-              style = 'opacity: 0.5';
-          }
-          var tile = new Element('div', {'class': 'scoring', 'style': style});
-          tile.insert(new Element('div', {'style': 'float: right; border-style: solid; border-width: 1px; '}).updateText("r" + (index + 1)));
-
-          {
-              var row = new Element("div");
-              row.insert(new Element("div", { "class": "scoring-head" }).updateText("vp:"));
-              row.insert(new Element("div").updateText(record.vp_display));
-              tile.insert(row);
-          }
-
-          if (index < 5) {
-              var style = cultStyle(record.cult);
-              var row = new Element('div');
-              row.insert(new Element("div", { "class": "scoring-head" }).updateText("income:"));
-              row.insert(new Element("div").insert(
-                  new Element("span", { style: style }).updateText(
-                      record.income_display)));
-              tile.insert(row);
-            }
-          container.prepend(tile);
-      });
-
-      {
-          var tile = new Element('div', {'class': 'final-scoring' });
-          var table = new Element('table', {'class': 'final-scoring'});
-          tile.insert(table);
-          table.insert(new Element("tr").insert(
-              new Element("td", {"style": "font-weight: bold", "colspan": 2}).updateText(
-                  "Final vp")));
-          $H(state.final_scoring).sortBy(naturalSortKey).each(function (elem) {
-              var type = elem.value.label || elem.key;
-              var desc = elem.value.description;
-              var points = elem.value.points;
-              var row = new Element("tr");
-              var label = new Element("span", { "title": desc });
-              label.updateText(type);
-              row.insert(new Element("td").insert(label));
-              row.insert(new Element("td").updateText(points.join('/')));
-              table.insert(row);
-          });
-          container.prepend(tile);
-      }
-      */
   }
 
   renderAction = function(canvas, name, key, border_color) {
