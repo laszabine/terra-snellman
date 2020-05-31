@@ -82,10 +82,11 @@ function sabine() {
           let imgDiv = new Element('div');
           tile.insert(imgDiv);
           let tileCanvas = new Element('canvas');
-          if (['BON1', 'BON2', 'FAV6'].includes(name) ||
-              (name.startsWith('BON') && faction == 'pool'))
-          {
+          if (['BON1', 'BON2', 'FAV6'].includes(name)) {
               tileCanvas.id = 'action/' + name + '/' + faction;
+          }
+          if (name.startsWith('BON') && faction == 'pool') {
+              tileCanvas.id = 'action/PASS/' + name;
           }
           imgDiv.insert(tileCanvas);
           //tileCanvas.style = 'background: url(' + urls[name] + ')';
@@ -519,7 +520,7 @@ function sabine() {
       img.onload = () => {
           ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, width, height);
 
-          if (state.map[key].blocked == 1) {
+          if (state.map[key] && state.map[key].blocked == 1) {
             ctx.save();
             ctx.fillStyle = '#000000' + '77';
             ctx.beginPath();
@@ -627,6 +628,19 @@ function sabine() {
                   menuClickHandler(title, loc, menu_items)(loc, event);
               }
           });
+      } else if (name.startsWith('PASS')) {
+          ctx.rect(0, 0, canvas.width, canvas.height);
+          ctx.stroke();
+          let tileName = key.substring(5); // e.g., key = PASS/BON2
+          let menu_items = {
+              "Pass": {
+                  "fun": function() { appendAndPreview('pass ' + tileName); },
+                  "label": (state.bonus_coins[tileName].C > 0 ? '+#{C}C, '.interpolate(state.bonus_coins[tileName]) : '') + tileLabel(state.bonus_tiles[tileName]),
+              }
+          };
+          canvas.addEventListener('click', function(event) {
+              menuClickHandler(tileName, "Pass & choose", menu_items)("Pass & choose", event);
+          });
       }
       ctx.restore();
   }
@@ -645,12 +659,18 @@ function sabine() {
   let addPassToMovePicker_ = addPassToMovePicker;
   addPassToMovePicker = function(picker, faction) {
       let row = addPassToMovePicker_(picker, faction);
-
+      for (tile in state.pool) {
+        if (tile.startsWith('BON') && state.pool[tile] == '1') {
+          let canvas = document.getElementById('action/PASS/' + tile);
+          if (faction.allowed_actions) {
+            markActionAsPossible(canvas, "PASS", "PASS/" + tile);
+          }
+        }
+      }
       return row;
   }
 
   init_mod = function(root) {
-    console.log('init_mod');
     root.innerHTML = ' \
     <table style="border-style: none" id="main-data"> \
       <tr> \
