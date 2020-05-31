@@ -69,7 +69,10 @@ function getImageUrls() {
 }
 
 function overwriteFunctions(details) {
-  console.log("game.js was requested")
+  console.log(details.url + " was requested")
+  let filename = details.url.match(/[^/\.]*\.js/i)[0];
+  console.log(filename);
+
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
   let encoder = new TextEncoder();
@@ -85,15 +88,17 @@ function overwriteFunctions(details) {
   };
   filter.onstop = async function(event) {
 
-    // output the image urls
-    let imgUrls = getImageUrls();
-    enc = encoder.encode(imgUrls);
-    console.log('urls', enc);
-    await filter.write(enc);
+    if (filename == 'game.js') {
+      // output the image urls
+      let imgUrls = getImageUrls();
+      enc = encoder.encode(imgUrls);
+      console.log('urls', enc);
+      await filter.write(enc);
+    }
 
     // output the new content, which overwrites the original content
     let modified_gamejs;
-    let path = 'content_scripts/game.js';
+    let path = 'content_scripts/' + filename;
     let response = await fetch(path, {mode:'same-origin'}) // <-- important
     let file = await response.blob();
     console.log('file', file);
@@ -108,7 +113,7 @@ function overwriteFunctions(details) {
 
       // clean up
       filter.disconnect();
-      console.log("finished parsing game.js");
+      console.log("finished parsing " + filename);
 
     }
     reader.readAsText(file);
