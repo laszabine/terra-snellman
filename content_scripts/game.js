@@ -2,7 +2,7 @@ var init_orig = init;
 
 var init_mod;
 
-init = async function(root) {
+init = function(root) {
   var isInit = true;
 
   function evaluateStateOptions(root) {
@@ -17,7 +17,7 @@ init = async function(root) {
     if (isInit) {
       if (Object.keys(state.options).every(val => implementedOptions.includes(val))) {
         console.log("all options are compatible with sabine's twist");
-        sabine();
+        overwrite();
         init_mod(root);
       }
       isInit = false;
@@ -34,7 +34,7 @@ init = async function(root) {
   init_orig(root);
 }
 
-function sabine() {
+function overwrite() {
   console.log("overwriting functions!")
 
   renderTreasuryTile = function(board, faction, name, count) {
