@@ -1,0 +1,11 @@
+- name: Build and sign WebExtension
+  uses: Saphareas/sign-web-extension-action@v0.1
+  with:
+    # Your key for Mozilla's API
+    amo-api-key: 1
+    # Your secret for Mozilla's API
+    amo-api-secret: 1
+    # UUID of your existing extension. Signing new extensions is not supported.
+    web-ext-id: 1
+    # Set to 'true' to list the extension on AMO. Defaults to 'false' for unlisted signing.
+    sign-listed: false

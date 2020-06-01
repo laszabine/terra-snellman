@@ -1,9 +1,14 @@
 {
   "manifest_version": 2,
   "name": "Snellman Prettification",
-  "version": "1.0",
+  "version": "1.2",
 
   "description": "Modifies the display of games at terra.snellman.net by adding images from the board game",
+  "browser_specific_settings": {
+    "gecko": {
+      "update_url": "https://raw.githubusercontent.com/rarusel/terra-snellman/master/manifest.json"
+    }
+  },
 
   "permissions": [
     "webRequest",
