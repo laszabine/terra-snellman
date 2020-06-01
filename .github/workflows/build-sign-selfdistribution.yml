@@ -4,8 +4,8 @@ on:
     branches:
       - master
 jobs:
-  publish-to-amo:
-    name: Build and publish the extension
+  publish-to-github:
+    name: Build and package the extension
     runs-on: ubuntu-latest
     steps:
 
@@ -18,7 +18,7 @@ jobs:
         uses: kewisch/action-web-ext@v1
         with:
           cmd: build
-          source: src
+          source: .
 
       - name: "Sign"
         id: web-ext-sign
