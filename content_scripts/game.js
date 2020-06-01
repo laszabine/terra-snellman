@@ -109,18 +109,19 @@ function overwrite() {
           // 2.8. stronghold action
           ctx.save();
           //ctx.fillStyle = colors[state.factions[name].color] + '99';
-          ctx.fillStyle = '#000000' + '77';
+          //ctx.fillStyle = '#000000' + '77';
           let factionAction = {
               'auren': 'ACTA',
               'chaosmagicians': 'ACTC',
+              'engineers': 'ACTE',
               'giants': 'ACTG',
               'nomads': 'ACTN',
               'swarmlings': 'ACTS',
               'witches': 'ACTW',
           }
-          if (name in factionAction && factionAction[name] in state.map) {
+          if (name in factionAction) {
               factionBoardCanvas.id = 'action/' + factionAction[name];
-              if (state.map[factionAction[name]].blocked == 1) {
+              if (factionAction[name] in state.map && state.map[factionAction[name]].blocked == 1) {
                 /*
                   ctx.beginPath();
                   ctx.arc(152,237,25,0,2*Math.PI); // getestet fuer ACTW
