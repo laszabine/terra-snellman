@@ -22,20 +22,19 @@ jobs:
 
       - name: "Sign"
         id: web-ext-sign
-        uses: kewisch/action-web-ext@v1
-        with:
-          cmd: sign
-          source: ${{ steps.web-ext-build.outputs.target }}
-          channel: unlisted
-          apiKey: ${{ secrets.MOZILLA_API_SABINE_USER }}
-          apiSecret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
-         # WEB_EXT_ID: "{212d2e80-11e9-4876-a063-b544b093bb47}"
-#        uses: saphareas/sign-web-extension-action@master
-#        with:
-#          web-ext-id: "{212d2e80-11e9-4876-a063-b544b093bb47}"
-#          sign-listed: false
-#          amo-api-key: ${{ secrets.MOZILLA_API_SABINE_USER }}
-#          amo-api-secret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
+        # uses: kewisch/action-web-ext@v1
+        # with:
+        #   cmd: sign
+        #   source: ${{ steps.web-ext-build.outputs.target }}
+        #   channel: unlisted
+        #   apiKey: ${{ secrets.MOZILLA_API_SABINE_USER }}
+        #   apiSecret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
+       uses: saphareas/sign-web-extension-action@master
+       with:
+         web-ext-id: "{212d2e80-11e9-4876-a063-b544b093bb47}"
+         sign-listed: false
+         amo-api-key: ${{ secrets.MOZILLA_API_SABINE_USER }}
+         amo-api-secret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
 
       - name: "Create Release"
         env:
