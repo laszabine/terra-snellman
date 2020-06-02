@@ -35,10 +35,13 @@ jobs:
         id: compare-version
         run: |
           echo "Committed version is ${newVersion}, latest release version is ${oldVersion}"
-          echo "Are they different?"
-          $different=[ ${newVersion} = ${oldVersion} ]
-          echo ${different}
-          echo "::set-output name=isDifferent::${different}"
+          if [ ${newVersion} = ${oldVersion} ]; then
+            echo "They are identical"
+            echo "::set-output name=isDifferent::false"
+          else
+            echo "They are different"
+            echo "::set-output name=isDifferent::true"
+          fi
         env:
           newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
           oldVersion: ${{ steps.read-latest-release-version.outputs.tag }}
