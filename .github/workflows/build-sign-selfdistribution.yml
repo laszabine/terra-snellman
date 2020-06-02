@@ -8,7 +8,7 @@ jobs:
     name: Compare version
     runs-on: ubuntu-latest
     outputs:
-      newVersion: ${{ steps.read-committed-version.outputs.version }}
+      newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
       isDifferent: ${{ steps.compare-version.outputs.isDifferent }}
     steps:
       - name: "Checkout"
@@ -49,23 +49,13 @@ jobs:
   publish-to-github:
     name: Publish to Github
     needs: compare-version
-    # if: ${{ needs.compare-version.outputs.isDifferent }}
+    if: ${{ needs.compare-version.outputs.isDifferent }}
     runs-on: ubuntu-latest
     steps:
-      - name: "Test output"
-        run: |
-          echo "new version=${{ needs.compare-version.outputs.newVersion }}, is different=${{ needs.compare-version.outputs.isDifferent }}"
-
-      - name: "Test boolean"
-        if: ${{ needs.compare-version.outputs.isDifferent }}
-        run: echo "yes different!"
-
       - name: "Checkout"
-        if: false
         uses: actions/checkout@v1
 
       - name: "Build"
-        if: false
         id: web-ext-build
         uses: kewisch/action-web-ext@v1
         with:
@@ -73,7 +63,6 @@ jobs:
           source: .
 
       - name: "Sign"
-        if: false
         id: web-ext-sign
         # uses: kewisch/action-web-ext@v1
         # with:
@@ -96,8 +85,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ${{ steps.web-ext-sign.outputs.target }}
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
+          tag_name: ${{ needs.compare-version.outputs.newVersion }}
+          name: Release ${{ needs.compare-version.outputs.newVersion }}
 
 #        uses: actions/create-release@v1
 #          release_name: Release ${{ github.ref }}
