@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       newVersion: ${{ steps.read-committed-version.outputs.version }}
-        description: 'The value of this commit's version number'
+        description: "The value of this commit's version number"
       isDifferent: ${{ steps.compare-version.outputs.isDifferent }}
-        description: 'Boolean whether this commit contains a version number different from the latest release'
+        description: "Boolean whether this commit contains a version number different from the latest release"
     steps:
       - name: "Checkout"
         uses: actions/checkout@v1
