@@ -30,13 +30,13 @@ jobs:
       - name: "Compare version"
         id: compare-version
         run: |
-          echo "Committed version is ${{ newVersion }}, latest release version is ${{ oldVersion }}"
+          echo "Committed version is ${newVersion}, latest release version is ${oldVersion}"
           echo "Are they different?"
-          $different = [ ${{ newVersion }} = ${{ oldVersion }} ]
+          $different = [ ${newVersion} = ${oldVersion} ]
           echo ${different}
-          echo "::set-output name=isDifferent::${{ different }}"
-          echo "::set-output name=newVersion::${{ newVersion }}"
-        with:
+          echo "::set-output name=isDifferent::${different}"
+          echo "::set-output name=newVersion::${newVersion}"
+        env:
           newVersion: ${{ steps.read-committed-version.outputs.version }}
           oldVersion: ${{ steps.read-latest-release-version.outputs.release }}
 
