@@ -15,11 +15,15 @@ jobs:
         uses: actions/checkout@v1
         # uses: actions/checkout@master
 
-      - name: "Read committed version"
-        id: read-committed-version
-        uses: tyankatsu0105/read-package-version-actions@v1
+      - name: "Open committed manifest"
+        id: open-committed-manifest
+        uses: juliangruber/read-file-action@v1
         with:
           path: "./manifest.json"
+
+      - name: "Read committed version"
+        id: read-committed-version
+        run: echo "::set-output name=newVersion::${{ fromJson(steps.open-committed-manifest.outputs.content).version }}"
 
       - name: "Read latest release version"
         id: read-latest-release-version
@@ -35,9 +39,8 @@ jobs:
           $different = [ ${newVersion} = ${oldVersion} ]
           echo ${different}
           echo "::set-output name=isDifferent::${different}"
-          echo "::set-output name=newVersion::${newVersion}"
         env:
-          newVersion: ${{ steps.read-committed-version.outputs.version }}
+          newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
           oldVersion: ${{ steps.read-latest-release-version.outputs.release }}
 
   publish-to-github:
