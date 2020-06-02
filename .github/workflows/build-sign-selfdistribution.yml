@@ -8,9 +8,9 @@ jobs:
     name: Compare version
     runs-on: ubuntu-latest
     outputs:
-      newVersion:
+      newVersion: ${{ steps.read-committed-version.outputs.version }}
         description: 'The value of this commit's version number'
-      isDifferent:
+      isDifferent: ${{ steps.compare-version.outputs.isDifferent }}
         description: 'Boolean whether this commit contains a version number different from the latest release'
     steps:
       - name: "Checkout"
@@ -35,6 +35,7 @@ jobs:
           echo "Committed version is ${{ newVersion }}, latest release version is ${{ oldVersion }}"
           echo "Are they different?"
           $different = [ ${{ newVersion }} = ${{ oldVersion }} ]
+          echo ${different}
           echo "::set-output name=isDifferent::${{ different }}"
           echo "::set-output name=newVersion::${{ newVersion }}"
         with:
