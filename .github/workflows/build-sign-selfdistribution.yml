@@ -1,4 +1,4 @@
-name: Builds and signs the WebExtension
+name: build & sign & publish 
 on:
   push:
     branches:

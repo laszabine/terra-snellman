@@ -9,7 +9,7 @@ We have not yet made this add-on available in the Firefox add-on webstore becaus
 ### Install from file
 
 The XPI file builds automatically:
-<img src="https://github.com/rarusel/terra-snellman/workflows/Builds%20and%20signs%20the%20WebExtension/badge.svg" alt="build status" />
+<img src="https://github.com/rarusel/terra-snellman/workflows/build%20%26%20sign%20%26%20publish/badge.svg" alt="build status" />
 
 ### Install as temporary add-on
 
