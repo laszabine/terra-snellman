@@ -4,15 +4,63 @@ on:
     branches:
       - master
 jobs:
-  publish-to-github:
-    name: Publish to Github
+  compare-version:
+    name: Compare version
     runs-on: ubuntu-latest
+    outputs:
+      newVersion:
+        description: 'The value of this commit's version number'
+      isDifferent:
+        description: 'Boolean whether this commit contains a version number different from the latest release'
     steps:
       - name: "Checkout"
         uses: actions/checkout@v1
         # uses: actions/checkout@master
 
+      - name: "Read committed version"
+        id: read-committed-version
+        uses: tyankatsu0105/read-package-version-actions@v1
+        with:
+          path: "./manifest.json"
+
+      - name: "Read latest release version"
+        id: read-latest-release-version
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+            repository: ${{ github.repository }}
+
+      - name: "Compare version"
+        id: compare-version
+        run: |
+          echo "Committed version is ${{ newVersion }}, latest release version is ${{ oldVersion }}"
+          echo "Are they different?"
+          $different = [ ${{ newVersion }} = ${{ oldVersion }} ]
+          echo "::set-output name=isDifferent::${{ different }}"
+          echo "::set-output name=newVersion::${{ newVersion }}"
+        with:
+          newVersion: ${{ steps.read-committed-version.outputs.version }}
+          oldVersion: ${{ steps.read-latest-release-version.outputs.release }}
+
+  publish-to-github:
+    name: Publish to Github
+    needs: compare-version
+    # if: ${{ needs.compare-version.outputs.isDifferent }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Test output"
+        run: |
+          echo "new version=${{ needs.compare-version.outputs.newVersion }}, is different=${{ needs.compare-version.outputs.isDifferent }}"
+
+      - name: "Test boolean"
+        if: ${{ needs.compare-version.outputs.isDifferent }}
+        run: echo "yes different!"
+
+      - name: "Checkout"
+        if: false
+        uses: actions/checkout@v1
+
       - name: "Build"
+        if: false
         id: web-ext-build
         uses: kewisch/action-web-ext@v1
         with:
@@ -20,6 +68,7 @@ jobs:
           source: .
 
       - name: "Sign"
+        if: false
         id: web-ext-sign
         # uses: kewisch/action-web-ext@v1
         # with:
@@ -36,6 +85,7 @@ jobs:
           amo-api-secret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
 
       - name: "Create Release"
+        if: false && steps.web-ext-sign.conclusion == 'success' # must use single quotes for string literals
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
