@@ -1,4 +1,4 @@
-name: build & sign & publish 
+name: build & sign & publish
 on:
   push:
     branches:
@@ -64,22 +64,22 @@ jobs:
 
       - name: "Sign"
         id: web-ext-sign
-        # uses: kewisch/action-web-ext@v1
-        # with:
-        #   cmd: sign
-        #   source: ${{ steps.web-ext-build.outputs.target }}
-        #   channel: unlisted
-        #   apiKey: ${{ secrets.MOZILLA_API_SABINE_USER }}
-        #   apiSecret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
-        uses: saphareas/sign-web-extension-action@master
+        uses: kewisch/action-web-ext@v1
         with:
-          web-ext-id: "{212d2e80-11e9-4876-a063-b544b093bb47}"
-          sign-listed: false
-          amo-api-key: ${{ secrets.MOZILLA_API_SABINE_USER }}
-          amo-api-secret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
+          cmd: sign
+          source: ${{ steps.web-ext-build.outputs.target }}
+          channel: unlisted
+          apiKey: ${{ secrets.MOZILLA_API_SABINE_USER }}
+          apiSecret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
+        # uses: saphareas/sign-web-extension-action@master
+        # with:
+        #   web-ext-id: "{212d2e80-11e9-4876-a063-b544b093bb47}"
+        #   sign-listed: false
+        #   amo-api-key: ${{ secrets.MOZILLA_API_SABINE_USER }}
+        #   amo-api-secret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
 
       - name: "Create Release"
-        if: false && steps.web-ext-sign.conclusion == 'success' # must use single quotes for string literals
+        if: steps.web-ext-sign.conclusion == 'success' # must use single quotes for string literals
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
