@@ -23,13 +23,13 @@ jobs:
 
       - name: "Read committed version"
         id: read-committed-version
-        run: echo "::set-output name=newVersion::${{ fromJson(steps.open-committed-manifest.outputs.content).version }}"
+        run: echo "::set-output name=newVersion::v${{ fromJson(steps.open-committed-manifest.outputs.content).version }}"
 
       - name: "Read latest release version"
         id: read-latest-release-version
-        uses: pozetroninc/github-action-get-latest-release@master
+        uses: oprypin/find-latest-tag@v1
         with:
-            repository: ${{ github.repository }}
+          repository: ${{ github.repository }}
 
       - name: "Compare version"
         id: compare-version
@@ -41,7 +41,7 @@ jobs:
           echo "::set-output name=isDifferent::${different}"
         env:
           newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
-          oldVersion: ${{ steps.read-latest-release-version.outputs.release }}
+          oldVersion: ${{ steps.read-latest-release-version.outputs.tag }}
 
   publish-to-github:
     name: Publish to Github
