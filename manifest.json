@@ -14,7 +14,7 @@
   "permissions": [
     "webRequest",
     "webRequestBlocking",
-    "<all_urls>"
+    "https://terra.snellman.net/*"
   ],
 
   "content_scripts": [
