@@ -6,9 +6,9 @@ on:
 jobs:
   compare-version:
     name: Compare version
-    id: compare-version
     runs-on: ubuntu-latest
     outputs:
+      versionNumber:
       newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
       isDifferent: ${{ steps.compare-version.outputs.isDifferent }}
     steps:
@@ -38,10 +38,10 @@ jobs:
           echo "Committed version is ${newVersion}, latest release version is ${oldVersion}"
           if [ ${newVersion} = ${oldVersion} ]; then
             echo "They are identical"
-            echo "::set-output name=isDifferent::false"
+            echo "::set-output name=isDifferent::${{ false }}"
           else
             echo "They are different"
-            echo "::set-output name=isDifferent::true"
+            echo "::set-output name=isDifferent::${{ true }}"
           fi
         env:
           newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
