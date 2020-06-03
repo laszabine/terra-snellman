@@ -51,7 +51,7 @@ jobs:
     needs: compare-version
     if: ${{ needs.compare-version.outputs.isDifferent }}
     outputs:
-      pathXPI: ${{ steps.web-ext-sign.outputs.target }}
+      pathXPI: ${{ steps.download-path.outputs.pathXPI }}
       version: ${{ needs.compare-version.outputs.newVersion }}
     runs-on: ubuntu-latest
     steps:
@@ -85,6 +85,16 @@ jobs:
           files: ${{ steps.web-ext-sign.outputs.target }}
           tag_name: ${{ needs.compare-version.outputs.newVersion }}
           name: Release ${{ needs.compare-version.outputs.newVersion }}
+
+      - name: "Get download path"
+        id: download-path
+        env:
+          LOCALPATH: ${{ steps.web-ext-sign.outputs.target }}
+          PART1: 'https://github.com/rarusel/terra-snellman/releases/download/'
+          PART2: ${{ needs.compare-version.outputs.newVersion }} + '/'
+        run: |
+          PART3=${LOCALPATH##*/}
+          echo "::set-output name=pathXPI::$PART1+PART2+PART3"
 
   commit-path-to-updates:
     name: Commit path for update
