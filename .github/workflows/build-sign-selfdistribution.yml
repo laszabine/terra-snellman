@@ -52,6 +52,7 @@ jobs:
     if: ${{ needs.compare-version.outputs.isDifferent }}
     outputs:
       pathXPI: ${{ steps.download-path.outputs.pathXPI }}
+      pathRelease: ${{ steps.create-release.outputs.url }}
       version: ${{ needs.compare-version.outputs.newVersion }}
     runs-on: ubuntu-latest
     steps:
@@ -77,6 +78,7 @@ jobs:
           timeout: 600000 # 10 minutes
 
       - name: "Create Release"
+        id: create-release
         if: steps.web-ext-sign.conclusion == 'success' # must use single quotes for string literals
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -111,12 +113,14 @@ jobs:
           XPIVERSION: ${{ needs.publish-to-github.outputs.version }}
           XPIPATH: ${{ needs.publish-to-github.outputs.pathXPI }}
           ADDONID: '{212d2e80-11e9-4876-a063-b544b093bb47}'
+          RELEASEPATH: ${{ needs.publish-to-github.outputs.pathRelease }}
         run: |
           jq --raw-output \
           --arg ADDONID "${ADDONID}" \
           --arg XPIVERSION ${XPIVERSION} \
           --arg XPIPATH ${XPIPATH} \
-          '.addons[$ADDONID].updates += [{"version": $XPIVERSION, "update_link": $XPIPATH }]' \
+          --arg RELEASEPATH ${RELEASEPATH} \
+          '.addons[$ADDONID].updates += [{"version": $XPIVERSION, "update_link": $XPIPATH, "update_info_url": $RELEASEPATH }]' \
           ${JSONPATH} > tmp.json
           rm ${JSONPATH}
           mv tmp.json ${JSONPATH}
