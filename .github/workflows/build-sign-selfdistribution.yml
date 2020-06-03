@@ -91,7 +91,7 @@ jobs:
         env:
           LOCALPATH: ${{ steps.web-ext-sign.outputs.target }}
           PART1: 'https://github.com/rarusel/terra-snellman/releases/download/'
-          PART2: ${{ needs.compare-version.outputs.newVersion }} + '/'
+          PART2: ${{ needs.compare-version.outputs.newVersion }}/
         run: |
           PART3=${LOCALPATH##*/}
           echo "::set-output name=pathXPI::$PART1$PART2$PART3"
