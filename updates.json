@@ -8,7 +8,7 @@
         },
         {
           "version": "v1.2.13",
-          "update_link": "web-ext-artifacts/snellman_prettification-1.2.13-an+fx.xpi"
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.2.13/snellman_prettification-1.2.13-an+fx.xpi"
         }
       ]
     }
