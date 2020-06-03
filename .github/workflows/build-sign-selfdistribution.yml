@@ -77,7 +77,7 @@ jobs:
           timeout: 600000 # 10 minutes
 
       - name: "Create Release"
-        if: steps.web-ext-sign.conclusion == 'success' # must use single quotes for string literals
+        if: steps.web-ext-sign.result == 'success' # must use single quotes for string literals
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
