@@ -1,12 +1,12 @@
 {
-  "addons": {
-    "{212d2e80-11e9-4876-a063-b544b093bb47}": {
-      "updates": [
-        {
-          "version": "1.2",
-          "update_link": ""
-        }
-      ]
-    }
-  }
+	"addons": {
+		"{212d2e80-11e9-4876-a063-b544b093bb47}": {
+			"updates": [
+				{
+					"version": "1.2.8",
+					"update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.2.8/snellman_prettification-1.2.8-an+fx.xpi"
+				}
+			]
+		}
+	}
 }

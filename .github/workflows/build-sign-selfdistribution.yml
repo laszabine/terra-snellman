@@ -50,6 +50,9 @@ jobs:
     name: Publish to Github
     needs: compare-version
     if: ${{ needs.compare-version.outputs.isDifferent }}
+    outputs:
+      pathXPI: ${{ steps.web-ext-sign.outputs.target }}
+      version: ${{ needs.compare-version.outputs.newVersion }}
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
@@ -72,12 +75,6 @@ jobs:
           apiKey: ${{ secrets.MOZILLA_API_SABINE_USER }}
           apiSecret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
           timeout: 240000 # 4 minutes
-        # uses: saphareas/sign-web-extension-action@master
-        # with:
-        #   web-ext-id: "{212d2e80-11e9-4876-a063-b544b093bb47}"
-        #   sign-listed: false
-        #   amo-api-key: ${{ secrets.MOZILLA_API_SABINE_USER }}
-        #   amo-api-secret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
 
       - name: "Create Release"
         if: steps.web-ext-sign.conclusion == 'success' # must use single quotes for string literals
@@ -89,21 +86,41 @@ jobs:
           tag_name: ${{ needs.compare-version.outputs.newVersion }}
           name: Release ${{ needs.compare-version.outputs.newVersion }}
 
-#        uses: actions/create-release@v1
-#          release_name: Release ${{ github.ref }}
-#          tag_name: ${{ github.ref }}
-#          draft: false
-#          prerelease: true
-        # if: SIGNING-WAS-SUCCESSFUL
-        # if: startsWith(github.ref, 'refs/tags/')
+  commit-path-to-updates:
+    name: Commit path for update
+    needs: publish-to-github
+    if: ${{ needs.publish-to-github.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v1
 
-#       - name: Upload Release Asset
-#         id: upload-release-asset
-#         uses: actions/upload-release-asset@v1
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-# #          asset_path: ./terra-snellman.zip
-#           asset_name: terra-snellman.xpi
-#           asset_content_type: application/zip
+      - name: "Modify updates.json"
+        shell: python3
+        env:
+          JSONPATH: './updates.json'
+          XPIVERSION: ${{ needs.publish-to-github.outputs.version }}
+          XPIPATH: ${{ needs.publish-to-github.outputs.pathXPI }}
+          ADDONID: '{212d2e80-11e9-4876-a063-b544b093bb47}'
+        run: |
+          import json
+          import os
+          data = json.load(open(os.getenv('JSONPATH'), 'r'))
+          newupd = {
+            "version": os.getenv('XPIVERSION'),
+            "update_link": os.getenv('XPIPATH')
+          }
+          data['addons'][os.getenv('ADDONID')]['updates'].append(newupd)
+          json.dump(data, open(os.getenv('JSONPATH'), 'w'), indent='\t')
+
+      - name: "Commit"
+        run: |
+          git add ./updates.json
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Auto-commit: make XPI path available to updates"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
