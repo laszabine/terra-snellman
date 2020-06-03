@@ -13,8 +13,7 @@ jobs:
       isDifferent: ${{ steps.compare-version.outputs.isDifferent }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v1
-        # uses: actions/checkout@master
+        uses: actions/checkout@v2
 
       - name: "Open committed manifest"
         id: open-committed-manifest
@@ -62,7 +61,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          lfs: true
 
       - name: "Build"
         id: web-ext-build
@@ -73,7 +74,7 @@ jobs:
 
       - name: "Sign"
         id: web-ext-sign
-        uses: chenxian352/action-web-ext@master
+        uses: chenxian352/action-web-ext@0c9c361e53ed3f493bc8af8a1b1a9087a3bc7489
         with:
           cmd: sign
           source: ${{ steps.web-ext-build.outputs.target }}
@@ -112,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: "Modify updates.json"
         env:
@@ -140,6 +141,6 @@ jobs:
           git commit -m "Auto-commit: make XPI path available to updates"
 
       - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
