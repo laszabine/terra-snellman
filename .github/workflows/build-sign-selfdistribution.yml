@@ -38,10 +38,10 @@ jobs:
           echo "Committed version is ${newVersion}, latest release version is ${oldVersion}"
           if [ ${newVersion} = ${oldVersion} ]; then
             echo "They are identical"
-            echo "::set-output name=isDifferent::${{ false }}"
+            echo "::set-output name=isDifferent::0"
           else
             echo "They are different"
-            echo "::set-output name=isDifferent::${{ true }}"
+            echo "::set-output name=isDifferent::1"
           fi
         env:
           newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
@@ -50,7 +50,7 @@ jobs:
   publish-to-github:
     name: Publish to Github
     needs: compare-version
-    if: ${{ needs.compare-version.outputs.isDifferent }}
+    if: ${{ needs.compare-version.outputs.isDifferent == 1 }}
     outputs:
       pathXPI: ${{ steps.download-path.outputs.pathXPI }}
       pathRelease: ${{ steps.create-release.outputs.url }}
