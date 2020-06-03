@@ -39,8 +39,8 @@
     "images/*"
   ],
 
-  "icons": [
+  "icons": {
     "48": "images/src/icon.svg",
     "96": "images/src/icon.svg"
-  ]
+  }
 }
