@@ -74,7 +74,7 @@ jobs:
           channel: unlisted
           apiKey: ${{ secrets.MOZILLA_API_SABINE_USER }}
           apiSecret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
-          timeout: 240000 # 4 minutes
+          timeout: 600000 # 10 minutes
 
       - name: "Create Release"
         if: steps.web-ext-sign.conclusion == 'success' # must use single quotes for string literals
