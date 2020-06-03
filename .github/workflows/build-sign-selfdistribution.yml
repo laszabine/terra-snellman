@@ -8,8 +8,8 @@ jobs:
     name: Compare version
     runs-on: ubuntu-latest
     outputs:
-      versionNumber: {{ fromJson(steps.open-committed-manifest.outputs.content).version }}
-      newVersion: v${{ versionNumber }}
+      versionNumber: ${{ steps.read-committed-version.outputs.versionNumber }}
+      versionString: ${{ steps.read-committed-version.outputs.versionString }}
       isDifferent: ${{ steps.compare-version.outputs.isDifferent }}
     steps:
       - name: "Checkout"
@@ -22,6 +22,14 @@ jobs:
         with:
           path: "./manifest.json"
 
+      - name: "Read committed version"
+        id: read-committed-version
+        env:
+          VERSION: ${{ fromJson(steps.open-committed-manifest.outputs.content).version }}
+        run: |
+          echo "::set-output name=versionNumber::$VERSION"
+          echo "::set-output name=versionString::v$VERSION"
+
       - name: "Read latest release version"
         id: read-latest-release-version
         uses: oprypin/find-latest-tag@v1
@@ -30,6 +38,9 @@ jobs:
 
       - name: "Compare version"
         id: compare-version
+        env:
+          newVersion: ${{ steps.read-committed-version.outputs.versionString }}
+          oldVersion: ${{ steps.read-latest-release-version.outputs.tag }}
         run: |
           echo "Committed version is ${newVersion}, latest release version is ${oldVersion}"
           if [ ${newVersion} = ${oldVersion} ]; then
@@ -39,9 +50,6 @@ jobs:
             echo "They are different"
             echo "::set-output name=isDifferent::1"
           fi
-        env:
-          newVersion: ${{ newVersion }}
-          oldVersion: ${{ steps.read-latest-release-version.outputs.tag }}
 
   publish-to-github:
     name: Publish to Github
@@ -82,18 +90,20 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ${{ steps.web-ext-sign.outputs.target }}
-          tag_name: ${{ needs.compare-version.outputs.newVersion }}
-          name: Release ${{ needs.compare-version.outputs.newVersion }}
+          tag_name: ${{ needs.compare-version.outputs.versionString }}
+          name: Release ${{ needs.compare-version.outputs.versionString }}
 
       - name: "Get download path"
         id: download-path
         env:
           LOCALPATH: ${{ steps.web-ext-sign.outputs.target }}
-          PART1: 'https://github.com/rarusel/terra-snellman/releases/download/'
-          PART2: ${{ needs.compare-version.outputs.newVersion }}/
+          PART1: 'https://github.com/'
+          PART2: ${{ github.repository }}/
+          PART3: 'releases/download/'
+          PART4: ${{ needs.compare-version.outputs.versionString }}/
         run: |
-          PART3=${LOCALPATH##*/}
-          echo "::set-output name=pathXPI::$PART1$PART2$PART3"
+          PART5=${LOCALPATH##*/}
+          echo "::set-output name=pathXPI::$PART1$PART2$PART3$PART4$PART5"
 
   commit-path-to-updates:
     name: Commit path for update
