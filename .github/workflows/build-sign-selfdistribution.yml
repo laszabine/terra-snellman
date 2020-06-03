@@ -77,7 +77,7 @@ jobs:
           timeout: 600000 # 10 minutes
 
       - name: "Create Release"
-        if: steps.web-ext-sign.result == 'success' # must use single quotes for string literals
+        if: steps.web-ext-sign.conclusion == 'success' # must use single quotes for string literals
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
@@ -89,7 +89,7 @@ jobs:
   commit-path-to-updates:
     name: Commit path for update
     needs: publish-to-github
-    if: ${{ needs.publish-to-github.conclusion == 'success' }}
+    if: ${{ needs.publish-to-github.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
