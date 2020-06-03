@@ -4,7 +4,7 @@ This is a Firefox Add-on to improve the layout of Terra Mystica (c Feuerland) ga
 
 ## Features
 
-This Add-on modifies the layout of games by drawing faction boards, resources, and bonus/favor/town/scoring tiles with images that resemble those in board game.
+This Add-on modifies the layout of games by drawing faction boards, resources, and bonus/favor/town/scoring tiles with images that resemble those in the board game.
 
 Not all expansions are implemented yet.
 If you open a game that uses an expansion that is not implemented, the game will render as it would without the Add-on.
