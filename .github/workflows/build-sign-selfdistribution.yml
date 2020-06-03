@@ -94,7 +94,7 @@ jobs:
           PART2: ${{ needs.compare-version.outputs.newVersion }} + '/'
         run: |
           PART3=${LOCALPATH##*/}
-          echo "::set-output name=pathXPI::$PART1+PART2+PART3"
+          echo "::set-output name=pathXPI::$PART1$PART2$PART3"
 
   commit-path-to-updates:
     name: Commit path for update
