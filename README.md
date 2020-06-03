@@ -14,7 +14,7 @@ If you open a game that uses an expansion that is not implemented, the game will
 We have not yet made this Add-on available in the Firefox Add-on webstore because we are unsure about the copyright of the images.
 
 ### Install from file (recommended)
-<img src="https://github.com/rarusel/terra-snellman/workflows/build%20%26%20sign%20%26%20publish/badge.svg" alt="build status" />
+![](https://github.com/rarusel/terra-snellman/workflows/build%20%26%20sign%20%26%20publish/badge.svg)
 
 Download the XPI file of the latest release: https://github.com/rarusel/terra-snellman/releases
 
