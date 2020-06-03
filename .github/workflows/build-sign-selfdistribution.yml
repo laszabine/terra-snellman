@@ -8,8 +8,8 @@ jobs:
     name: Compare version
     runs-on: ubuntu-latest
     outputs:
-      versionNumber:
-      newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
+      versionNumber: {{ fromJson(steps.open-committed-manifest.outputs.content).version }}
+      newVersion: v${{ versionNumber }}
       isDifferent: ${{ steps.compare-version.outputs.isDifferent }}
     steps:
       - name: "Checkout"
@@ -21,10 +21,6 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: "./manifest.json"
-
-      - name: "Read committed version"
-        id: read-committed-version
-        run: echo "::set-output name=newVersion::v${{ fromJson(steps.open-committed-manifest.outputs.content).version }}"
 
       - name: "Read latest release version"
         id: read-latest-release-version
@@ -44,7 +40,7 @@ jobs:
             echo "::set-output name=isDifferent::1"
           fi
         env:
-          newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
+          newVersion: ${{ newVersion }}
           oldVersion: ${{ steps.read-latest-release-version.outputs.tag }}
 
   publish-to-github:
@@ -54,7 +50,7 @@ jobs:
     outputs:
       pathXPI: ${{ steps.download-path.outputs.pathXPI }}
       pathRelease: ${{ steps.create-release.outputs.url }}
-      version: ${{ needs.compare-version.outputs.newVersion }}
+      version: ${{ needs.compare-version.outputs.versionNumber }}
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
