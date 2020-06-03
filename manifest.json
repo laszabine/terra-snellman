@@ -37,6 +37,10 @@
 
   "web_accessible_resources": [
     "images/*"
-  ]
+  ],
 
+  "icons": [
+    "48": "images/src/icon.svg",
+    "96": "images/src/icon.svg"
+  ]
 }
