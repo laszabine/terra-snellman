@@ -64,13 +64,14 @@ jobs:
 
       - name: "Sign"
         id: web-ext-sign
-        uses: kewisch/action-web-ext@v1
+        uses: chenxian352/action-web-ext@master
         with:
           cmd: sign
           source: ${{ steps.web-ext-build.outputs.target }}
           channel: unlisted
           apiKey: ${{ secrets.MOZILLA_API_SABINE_USER }}
           apiSecret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
+          timeout: 4000
         # uses: saphareas/sign-web-extension-action@master
         # with:
         #   web-ext-id: "{212d2e80-11e9-4876-a063-b544b093bb47}"
