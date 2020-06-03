@@ -6,6 +6,7 @@ on:
 jobs:
   compare-version:
     name: Compare version
+    id: compare-version
     runs-on: ubuntu-latest
     outputs:
       newVersion: ${{ steps.read-committed-version.outputs.newVersion }}
