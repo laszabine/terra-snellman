@@ -207,6 +207,14 @@ function overwrite() {
           let income_id = "income-" + name;
           let income = new Element('table', {'class': 'income-table', 'id': income_id});
           resourcesDiv.insert(income);
+
+          function styleDisplayNone(className) {
+            return {
+              'class': className,
+              'style': 'display: none;'
+            }
+          }
+
           // 1.4.1. resources
           let row = new Element('tr');
           row.insert(new Element("td").updateText("Resources:"));
@@ -215,10 +223,61 @@ function overwrite() {
           row.insert(new Element("td").updateText(faction.W + " w"));
           row.insert(new Element("td").updateText(faction.P + " p"));
           row.insert(new Element("td").updateText(faction.P3 + " pw"));
+          let vp_id = faction.name + "-vp";
+          let vp_link = makeToggleLink('?', function() { toggleVP(vp_id); });
+          row.insert(new Element("td").updateText(faction.VP + " vp ").insert(vp_link));
+          row.insert(new Element("td", {'style': 'color: #888;'}).updateText((faction.MAX_P - faction.P) + " p"));
+          row.insert(new Element("td", {'style': 'color: #888;'}).updateText(faction.BRIDGE_COUNT + " b"));
           income.insert(row);
+          // vp source
+          if (faction.vp_source) {
+              let vp_breakdown = income;
+              row = new Element("tr", styleDisplayNone(vp_id));
+              row.insert(new Element("td").updateText("VP breakdown:"));
+              vp_breakdown.insert(row);
+              let hr = new Element("tr", styleDisplayNone(vp_id)).insert(new Element("td")).insert(new Element("td", {colspan: 8}).insert(new Element("hr")));
+              //vp_breakdown.insert(hr);
+              $H(faction.vp_source).sortBy(function(a) { return -a.value}).each(function(record) {
+                  row = new Element("tr", styleDisplayNone(vp_id));
+                  row.insert(new Element("td"));
+                  row.insert(new Element("td", {colspan: 5}).updateText(record.key));
+                  row.insert(new Element("td").updateText(record.value));
+                  vp_breakdown.insert(row);
+              });
+              vp_breakdown.insert(hr.cloneNode(true));
+          }
+          // vp projection (round 6 only)
+          if (faction.vp_projection) {
+              let vp_proj_id = "vp-projection-" + name;
+              let vp_proj = income;
+              row = new Element('tr');
+              row.insert(new Element('td').updateText('VP projection:'));
+              row.insert(new Element('td', {colspan: 5}).updateText('total'));
+              row.insert(new Element('td').updateText(faction.vp_projection.total + ' vp ').insert(
+                  makeToggleLink("?", function() { toggleVP(vp_proj_id) }))
+              );
+              vp_proj.insert(row);
+
+              let hr = Element('tr', styleDisplayNone(vp_proj_id)).insert(new Element("td")).insert(
+                  new Element("td", { colspan: 8 }).insert(
+                      new Element("hr")))
+              vp_proj.insert(hr);
+              $H(faction.vp_projection).each(function(elem, ind) {
+                  if (!elem.value || elem.key == "total") {
+                      return;
+                  }
+
+                  var row = new Element('tr', styleDisplayNone(vp_proj_id));
+                  row.insert(new Element("td"));
+                  row.insert(new Element("td", {colspan: 5}).updateText(elem.key));
+                  row.insert(new Element("td", {colspan: 3}).updateText(elem.value));
+                  vp_proj.insert(row);
+              });
+              vp_proj.insert(hr.cloneNode(true));
+          }
           // 1.4.2. income
           if (faction.income) {
-              let row = new Element('tr');
+              row = new Element('tr');
               row.insert(new Element("td").updateText("Income:"));
               row.insert(new Element("td").updateText("total"));
               row.insert(new Element("td").updateText(faction.income.C + " c"));
@@ -238,44 +297,77 @@ function overwrite() {
               row.insert(new Element("td").insert(
                   makeTextSpan(faction.income.PW + " pw", PW_class))
               );
+              var income_vp = {};
+              ['BON6', 'BON7', 'BON9', 'FAV12'].forEach( elem => {
+                  if (elem in faction && faction[elem] == '1') {
+                    let type;
+                    switch (elem.slice(0,3)) {
+                      case "BON":
+                        type = 'bonus_tiles';
+                        break;
+                      case "FAV":
+                        type = 'favors';
+                        break;
+                    }
+                    let passvp = state[type][elem].pass_vp;
+                    for (let buildingType in passvp) {
+                      let playerHas = faction.buildings[buildingType].level;
+                      let this_vp = passvp[buildingType][playerHas];
+                      income_vp[elem] = this_vp;
+                    }
+                  }
+              });
+              let total_vp = (Object.keys(income_vp).length === 0 ? 0 : Object.values(income_vp).reduce( (a,b) => a+b));
+              row.insert(new Element('td').updateText(total_vp + ' vp'));
+              row.insert(new Element("td", {colspan: 3}));
               row.insert(new Element('td').insert(
-                  makeToggleLink("+", function() { toggleIncome(income_id); }))
+                  makeToggleLink("+", function() { toggleVP(income_id); }))
               );
               income.insert(row);
           }
           // 1.4.3. income breakdown
           if (faction.income_breakdown) {
-              income.insert(Element('tr', {'style': 'display: none'}).insert(
+              let hr = Element('tr', styleDisplayNone(income_id)).insert(new Element('td')).insert(
                   new Element("td", { colspan: 6 }).insert(
-                      new Element("hr"))));
+                      new Element("hr")))
+              income.insert(hr);
               $H(faction.income_breakdown).each(function(elem, ind) {
                   if (!elem.value) {
                       return;
                   }
-                  let row = new Element('tr', {'style': 'display: none'});
+                  row = new Element('tr', styleDisplayNone(income_id));
                   row.insert(new Element("td"));
                   row.insert(new Element("td").updateText(elem.key));
-                  row.insert(new Element("td").updateText(elem.value.C));
-                  row.insert(new Element("td").updateText(elem.value.W));
-                  row.insert(new Element("td").updateText(elem.value.P));
-                  row.insert(new Element("td").updateText(elem.value.PW));
+                  row.insert(new Element("td").updateText(elem.value.C + ' c'));
+                  row.insert(new Element("td").updateText(elem.value.W + ' w'));
+                  row.insert(new Element("td").updateText(elem.value.P + ' p'));
+                  row.insert(new Element("td").updateText(elem.value.PW + ' pw'));
                   income.insert(row);
               });
+
+              for (let tile in income_vp) {
+                row = new Element('tr', styleDisplayNone(income_id));
+                row.insert(new Element('td'));
+                row.insert(new Element('td').updateText(tile));
+                row.insert(new Element('td', {colspan: 4}));
+                row.insert(new Element('td').updateText(income_vp[tile] + ' vp'));
+                income.insert(row);
+              }
+
               if (faction.passed == 0) {
-                  let row = new Element('tr', {'style': 'display: none; color: #888;'});
+                  row = new Element('tr', {'class': income_id, 'style': 'display: none; color: #888;'});
                   row.insert(new Element("td"));
                   row.insert(new Element("td").updateText('bonus'));
                   row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
+                  row.insert(new Element("td").updateText('?'));
                   income.insert(row);
               }
-              income.insert(Element('tr', {'style': 'display: none'}).insert(
-                  new Element("td", { colspan: 6 }).insert(
-                      new Element("hr"))));
+              income.insert(hr.cloneNode(true));
           }
-          // 1.4.4. projected resources
+          // 1.4.4. projected resources (rounds 0-5 only)
           if (faction.income) {
               row = new Element('tr');
               row.insert(new Element("td").updateText("Next round:"));
@@ -298,77 +390,15 @@ function overwrite() {
               row.insert(new Element("td").updateText(newP3 + " pw"));
               income.insert(row);
           }
-      }
-      // 3. status
-      {
-          let statusDiv = new Element('div');
-          board.insert(statusDiv);
-          // 3.1. victory points
-          let vp_id = faction.name + "/vp";
-          let link = makeToggleLink(faction.VP, function() { toggleVP(vp_id); });
-          statusDiv.insert(link);
-          statusDiv.insertTextSpan(" vp, ");
-          // 3.2. priests available
-          statusDiv.insertTextSpan((faction.MAX_P - faction.P) + " p available, ");
-          // 3.3. bridges available
-          statusDiv.insertTextSpan(faction.BRIDGE_COUNT + " bridges left");
-          // 3.4. VP details (onclick)
-          if (faction.vp_source) {
-              let vp_breakdown = new Element('table', {'id': vp_id,
-                                                       'style': 'display: none',
-                                                       'class': 'vp-breakdown'});
-              vp_breakdown.insert(new Element("tr").insert(
-                  new Element("td", { colspan: 2 }).insert(
-                      new Element("b").updateText("VP breakdown"))));
-              $H(faction.vp_source).sortBy(function(a) { return -a.value}).each(function(record) {
-                  let row = new Element("tr");
-                  row.insert(new Element("td").updateText(record.key));
-                  row.insert(new Element("td").updateText(record.value));
-                  vp_breakdown.insert(row);
-              });
-              statusDiv.insert(vp_breakdown);
-          }
-          // 3.5. VP projection (round 6 only)
-          if (faction.vp_projection) {
-          var vp_proj_id = "vp-projection-" + name;
-          var vp_proj = new Element('table', {'class': 'income-table', 'id': vp_proj_id});
-          statusDiv.insert(vp_proj);
-          {
-        var row = new Element('tr');
-              row.insert(new Element('td').updateText('VP projection:'));
-              row.insert(new Element('td').updateText('total'));
-              row.insert(new Element('td').updateText(faction.vp_projection.total));
-              row.insert(new Element('td').insert(
-                  makeToggleLink("+", function() { toggleIncome(vp_proj_id) })));
-              vp_proj.insert(row);
-          }
-
-          vp_proj.insert(Element('tr', {'style': 'display: none'}).insert(
-              new Element("td", { colspan: 3 }).insert(
-                  new Element("hr"))));
-          $H(faction.vp_projection).each(function(elem, ind) {
-              if (!elem.value || elem.key == "total") {
-                  return;
-              }
-
-              var row = new Element('tr', {'style': 'display: none'});
-              row.insert(new Element("td"));
-              row.insert(new Element("td").updateText(elem.key));
-              row.insert(new Element("td").updateText(elem.value));
-              vp_proj.insert(row);
-          });
-      }
 
       }
   }
 
-  toggleIncome = function(id) {
-      var table = $(id);
-
-      table.childElements().each(function (elem, index) {
-          if (index != 0 && index != 1 && index != table.childElements().length-1) {
-              elem.style.display = (elem.style.display == 'none' ? '' : 'none');
-          }
+  toggleVP = function(className) {
+      let tds = document.getElementsByClassName(className);
+      let elems = Array.prototype.slice.call(tds);
+      elems.forEach(elem => {
+        elem.style.display = (elem.style.display == 'none' ? '' : 'none');
       });
   }
 
@@ -419,6 +449,9 @@ function overwrite() {
           img.width = 140;
           img.alt = elem;
           container.prepend(img);
+          if (roundNum == 6) {
+
+          }
       });
   }
 
@@ -576,16 +609,25 @@ function overwrite() {
       ctx.beginPath();
 
       if (name.match(/ACT[A-Z]/i)) { // faction action
-          let left = 125;
-          let top = 210;
-          let right = 179;
-          let bottom = 263;
+        let left, top, right, bottom;
+        if (name == 'ACTE') { // bottom-right action
+          left = 424;
+          top = 284;
+          right = 607;
+          bottom = 387;
+        } else { // stronghold action
+          left = 125;
+          top = 210;
+          right = 179;
+          bottom = 263;
+        }
           ctx.rect(left, top, right-left, bottom-top);
           ctx.stroke();
           canvas.addEventListener('click', function(event) {
               let position = canvas.getBoundingClientRect();
               let x = event.clientX - position.left;
               let y = event.clientY - position.top;
+              alert('x='+x+', y='+y);
               // create context menu
               let title = "Special action";
               let loc = 'Action';
@@ -608,6 +650,15 @@ function overwrite() {
                               }
                           };
                           break;
+                      case "ACTE":
+                          let actionData = state.actions.ACTE;
+                          title = "Bridge";
+                          menu_items = {
+                              "Place bridge": {
+                                  "fun": function() { appendAndPreview('action ACTE'); },
+                                  "label": effectString(actionData.cost, actionData.gains),
+                              }
+                          };
                   }
                   menuClickHandler(title, loc, menu_items)(loc, event);
               }
