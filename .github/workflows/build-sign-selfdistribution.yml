@@ -81,7 +81,7 @@ jobs:
           channel: unlisted
           apiKey: ${{ secrets.MOZILLA_API_SABINE_USER }}
           apiSecret: ${{ secrets.MOZILLA_API_SABINE_SECRET }}
-          timeout: 600000 # 10 minutes
+          timeout: 1200000 # 20 minutes
 
       - name: "Create Release"
         id: create-release
