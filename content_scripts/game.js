@@ -51,7 +51,7 @@ function overwrite() {
       let name = faction.name;
       let factionBoardCanvasWidth = 620;
       let factionBoardCanvasHeight = 399;
-      // 2. faction board
+      // faction board
       {
           let factionBoardCanvas = new Element('canvas');
           board.insert(factionBoardCanvas);
@@ -144,7 +144,7 @@ function overwrite() {
           ctx.fillText(faction.P3, 200, 110);
           ctx.restore();
       }
-      // 1. resources
+      // resources
       {
           let resourcesDiv = new Element('div');
           //resourcesDiv.style.width = (max_width - factionBoardCanvasWidth - 10) + 'px'; // same as faction board image
@@ -627,7 +627,7 @@ function overwrite() {
               let position = canvas.getBoundingClientRect();
               let x = event.clientX - position.left;
               let y = event.clientY - position.top;
-              alert('x='+x+', y='+y);
+              // alert('x='+x+', y='+y);
               // create context menu
               let title = "Special action";
               let loc = 'Action';
