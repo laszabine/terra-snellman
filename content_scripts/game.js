@@ -757,6 +757,21 @@ function overwrite() {
                           convert_possible = true;
                           for (let i = 1; rate * i <= faction[from_type] && i < 10; i++) {
                               let command = 'Convert ' + (i*rate) + from_type + ' to ' + i + to_type;
+                              let label = new Element('span');
+                              let getImg = {'C': urls.coin1, 'W': urls.worker, 'P': urls['priest_'+faction.color], 'PW': urls.power};
+                              for (let fromCounter=0; fromCounter<i*rate; fromCounter++) {
+                                let img = new Image();
+                                img.src = getImg[from_type];
+                                img.height = 10;
+                                label.insert(img);
+                              }
+                              label.insert(new Element('span').updateText(' -> '));
+                              for (let toCounter=0; toCounter<i; toCounter++) {
+                                let img = new Image();
+                                img.src = getImg[to_type];
+                                img.height = 10;
+                                label.insert(img);
+                              }
                               menu_items[command] = {
                                   "fun": () => { appendAndPreview(command); },
                                   "label": '',
