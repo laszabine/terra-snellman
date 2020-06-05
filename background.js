@@ -18,6 +18,7 @@ function getImageUrls() {
       'BON7': 'images/bonus07.png',
       'BON8': 'images/bonus08.png',
       'BON9': 'images/bonus09.png',
+      'BON10': 'images/bonus10.png',
       'coin1': 'images/src/coin1.svg',
       'coin2': 'images/src/coin2.svg',
       'coin5': 'images/src/coin5.svg',
@@ -64,6 +65,7 @@ function getImageUrls() {
       'SCORE6': 'images/scoring6.png',
       'SCORE7': 'images/scoring7.png',
       'SCORE8': 'images/scoring8.png',
+      'SCORE9': 'images/scoring9.png',
       'scoring_bg': 'images/scoring_bg.png',
       'scoring_final': 'images/scoring_final.jpg',
       "TW1": 'images/town1.png',
@@ -71,6 +73,10 @@ function getImageUrls() {
       "TW3": 'images/town3.png',
       "TW4": 'images/town4.png',
       "TW5": 'images/town5.png',
+      'TW6': 'images/town6.png',
+      'TW7_ship': 'images/town7_ship.png',
+      'TW7_carpet': 'images/town7_carpet.png',
+      'TW8': 'images/town8.png',
       'worker': 'images/src/worker.svg',
   };
   for (key in urls) {

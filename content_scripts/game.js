@@ -9,9 +9,12 @@ init = function(root) {
     let implementedOptions = [
       'email-notify',
       'errata-cultist-power',
+      'mini-expansion-1',
+      'shipping-bonus',
       'strict-chaosmagician-sh',
       'strict-darkling-sh',
       'strict-leech',
+      'temple-scoring-tile',
       'variable-turn-order',
     ];
     if (isInit) {
@@ -588,7 +591,15 @@ function overwrite() {
       } else {
           tile.insertTextSpan(name);
       }
-      // hier kommt die sabine
+      if (name == 'TW7') {
+        let username = document.cookie.match(/session-username=([A-Za-z0-9._-]+)/);
+        username = (username ? username[1] : '');
+        if (faction == 'fakirs' || (faction == 'pool' && 'fakirs' in state.factions && state.factions.fakirs.username == username)) {
+          name += '_carpet';
+        } else {
+          name += '_ship';
+        }
+      }
       if (name in urls) {
           let tileImg = new Element('img');
           tileImg.src = urls[name];
