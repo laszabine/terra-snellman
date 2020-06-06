@@ -26,6 +26,11 @@
           "version": "1.5",
           "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.5/snellman_prettification-1.5-an+fx.xpi",
           "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.5"
+        },
+        {
+          "version": "1.5.1",
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.5.1/snellman_prettification-1.5.1-an+fx.xpi",
+          "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.5.1"
         }
       ]
     }
