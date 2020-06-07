@@ -803,10 +803,10 @@ function overwrite() {
       let row = addAdvanceToMovePicker_(picker, faction);
       let canvas = document.getElementById(faction.name).getElementsByTagName('canvas')[0];
       if (faction.allowed_actions) {
-          if (canAfford(faction, [faction.dig.advance_cost], 1)) {
+          if (faction.dig && faction.dig.advance_cost && canAfford(faction, [faction.dig.advance_cost], 1)) {
               markActionAsPossible(canvas, "ADV1", "ADV1/"+faction.name);
           }
-          if (canAfford(faction, [faction.ship.advance_cost], 1)) {
+          if (faction.ship && faction.ship.advance_cost && canAfford(faction, [faction.ship.advance_cost], 1)) {
               markActionAsPossible(canvas, "ADV2", "ADV2/"+faction.name);
           }
       }
