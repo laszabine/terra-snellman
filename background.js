@@ -65,7 +65,7 @@ function getImageUrls() {
       'SCORE6': 'images/src/scoring6.svg',
       'SCORE7': 'images/src/scoring7.svg',
       'SCORE8': 'images/src/scoring8.svg',
-      'SCORE9': 'images/src/scoring9.svg',
+      'SCORE9': 'images/scoring9.png',
       'scoring_bg': 'images/src/scoring_bg.svg',
       'scoring_final': 'images/scoring_final.jpg',
       'scoring_last_round': 'images/src/scoring_last_round.svg',
