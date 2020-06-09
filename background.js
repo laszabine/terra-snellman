@@ -2,6 +2,7 @@
 function getImageUrls() {
   let str = 'const urls = {';
   let urls = {
+      'libSvgInject': 'lib/svg-inject.js',
       'ACT1': 'images/src/action1.svg',
       'ACT2': 'images/src/action2.svg',
       'ACT3': 'images/src/action3.svg',

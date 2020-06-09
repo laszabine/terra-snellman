@@ -1006,4 +1006,20 @@
          d="m 122.43635,-21.9478 h 5.33556 v -18.415761 l -5.80444,1.164121 v -2.974978 l 5.77211,-1.164122 h 3.266 v 21.39074 h 5.33556 v 2.748621 h -13.90479 z" />
     </g>
   </g>
+  <g
+     style="display:inline"
+     inkscape:groupmode="layer"
+     id="ActionTaken"
+     inkscape:label="Ebene 2">
+    <image
+       sodipodi:absref="/home/sabine/Documents/Projects/terra-snellman/images/src/action_taken.svg"
+       xlink:href="src/action_taken.svg"
+       y="15.997"
+       x="55.830002"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="51.931"
+       height="51.931"
+       id="image272" />
+  </g>
 </svg>

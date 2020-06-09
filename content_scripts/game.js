@@ -540,7 +540,8 @@ function overwrite() {
       if (name in urls) {
           let imgDiv = new Element('div');
           tile.insert(imgDiv);
-          let tileCanvas = new Element('canvas');
+          // let tileCanvas = new Element('canvas');
+          let tileCanvas = new Element('img');
           if (['BON1', 'BON2', 'FAV6'].includes(name)) {
               tileCanvas.id = 'action/' + name + '/' + faction;
           }
@@ -564,6 +565,7 @@ function overwrite() {
           } else {
               alert(name);
           }
+          /*
           let ctx = tileCanvas.getContext('2d');
           let tileImg = new Image();
           tileImg.src = urls[name];
@@ -576,12 +578,55 @@ function overwrite() {
                 tileImgTaken.onload = () => {
                     ctx.drawImage(tileImgTaken, 9, 39, actionTakenWidth, actionTakenHeight);
                 }
-                  /*ctx.fillStyle = '#000000' + '77';
-                  ctx.beginPath();
-                  ctx.arc(actionTakenWidth, actionTakenHeight, 25, 0, 2*Math.PI);
-                  ctx.fill();*/
               }
           };
+          */
+          tileCanvas.src = urls[name];
+
+          if (tileCanvas.src.substr(-3) == 'svg') {
+
+            tileCanvas.onload = function() {
+              console.log('injecting image '+this.src);
+              SVGInject(this, {
+                afterInject: function(img, svg) {
+                  // get action-taken layer
+                  let actionTakenLayer;
+                  let layers = svg.getElementsByTagName('g');
+                  for (let i in layers) {
+                    if (layers[i].id && layers[i].id.startsWith('ActionTaken')) {
+                      actionTakenLayer = layers[i];
+                      break;
+                    }
+                  }
+                  if (actionTakenLayer) {
+                    // fix link to action taken image
+                    let firstChild = actionTakenLayer.firstElementChild;
+                    if (firstChild.tagName == 'image') {
+                      firstChild.setAttribute('xlink:href', urls.ACTTAKEN);
+                    }
+                    function showActionTakenToken(layer) {
+                      layer.style = null;
+                    }
+                    function hideActionTakenToken(layer) {
+                      layer.style.display = 'none';
+                    }
+                    if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
+                      showActionTakenToken(actionTakenLayer);
+                      svg.onmouseover = function() {
+                        showActionTakenToken(actionTakenLayer);
+                      };
+                      svg.onmouseout = function() {
+                        hideActionTakenToken(actionTakenLayer);
+                      }
+                    } else {
+                      hideActionTakenToken(actionTakenLayer);
+                    }
+                  }
+                }
+              });
+              console.log('finished injecting image '+name);
+            };
+          }
       }
   }
 
@@ -883,6 +928,12 @@ function overwrite() {
       <col span=2 ></col> \
       <col span=2 style="background-color: #e0e0f0"></col> \
     </table>';
+
+    let svgInjectScript = new Element('script');
+    svgInjectScript.src = urls.libSvgInject;
+    svgInjectScript.type = 'text/javascript';
+    svgInjectScript.language = 'javascript';
+    document.head.appendChild(svgInjectScript);
 
     $('header').style['max-width'] = max_width + 'px';
     $('action_required').style['max-width'] = max_width + 'px';
