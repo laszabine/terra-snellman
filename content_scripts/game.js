@@ -422,7 +422,6 @@ function overwrite() {
           }
         }
       }
-      console.log(scoringTileIds);
 
       var container = $("scoring");
       container.width = 140;
@@ -432,29 +431,79 @@ function overwrite() {
       scoringTileIds.push('scoring_final');
 
       let roundNum = 0;
-      let curRound = state.round;
       scoringTileIds.each(function (elem) {
           roundNum++;
-          console.log(elem);
           let img = new Image();
-          let img_fg;
-          if (roundNum < curRound || (roundNum == 6 && state.finished)) {
-            img.src = urls.scoring_bg;
-            img.onmouseover = function(event) {
-              this.src = urls[elem];
-            }
-            img.onmouseout = function(event) {
-              this.src = urls.scoring_bg;
-            }
-          } else {
-            img.src = urls[elem];
-          }
           img.width = 140;
-          img.alt = elem;
-          container.prepend(img);
-          if (roundNum == 6) {
-
+          if (roundNum != 7) {
+            img.height = 78;
           }
+          img.alt = elem;
+          img.src = urls[elem];
+          img.setAttribute('data-round', roundNum);
+          if (img.src.substr(-3) == 'svg') {
+              // new code for svgs
+              img.onload = function() {
+                SVGInject(this, {
+                  afterInject: function(img, svg) {
+                    let backgroundLayer;
+                    let lastRoundLayer;
+                    // get layers
+                    let layers = svg.getElementsByTagName('g');
+                    for (let i in layers) {
+                      let layerId = layers[i].id;
+                      if (layerId && layerId.startsWith('RoundOver')) {
+                        backgroundLayer = layers[i];
+                      }
+                      if (layerId && layerId.startsWith('LastRound')) {
+                        lastRoundLayer = layers[i];
+                      }
+                      if (backgroundLayer && lastRoundLayer) {
+                        break;
+                      }
+                    }
+                    // fix urls
+                    fixSvgImageUrl(backgroundLayer);
+                    fixSvgImageUrl(lastRoundLayer);
+                    // mouse over
+                    if (img.dataset.round < state.round || (img.dataset.round == 6 && state.finished)) {
+                        showSvgLayer(backgroundLayer);
+                        svg.onmouseover = function() {
+                            hideSvgLayer(backgroundLayer);
+                        }
+                        svg.onmouseout = function() {
+                            showSvgLayer(backgroundLayer);
+                        }
+                    } else {
+                        hideSvgLayer(backgroundLayer);
+                    }
+                    // don't show cult income for round 6
+                    if (img.dataset.round == 6) {
+                        showSvgLayer(lastRoundLayer);
+                    } else {
+                        hideSvgLayer(lastRoundLayer);
+                    }
+                  }
+                });
+              };
+          } else {
+              // old code for pngs
+              if (roundNum < state.round || (roundNum == 6 && state.finished)) {
+                img.src = urls.scoring_bg;
+                img.onmouseover = function(event) {
+                  this.src = urls[elem];
+                }
+                img.onmouseout = function(event) {
+                  this.src = urls.scoring_bg;
+                }
+              } else {
+                img.src = urls[elem];
+              }
+              if (roundNum == 6) {
+                  // not possible, use svg instead
+              }
+          }
+          container.prepend(img);
       });
   }
 
@@ -586,11 +635,10 @@ function overwrite() {
           if (tileCanvas.src.substr(-3) == 'svg') {
 
             tileCanvas.onload = function() {
-              console.log('injecting image '+this.src);
               SVGInject(this, {
                 afterInject: function(img, svg) {
-                  // get action-taken layer
                   let actionTakenLayer;
+                  // get action-taken layer
                   let layers = svg.getElementsByTagName('g');
                   for (let i in layers) {
                     if (layers[i].id && layers[i].id.startsWith('ActionTaken')) {
@@ -600,31 +648,22 @@ function overwrite() {
                   }
                   if (actionTakenLayer) {
                     // fix link to action taken image
-                    let firstChild = actionTakenLayer.firstElementChild;
-                    if (firstChild.tagName == 'image') {
-                      firstChild.setAttribute('xlink:href', urls.ACTTAKEN);
-                    }
-                    function showActionTakenToken(layer) {
-                      layer.style = null;
-                    }
-                    function hideActionTakenToken(layer) {
-                      layer.style.display = 'none';
-                    }
+                    fixSvgImageUrl(actionTakenLayer);
+                    // mouse over actions
                     if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
-                      showActionTakenToken(actionTakenLayer);
+                      showSvgLayer(actionTakenLayer);
                       svg.onmouseover = function() {
-                        showActionTakenToken(actionTakenLayer);
+                        showSvgLayer(actionTakenLayer);
                       };
                       svg.onmouseout = function() {
-                        hideActionTakenToken(actionTakenLayer);
+                        hideSvgLayer(actionTakenLayer);
                       }
                     } else {
-                      hideActionTakenToken(actionTakenLayer);
+                      hideSvgLayer(actionTakenLayer);
                     }
                   }
                 }
               });
-              console.log('finished injecting image '+name);
             };
           }
       }
