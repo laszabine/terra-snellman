@@ -470,4 +470,20 @@
          style="fill:#ddd4bb;fill-opacity:1;stroke:#000000;stroke-width:0.0790405px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
   </g>
+  <g
+     style="display:none"
+     inkscape:label="Ebene 2"
+     id="ActionTaken"
+     inkscape:groupmode="layer">
+    <image
+       sodipodi:absref="/home/sabine/Documents/Projects/terra-snellman/images/src/action_taken.svg"
+       xlink:href="src/action_taken.svg"
+       y="70.492996"
+       x="356.931"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="213.996"
+       height="213.996"
+       id="image139" />
+  </g>
 </svg>

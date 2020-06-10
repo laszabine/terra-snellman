@@ -507,37 +507,57 @@ function overwrite() {
       });
   }
 
-  renderAction = function(canvas, name, key, border_color) {
-      if (!canvas.getContext) return;
-      let ctx = canvas.getContext("2d");
+  insertAction = function(parent, name, key) {
+      var container = new Element('img', {
+          'id': 'action/' + key, 'class': 'action', 'width': 100, 'height': 170});
+      parent.insert(container);
+      renderAction(container, name, key, '#000');
+      return container;
+  }
+
+  renderAction = function(container, name, key, border_color) {
       let width = 145;
       let height = 73;
-      canvas.width = width;
-      canvas.height = height;
-      canvas.style.width = width+'px';
-      canvas.style.height = height+'px';
-      canvas.style.padding = '5px';
+      container.width = width;
+      container.height = height;
+      container.style.width = width+'px';
+      container.style.height = height+'px';
+      container.style.padding = '5px';
 
-      canvas.parentNode.style.height = height;
+      container.parentNode.style.height = height;
 
-      let img = new Image();
-      img.src = urls[key];
-      img.onload = () => {
-          ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, width, height);
-
-          if (state.map[key] && state.map[key].blocked == 1) { // TODO
-            let tileImgTaken = new Image();
-            tileImgTaken.src = urls['ACTTAKEN'];
-            tileImgTaken.onload = () => {
-                ctx.drawImage(tileImgTaken, 78, 13, 49, 49);
+      container.src = urls[key];
+      container.onload = function() {
+        SVGInject(this, {
+          afterInject: function(img, svg) {
+            let actionTakenLayer;
+            // get layers
+            let layers = svg.getElementsByTagName('g');
+            for (let i in layers) {
+              let layerId = layers[i].id;
+              if (layerId && layerId.startsWith('ActionTaken')) {
+                actionTakenLayer = layers[i];
+                break;
+              }
             }
-            // ctx.save();
-            /*ctx.fillStyle = '#000000' + '77';
-            ctx.beginPath();
-            ctx.arc(101,39,25,0,2*Math.PI); // getestet fuer ACTW
-            ctx.fill();
-            ctx.restore();*/
+            if (actionTakenLayer) {
+              // fix urls
+              fixSvgImageUrl(actionTakenLayer);
+              // show or hide action taken token
+              if (state.map[key] && state.map[key].blocked == 1) {
+                showSvgLayer(actionTakenLayer);
+                svg.onmouseover = function() {
+                    hideSvgLayer(actionTakenLayer);
+                }
+                svg.onmouseout = function() {
+                    showSvgLayer(actionTakenLayer);
+                }
+              } else {
+                hideSvgLayer(actionTakenLayer);
+              }
+            }
           }
+        });
       };
   }
 
