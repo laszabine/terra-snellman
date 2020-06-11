@@ -2,12 +2,15 @@
 function getImageUrls() {
   let str = 'const urls = {';
   let urls = {
-      'ACT1': 'images/src/action1.svg',
-      'ACT2': 'images/src/action2.svg',
-      'ACT3': 'images/src/action3.svg',
-      'ACT4': 'images/src/action4.svg',
-      'ACT5': 'images/src/action5.svg',
-      'ACT6': 'images/src/action6.svg',
+      'EXT_BASE_URL': '',
+      'script_svg': 'content_scripts/svg.js',
+      'libSvgInject': 'lib/svg-inject.js',
+      'ACT1': 'images/action1.svg',
+      'ACT2': 'images/action2.svg',
+      'ACT3': 'images/action3.svg',
+      'ACT4': 'images/action4.svg',
+      'ACT5': 'images/action5.svg',
+      'ACT6': 'images/action6.svg',
       'ACTTAKEN': 'images/src/action_taken.svg',
       'BON1': 'images/bonus01.png',
       'BON2': 'images/bonus02.png',
@@ -57,15 +60,15 @@ function getImageUrls() {
       'priest_green': 'images/src/priest_green.svg',
       'priest_red': 'images/src/priest_red.svg',
       'priest_yellow': 'images/src/priest_yellow.svg',
-      'SCORE1': 'images/src/scoring1.svg',
-      'SCORE2': 'images/src/scoring2.svg',
-      'SCORE3': 'images/src/scoring3.svg',
-      'SCORE4': 'images/src/scoring4.svg',
-      'SCORE5': 'images/src/scoring5.svg',
-      'SCORE6': 'images/src/scoring6.svg',
-      'SCORE7': 'images/src/scoring7.svg',
-      'SCORE8': 'images/src/scoring8.svg',
-      'SCORE9': 'images/src/scoring9.svg',
+      'SCORE1': 'images/scoring1.svg',
+      'SCORE2': 'images/scoring2.svg',
+      'SCORE3': 'images/scoring3.svg',
+      'SCORE4': 'images/scoring4.svg',
+      'SCORE5': 'images/scoring5.svg',
+      'SCORE6': 'images/scoring6.svg',
+      'SCORE7': 'images/scoring7.svg',
+      'SCORE8': 'images/scoring8.svg',
+      'SCORE9': 'images/scoring9.png',
       'scoring_bg': 'images/src/scoring_bg.svg',
       'scoring_final': 'images/scoring_final.jpg',
       'scoring_last_round': 'images/src/scoring_last_round.svg',
@@ -87,10 +90,22 @@ function getImageUrls() {
   return str;
 }
 
+async function fileToFilter(filter, path, function_onloadend) {
+  let response = await fetch(path, {mode: 'same-origin'});
+  let file = await response.blob();
+  let reader = new FileReader();
+  let encoder = new TextEncoder();
+  reader.onload = async function() {
+    let content = reader.result;
+    await filter.write(encoder.encode(content));
+  };
+  reader.onloadend = function_onloadend;
+  reader.readAsText(file);
+}
+
 function overwriteFunctions(details) {
   console.log(details.url + " was requested")
   let filename = details.url.match(/[^/\.]*\.(js|css)/i)[0];
-  console.log(filename);
 
   let filter = browser.webRequest.filterResponseData(details.requestId);
   let decoder = new TextDecoder("utf-8");
@@ -99,44 +114,33 @@ function overwriteFunctions(details) {
   filter.ondata = async function(event) {
 
     // output the original content
+    console.log('outputting original content');
     let orig_gamejs = decoder.decode(event.data, {stream: true});
-    enc = encoder.encode(orig_gamejs);
-    console.log('orig', enc);
-    await filter.write(enc);
+    await filter.write(encoder.encode(orig_gamejs));
 
   };
   filter.onstop = async function(event) {
 
     if (filename == 'game.js') {
+
       // output the image urls
+      console.log('appending urls to assets in extension');
       let imgUrls = getImageUrls();
-      enc = encoder.encode(imgUrls);
-      console.log('urls', enc);
-      await filter.write(enc);
+      await filter.write(encoder.encode(imgUrls));
+
+      // output the svg functions
+      console.log('appending custom svg functions');
+      fileToFilter(filter, 'static/svg.js');
     }
 
     // output the new content, which overwrites the original content
-    let modified_gamejs;
     let path = 'content_scripts/' + filename;
-    let response = await fetch(path, {mode:'same-origin'}) // <-- important
-    let file = await response.blob();
-    console.log('file', file);
-    let reader = new FileReader();
-    reader.onload = async function() {
-      modified_gamejs = reader.result;
-      let enc = encoder.encode(modified_gamejs);
-      console.log('custom', enc);
-      await filter.write(enc);
-    };
-    reader.onloadend = function() {
-
+    console.log('appending the contents of '+path);
+    fileToFilter(filter, path, function() {
       // clean up
       filter.disconnect();
       console.log("finished parsing " + filename);
-
-    }
-    reader.readAsText(file);
-
+    });
   };
   // things here will happen while the filter is receiving data
   return {};

@@ -1600,4 +1600,36 @@
       </g>
     </g>
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="LastRound"
+     inkscape:label="Ebene 2"
+     style="display:none">
+    <image
+       sodipodi:absref="/home/sabine/Documents/Projects/terra-snellman/images/src/scoring_last_round.svg"
+       xlink:href="src/scoring_last_round.svg"
+       y="2.092"
+       x="27.583"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="25.999996"
+       height="25.999996"
+       id="image453" />
+  </g>
+  <g
+     style="display:none"
+     inkscape:label="Ebene 3"
+     id="RoundOver"
+     inkscape:groupmode="layer">
+    <image
+       sodipodi:absref="/home/sabine/Documents/Projects/terra-snellman/images/src/scoring_bg.svg"
+       xlink:href="src/scoring_bg.svg"
+       y="0"
+       x="0"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="54.999992"
+       height="30.000046"
+       id="image511" />
+  </g>
 </svg>
