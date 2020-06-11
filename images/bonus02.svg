@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="bonus02.svg"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 132.50757 397.09195"
+   height="397.09195mm"
+   width="132.50757mm">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showguides="false"
+     inkscape:window-maximized="0"
+     inkscape:window-y="23"
+     inkscape:window-x="26"
+     inkscape:window-height="1703"
+     inkscape:window-width="2391"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="415.20894"
+     inkscape:cx="180.81012"
+     inkscape:zoom="1.4"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-2.1431227,-78.066628)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Ebene 1">
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/bonus_template_with_bar.svg"
+       xlink:href="./src/bonus_template_with_bar.svg"
+       y="78.066628"
+       x="2.1431227"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="132.50757"
+       height="397.09195"
+       id="image3504" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/action_bg.svg"
+       xlink:href="./src/action_bg.svg"
+       y="156.07663"
+       x="22.927122"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="90.524002"
+       height="90.524002"
+       id="image2051" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/coin4.svg"
+       xlink:href="./src/coin4.svg"
+       y="281.99265"
+       x="36.329872"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="62.782001"
+       height="62.782001"
+       id="image1002" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/hand.svg"
+       xlink:href="./src/hand.svg"
+       y="343.08612"
+       x="33.829292"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="72.198959"
+       height="27.389097"
+       id="image1497" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/DejaVu_1_white_border.svg"
+       xlink:href="./src/DejaVu_1_white_border.svg"
+       y="178.93663"
+       x="54.437122"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="26.497999"
+       height="43.520847"
+       id="image2828" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/cult_combined.svg"
+       xlink:href="./src/cult_combined.svg"
+       y="164.92563"
+       x="31.612123"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="73.113998"
+       height="73.113998"
+       id="image2989" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Ebene 2"
+     style="display:none">
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/action_taken.svg"
+       xlink:href="./src/action_taken.svg"
+       y="78.010002"
+       x="20.784"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="90.524002"
+       height="90.524002"
+       id="image1319" />
+  </g>
+</svg>
