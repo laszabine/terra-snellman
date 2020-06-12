@@ -673,10 +673,10 @@ function overwrite() {
                     if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
                       showSvgLayer(actionTakenLayer);
                       svg.onmouseover = function() {
-                        showSvgLayer(actionTakenLayer);
+                        hideSvgLayer(actionTakenLayer);
                       };
                       svg.onmouseout = function() {
-                        hideSvgLayer(actionTakenLayer);
+                        showSvgLayer(actionTakenLayer);
                       }
                     } else {
                       hideSvgLayer(actionTakenLayer);
