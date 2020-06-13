@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg2865"
+   version="1.1"
+   viewBox="0 0 55 51.479195"
+   height="51.479195mm"
+   width="55mm">
+  <defs
+     id="defs2859" />
+  <metadata
+     id="metadata2862">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-72.893245,80.295336)"
+     id="layer1">
+    <g
+       id="g2845"
+       transform="matrix(6.5260245,0,0,6.5260245,0.85805993,-104.63781)">
+      <path
+         d="m 19.341042,9.1177618 c 0,1.3119832 -1.830371,2.3755552 -4.088248,2.3755552 -2.257877,0 -4.077552,-1.148235 -4.077552,-2.460218 0,-0.6559921 -0.0016,-1.9652053 0.0034,-2.8494689 0.0051,-0.9068213 2.945254,0.5585764 4.074192,0.5585764 1.128939,0 4.060926,-1.4712704 4.06901,-0.6156509 0.0087,0.9256454 0.01924,2.3352148 0.01924,2.9912062"
+         style="fill:#eadec5;fill-opacity:1;stroke:none;stroke-width:0.0249048;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.52549"
+         id="ellipse1424" />
+      <ellipse
+         ry="2.375555"
+         rx="4.0882473"
+         cy="6.2307901"
+         cx="15.251318"
+         id="path1422"
+         style="fill:#d9c5ab;fill-opacity:1;stroke:none;stroke-width:0.0249048;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.52549" />
+      <path
+         transform="scale(0.26458333)"
+         d="m 57.642578,14.570312 a 15.451643,8.9784756 0 0 0 -15.451172,8.978516 15.451643,8.9784756 0 0 0 0.05664,0.773438 c -0.01343,3.27659 -0.01172,7.557996 -0.01172,9.818359 0,4.958676 6.878401,9.298828 15.41211,9.298828 8.533708,0 15.451171,-4.019839 15.451171,-8.978515 0,-2.221894 -0.03414,-6.700428 -0.06445,-10.13086 a 15.451643,8.9784756 0 0 0 0.05859,-0.78125 15.451643,8.9784756 0 0 0 -15.451172,-8.978516 z"
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.944882;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse2836" />
+    </g>
+  </g>
+</svg>
