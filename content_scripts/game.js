@@ -753,17 +753,7 @@ function overwrite() {
                       case "ACTC":
                       case "ACTG":
                       case "ACTS":
-                      case "ACTW":
                           alert('This is not implemented yet!');
-                          break;
-                      case "ACTN":
-                          title = "Sandstorm"; // top line of context menu
-                          menu_items = {
-                              "Terraform": { // button text
-                                  "fun": function() { appendAndPreview('action ACTN'); }, // will be executed as fun(loc,key) after the menu closes
-                                  "label": '', // text to display to the right of the button (typically costs)
-                              }
-                          };
                           break;
                       case "ACTE":
                           let actionData = state.actions.ACTE;
@@ -774,6 +764,25 @@ function overwrite() {
                                   "label": effectString(actionData.cost, actionData.gains),
                               }
                           };
+                          break;
+                      case "ACTN":
+                          title = "Sandstorm"; // top line of context menu
+                          menu_items = {
+                              "Terraform": { // button text
+                                  "fun": function() { appendAndPreview('action ACTN'); }, // will be executed as fun(loc,key) after the menu closes
+                                  "label": '', // text to display to the right of the button (typically costs)
+                              }
+                          };
+                          break;
+                      case "ACTW":
+                          title = "Witches' Ride";
+                          menu_items = {
+                              "Place dwelling": {
+                                  "fun": function() { appendAndPreview('action ACTW'); },
+                                  "label": '',
+                              }
+                          };
+                          break;
                   }
                   menuClickHandler(title, loc, menu_items)(loc, event);
               }
