@@ -253,17 +253,19 @@ function overwrite() {
               });
               vp_breakdown.insert(hr.cloneNode(true));
           }
-          // VP when passing
+          // gain when passing
           let pass_id;
+          let pass_income = {};
           {
             row = new Element('tr');
             row.insert(new Element('td').updateText("Passing:"));
             row.insert(new Element('td').updateText('total'));
             // calculate sources of pass-vp
-            var income_vp = {};
+            pass_income.scoring = faction.income_breakdown.scoring || {};
             ['BON6', 'BON7', 'BON9', 'FAV12'].forEach( elem => {
                 if (elem in faction && faction[elem] == '1') {
-                  income_vp[elem] = income_vp[elem] || 0;
+                  pass_income[elem] = pass_income[elem] || {};
+                  pass_income[elem].vp = pass_income[elem].vp || 0;
                   let type;
                   switch (elem.slice(0,3)) {
                     case "BON":
@@ -277,7 +279,7 @@ function overwrite() {
                   for (let buildingType in passvp) {
                     let playerHas = faction.buildings[buildingType].level;
                     let this_vp = passvp[buildingType][playerHas];
-                    income_vp[elem] += this_vp;
+                    pass_income[elem].vp += this_vp;
                   }
                 }
             });
@@ -293,15 +295,23 @@ function overwrite() {
                   }
                 }
               }
-              income_vp["SH"] = bridge_vp;
+              pass_income.SH = pass_income.SH || {};
+              pass_income.SH.vp = bridge_vp;
             }
             // output
-            let total_vp = (Object.keys(income_vp).length === 0 ? 0 : Object.values(income_vp).reduce( (a,b) => a+b));
-            row.insert(new Element('td').updateText()); // c
-            row.insert(new Element('td').updateText()); // w
-            row.insert(new Element('td').updateText()); // p
-            row.insert(new Element('td').updateText()); // pw
-            row.insert(new Element('td').updateText(total_vp+' vp'));
+            let pass_income_total = {};
+            for (let s in pass_income) {
+              for (let r in pass_income[s]) {
+                pass_income_total[r] = pass_income_total[r] || 0;
+                pass_income_total[r] += pass_income[s][r];
+              }
+            }
+            console.log(pass_income_total);
+            ['C', 'W', 'P', 'PW', 'vp'].forEach(r => {
+              row.insert(new Element('td').updateText(
+                (pass_income_total[r] || 0) + ' ' + r.toLowerCase()
+              ));
+            });
             pass_id = faction.name + '-pass';
             let pass_link = makeToggleLink('+', function() { toggleVP(pass_id); });
             row.insert(new Element('td').insert(pass_link));
@@ -314,12 +324,15 @@ function overwrite() {
                 new Element("td", { colspan: 6 }).insert(
                     new Element("hr")));
             income.insert(hr);
-            for (let source in income_vp) {
+            for (let source in pass_income) {
               row = new Element('tr', styleDisplayNone(pass_id));
               row.insert(new Element('td'));
               row.insert(new Element('td').updateText(source));
-              row.insert(new Element('td', {colspan: 4}));
-              row.insert(new Element('td').updateText(income_vp[source] + ' vp'));
+              ['C', 'W', 'P', 'PW', 'vp'].forEach(r =>
+                row.insert(new Element('td').updateText(
+                  (pass_income[source][r] || 0) + ' ' + r.toLowerCase()
+                ))
+              );
               income.insert(row);
             }
             income.insert(hr.cloneNode(true));
@@ -391,6 +404,9 @@ function overwrite() {
                   if (!elem.value) {
                       return;
                   }
+                  if (elem.key == "scoring") {
+                      return;
+                  }
                   row = new Element('tr', styleDisplayNone(income_id));
                   row.insert(new Element("td"));
                   row.insert(new Element("td").updateText(elem.key));
@@ -404,7 +420,6 @@ function overwrite() {
                   row = new Element('tr', {'class': income_id, 'style': 'display: none; color: #888;'});
                   row.insert(new Element("td"));
                   row.insert(new Element("td").updateText('bonus'));
-                  row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
