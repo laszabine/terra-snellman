@@ -504,6 +504,7 @@ function overwrite() {
               img.onload = function() {
                 SVGInject(this, {
                   afterInject: function(img, svg) {
+                    fixSvgImageUrl(svg);
                     let backgroundLayer;
                     let lastRoundLayer;
                     // get layers
@@ -520,9 +521,6 @@ function overwrite() {
                         break;
                       }
                     }
-                    // fix urls
-                    fixSvgImageUrl(backgroundLayer);
-                    fixSvgImageUrl(lastRoundLayer);
                     // mouse over
                     if (img.dataset.round < state.round || (img.dataset.round == 6 && state.finished)) {
                         showSvgLayer(backgroundLayer);
@@ -588,6 +586,7 @@ function overwrite() {
       container.onload = function() {
         SVGInject(this, {
           afterInject: function(img, svg) {
+            fixSvgImageUrl(svg);
             let actionTakenLayer;
             // get layers
             let layers = svg.getElementsByTagName('g');
@@ -599,8 +598,6 @@ function overwrite() {
               }
             }
             if (actionTakenLayer) {
-              // fix urls
-              fixSvgImageUrl(actionTakenLayer);
               // show or hide action taken token
               if (state.map[key] && state.map[key].blocked == 1) {
                 showSvgLayer(actionTakenLayer);
@@ -667,54 +664,15 @@ function overwrite() {
       if (name in urls) {
           let imgDiv = new Element('div');
           tile.insert(imgDiv);
-          // let tileCanvas = new Element('canvas');
-          let tileCanvas = new Element('img');
-          if (['BON1', 'BON2', 'FAV6'].includes(name)) {
-              tileCanvas.id = 'action/' + name + '/' + faction;
-          }
-          if (name.startsWith('BON') && faction == 'pool') {
-              tileCanvas.id = 'action/PASS/' + name;
-          }
-          imgDiv.insert(tileCanvas);
-          //tileCanvas.style = 'background: url(' + urls[name] + ')';
-          let actionTakenHeight = 0;
-          let actionTakenWidth = 0;
-          if (name.startsWith('BON')) {
-              tileCanvas.height = 205;
-              tileCanvas.width = 68;
-              actionTakenHeight = 50;
-              actionTakenWidth = 50;
-          } else if (name.startsWith('FAV')) {
-              tileCanvas.height = 85;
-              tileCanvas.width = 128;
-              actionTakenHeight = 41;
-              actionTakenWidth = 79;
-          } else {
-              alert(name);
-          }
-          /*
-          let ctx = tileCanvas.getContext('2d');
-          let tileImg = new Image();
-          tileImg.src = urls[name];
-          tileImg.onload = () => {
-              ctx.drawImage(tileImg, 0, 0, tileCanvas.width, tileCanvas.height);
-              // draw action-is-taken marker over image
-              if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
-                let tileImgTaken = new Image();
-                tileImgTaken.src = urls['ACTTAKEN'];
-                tileImgTaken.onload = () => {
-                    ctx.drawImage(tileImgTaken, 9, 39, actionTakenWidth, actionTakenHeight);
-                }
-              }
-          };
-          */
-          tileCanvas.src = urls[name];
+          let tileCanvas;
 
-          if (tileCanvas.src.substr(-3) == 'svg') {
-
+          if (urls[name].substr(-3) == 'svg') {
+            tileCanvas = new Element('img');
+            tileCanvas.src = urls[name];
             tileCanvas.onload = function() {
               SVGInject(this, {
                 afterInject: function(img, svg) {
+                  fixSvgImageUrl(svg);
                   let actionTakenLayer;
                   // get action-taken layer
                   let layers = svg.getElementsByTagName('g');
@@ -725,8 +683,6 @@ function overwrite() {
                     }
                   }
                   if (actionTakenLayer) {
-                    // fix link to action taken image
-                    fixSvgImageUrl(actionTakenLayer);
                     // mouse over actions
                     if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
                       showSvgLayer(actionTakenLayer);
@@ -743,7 +699,49 @@ function overwrite() {
                 }
               });
             };
+          } else {
+            tileCanvas = new Element('canvas');
+            // tileCanvas.style = 'background: url(' + urls[name] + ')';
+            let ctx = tileCanvas.getContext('2d');
+            let tileImg = new Image();
+            tileImg.src = urls[name];
+            let actionTakenHeight = 0;
+            let actionTakenWidth = 0;
+            if (name.startsWith('BON')) {
+              actionTakenHeight = 50;
+              actionTakenWidth = 50;
+            } else {
+              actionTakenHeight = 41;
+              actionTakenWidth = 79;
+            }
+            tileImg.onload = () => {
+                ctx.drawImage(tileImg, 0, 0, tileCanvas.width, tileCanvas.height);
+                // draw action-is-taken marker over image
+                if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
+                  let tileImgTaken = new Image();
+                  tileImgTaken.src = urls['ACTTAKEN'];
+                  tileImgTaken.onload = () => {
+                      ctx.drawImage(tileImgTaken, 9, 39, actionTakenWidth, actionTakenHeight);
+                  }
+                }
+            };
           }
+          if (['BON1', 'BON2', 'FAV6'].includes(name)) {
+              tileCanvas.id = 'action/' + name + '/' + faction;
+          }
+          if (name.startsWith('BON') && faction == 'pool') {
+              tileCanvas.id = 'action/PASS/' + name;
+          }
+          if (name.startsWith('BON')) {
+              tileCanvas.height = 205;
+              tileCanvas.width = 68;
+          } else if (name.startsWith('FAV')) {
+              tileCanvas.height = 85;
+              tileCanvas.width = 128;
+          } else {
+              alert(name);
+          }
+          imgDiv.insert(tileCanvas);
       }
   }
 
@@ -766,6 +764,14 @@ function overwrite() {
           let tileImg = new Element('img');
           tileImg.src = urls[name];
           tileImg.height = 90;
+          tileImg.width = 90;
+          tileImg.onload = function() {
+            SVGInject(this, {
+              afterInject: function(img, svg) {
+                fixSvgImageUrl(svg);
+              }
+            });
+          };
           let imgDiv = new Element('div');
           imgDiv.insert(tileImg);
           tile.insert(imgDiv);

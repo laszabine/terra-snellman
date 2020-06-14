@@ -8,10 +8,11 @@ function hideSvgLayer(layer) {
 }
 
 function fixSvgImageUrl(layer) {
-  let firstChild = layer.firstElementChild;
-  if (firstChild.tagName == 'image') {
-    let relUrl = firstChild.getAttribute('xlink:href');
+  let images = layer.getElementsByTagName('image');
+  for (let i=0; i<images.length; i++) {
+    let img = images[i];
+    let relUrl = img.getAttribute('xlink:href');
     let absUrl = urls.EXT_BASE_URL + 'images/' + relUrl;
-    firstChild.setAttribute('xlink:href', absUrl);
+    img.setAttribute('xlink:href', absUrl);
   }
 }
