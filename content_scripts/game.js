@@ -242,16 +242,13 @@ function overwrite() {
           // vp source
           if (faction.vp_source) {
               let vp_breakdown = income;
-              row = new Element("tr", styleDisplayNone(vp_id));
-              row.insert(new Element("td").updateText("VP breakdown:"));
-              vp_breakdown.insert(row);
-              let hr = new Element("tr", styleDisplayNone(vp_id)).insert(new Element("td")).insert(new Element("td", {colspan: 8}).insert(new Element("hr")));
-              //vp_breakdown.insert(hr);
+              let hr = new Element("tr", styleDisplayNone(vp_id)).insert(new Element("td")).insert(new Element("td", {colspan: 6}).insert(new Element("hr")));
+              vp_breakdown.insert(hr);
               $H(faction.vp_source).sortBy(function(a) { return -a.value}).each(function(record) {
                   row = new Element("tr", styleDisplayNone(vp_id));
                   row.insert(new Element("td"));
                   row.insert(new Element("td", {colspan: 5}).updateText(record.key));
-                  row.insert(new Element("td").updateText(record.value));
+                  row.insert(new Element("td").updateText(record.value+' vp'));
                   vp_breakdown.insert(row);
               });
               vp_breakdown.insert(hr.cloneNode(true));
