@@ -321,6 +321,20 @@ function overwrite() {
                     }
                   }
               });
+              if (faction.name == "engineers" && faction.buildings.SH.level == 1) {
+                let bridge_vp = 0;
+                for (let i=0; i<state.bridges.length; i++) {
+                  let b = state.bridges[i];
+                  if (b.color == "gray") {
+                    let hexagon1 = state.map[b.from];
+                    let hexagon2 = state.map[b.to];
+                    if (hexagon1.color == "gray" && hexagon1.building && hexagon2.color == "gray" && hexagon2.building) {
+                      bridge_vp += 3;
+                    }
+                  }
+                }
+                income_vp["SH"] = bridge_vp;
+              }
               let total_vp = (Object.keys(income_vp).length === 0 ? 0 : Object.values(income_vp).reduce( (a,b) => a+b));
               row.insert(new Element('td').updateText(total_vp + ' vp'));
               row.insert(new Element("td", {colspan: 3}));
