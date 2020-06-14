@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="259.88724mm"
+   height="297.733mm"
+   viewBox="0 0 259.88724 297.733"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="town4.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="23"
+     inkscape:window-x="26"
+     inkscape:window-height="849"
+     inkscape:window-width="1469"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="578.31809"
+     inkscape:cx="529.97612"
+     inkscape:zoom="0.51445126"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-114.98495,24.134357)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Ebene 1">
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/town_template.svg"
+       xlink:href="src/town_template.svg"
+       y="-24.134357"
+       x="114.98495"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="259.88724"
+       height="297.733"
+       id="image1482" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/key.svg"
+       xlink:href="src/key.svg"
+       y="184.72543"
+       x="6.7222676"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="77.674812"
+       height="162.87999"
+       id="image1718"
+       transform="matrix(-0.22538522,0.97426973,0.94611396,0.32383387,0,0)" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/victorypoint6.svg"
+       xlink:href="src/victorypoint6.svg"
+       y="37.442909"
+       x="208.66287"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="72.723152"
+       height="72.722763"
+       id="image2187" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/power.svg"
+       xlink:href="src/power.svg"
+       y="164.53604"
+       x="213.63991"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="57.140781"
+       height="53.368458"
+       id="image5372" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/DejaVu_8_white_border.svg"
+       xlink:href="src/DejaVu_8_white_border.svg"
+       y="169.46774"
+       x="227.44759"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="29.097683"
+       height="43.145164"
+       id="image5425" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/arrow_bow_right.svg"
+       xlink:href="src/arrow_bow_right.svg"
+       y="139.66299"
+       x="202.60359"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="80.907959"
+       height="31.392229"
+       id="image5473" />
+  </g>
+</svg>
