@@ -263,12 +263,8 @@ function overwrite() {
           // gain when passing
           let pass_id;
           let pass_income = {};
-          {
-            row = new Element('tr');
-            row.insert(new Element('td').updateText("Passing:"));
-            row.insert(new Element('td').updateText('total'));
+          if (faction.passed == 0) {
             // calculate sources of pass-vp
-            pass_income.scoring = faction.income_breakdown.scoring || {};
             ['BON6', 'BON7', 'BON9', 'FAV12'].forEach( elem => {
                 if (elem in faction && faction[elem] == '1') {
                   pass_income[elem] = pass_income[elem] || {};
@@ -306,26 +302,32 @@ function overwrite() {
               pass_income.SH.vp = bridge_vp;
             }
             // output
-            let pass_income_total = {};
-            for (let s in pass_income) {
-              for (let r in pass_income[s]) {
-                pass_income_total[r] = pass_income_total[r] || 0;
-                pass_income_total[r] += pass_income[s][r];
+            if (Object.keys(pass_income).length > 0) {
+              let pass_income_total = {};
+              for (let s in pass_income) {
+                for (let r in pass_income[s]) {
+                  pass_income_total[r] = pass_income_total[r] || 0;
+                  pass_income_total[r] += pass_income[s][r];
+                }
               }
+              row = new Element('tr');
+              row.insert(new Element('td').updateText("Passing:"));
+              row.insert(new Element('td').updateText('total'));
+              ['C', 'W', 'P', 'PW', 'vp'].forEach(r => {
+                let cell = new Element('td');
+                if (pass_income_total[r]) {
+                  cell.updateText(pass_income_total[r] + ' ' + r.toLowerCase());
+                }
+                row.insert(cell);
+              });
+              pass_id = faction.name + '-pass';
+              let pass_link = makeToggleLink('+', function() { toggleVP(pass_id); });
+              row.insert(new Element('td').insert(pass_link));
+              income.insert(row);
             }
-            console.log(pass_income_total);
-            ['C', 'W', 'P', 'PW', 'vp'].forEach(r => {
-              row.insert(new Element('td').updateText(
-                (pass_income_total[r] || 0) + ' ' + r.toLowerCase()
-              ));
-            });
-            pass_id = faction.name + '-pass';
-            let pass_link = makeToggleLink('+', function() { toggleVP(pass_id); });
-            row.insert(new Element('td').insert(pass_link));
-            income.insert(row);
           }
           // passing VP details
-          {
+          if (faction.passed == 0 && Object.keys(pass_income).length > 0) {
             let hr = new Element('tr', styleDisplayNone(pass_id)).insert(
                 new Element('td')).insert(
                 new Element("td", { colspan: 6 }).insert(
@@ -335,11 +337,13 @@ function overwrite() {
               row = new Element('tr', styleDisplayNone(pass_id));
               row.insert(new Element('td'));
               row.insert(new Element('td').updateText(source));
-              ['C', 'W', 'P', 'PW', 'vp'].forEach(r =>
-                row.insert(new Element('td').updateText(
-                  (pass_income[source][r] || 0) + ' ' + r.toLowerCase()
-                ))
-              );
+              ['C', 'W', 'P', 'PW', 'vp'].forEach(r => {
+                let cell = new Element('td');
+                if (pass_income[source][r]) {
+                  cell.updateText(pass_income[source][r] + ' ' + r.toLowerCase());
+                }
+                row.insert(cell);
+              });
               income.insert(row);
             }
             income.insert(hr.cloneNode(true));
@@ -375,24 +379,18 @@ function overwrite() {
           }
           // 1.4.2. income
           if (faction.income) {
-              let income_without_scoring = JSON.parse(JSON.stringify(faction.income));
-              if (faction.income_breakdown.scoring) {
-                for (let r in income_without_scoring) {
-                  income_without_scoring[r] -= faction.income_breakdown.scoring[r];
-                }
-              }
               row = new Element('tr');
               row.insert(new Element("td").updateText("Income:"));
               row.insert(new Element("td").updateText("total"));
-              row.insert(new Element("td").updateText(income_without_scoring.C + " c"));
-              row.insert(new Element("td").updateText(income_without_scoring.W + ' w'));
+              row.insert(new Element("td").updateText(faction.income.C + " c"));
+              row.insert(new Element("td").updateText(faction.income.W + ' w'));
               let P_class = '';
               if (faction.income.P > faction.MAX_P - faction.P) {
                   P_class = 'faction-info-income-overflow';
               }
               row.insert(new Element("td").insert(
                   makeTextSpan(
-                    income_without_scoring.P + " p",
+                    faction.income.P + " p",
                     P_class)));
               let PW_class = '';
               if (faction.income.PW > faction.P1 * 2 + faction.P2) {
@@ -400,7 +398,7 @@ function overwrite() {
               }
               row.insert(new Element("td").insert(
                   makeTextSpan(
-                    income_without_scoring.PW + " pw",
+                    faction.income.PW + " pw",
                     PW_class))
               );
               row.insert(new Element("td"));
@@ -417,9 +415,6 @@ function overwrite() {
               income.insert(hr);
               $H(faction.income_breakdown).each(function(elem, ind) {
                   if (!elem.value) {
-                      return;
-                  }
-                  if (elem.key == "scoring") {
                       return;
                   }
                   row = new Element('tr', styleDisplayNone(income_id));
