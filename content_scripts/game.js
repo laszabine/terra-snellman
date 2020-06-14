@@ -224,28 +224,35 @@ function overwrite() {
             }
           }
 
+          let row;
+          let vp_breakdown_id;
           // 1.4.1. resources
-          let row = new Element('tr');
-          row.insert(new Element("td").updateText("Resources:"));
-          row.insert(new Element("td").updateText("total"));
-          row.insert(new Element("td").updateText(faction.C + " c"));
-          row.insert(new Element("td").updateText(faction.W + " w"));
-          row.insert(new Element("td").updateText(faction.P + " p"));
-          row.insert(new Element("td").updateText(faction.P3 + " pw"));
-          let vp_id = faction.name + "-vp";
-          let vp_link = makeToggleLink('+', function() { toggleVP(vp_id); });
-          row.insert(new Element("td").updateText(faction.VP + " vp "));
-          row.insert(new Element('td').insert(vp_link));
-          row.insert(new Element("td", {'style': 'color: #888;'}).updateText((faction.MAX_P - faction.P) + " p"));
-          row.insert(new Element("td", {'style': 'color: #888;'}).updateText(faction.BRIDGE_COUNT + " b"));
-          income.insert(row);
+          {
+            row = new Element('tr');
+            row.insert(new Element("td").updateText("Resources:"));
+            row.insert(new Element("td").updateText("total"));
+            row.insert(new Element("td").updateText(faction.C + " c"));
+            row.insert(new Element("td").updateText(faction.W + " w"));
+            row.insert(new Element("td").updateText(faction.P + " p"));
+            row.insert(new Element("td").updateText(faction.P3 + " pw"));
+            vp_breakdown_id = faction.name + "-vp";
+            row.insert(new Element("td").updateText(faction.VP + " vp "));
+            let vp_link = makeToggleLink('+', function() { toggleVP(vp_breakdown_id); });
+            row.insert(new Element('td').insert(vp_link));
+            row.insert(new Element("td", {'style': 'color: #888;'}).updateText((faction.MAX_P - faction.P) + " p"));
+            row.insert(new Element("td", {'style': 'color: #888;'}).updateText(faction.BRIDGE_COUNT + " b"));
+            income.insert(row);
+          }
           // vp source
           if (faction.vp_source) {
               let vp_breakdown = income;
-              let hr = new Element("tr", styleDisplayNone(vp_id)).insert(new Element("td")).insert(new Element("td", {colspan: 6}).insert(new Element("hr")));
+              let hr = new Element("tr", styleDisplayNone(vp_breakdown_id)).insert(
+                new Element("td")).insert(
+                new Element("td", {colspan: 6}).insert(
+                new Element("hr")));
               vp_breakdown.insert(hr);
               $H(faction.vp_source).sortBy(function(a) { return -a.value}).each(function(record) {
-                  row = new Element("tr", styleDisplayNone(vp_id));
+                  row = new Element("tr", styleDisplayNone(vp_breakdown_id));
                   row.insert(new Element("td"));
                   row.insert(new Element("td", {colspan: 5}).updateText(record.key));
                   row.insert(new Element("td").updateText(record.value+' vp'));
@@ -368,25 +375,33 @@ function overwrite() {
           }
           // 1.4.2. income
           if (faction.income) {
+              let income_without_scoring = JSON.parse(JSON.stringify(faction.income));
+              if (faction.income_breakdown.scoring) {
+                for (let r in income_without_scoring) {
+                  income_without_scoring[r] -= faction.income_breakdown.scoring[r];
+                }
+              }
               row = new Element('tr');
               row.insert(new Element("td").updateText("Income:"));
               row.insert(new Element("td").updateText("total"));
-              row.insert(new Element("td").updateText(faction.income.C + " c"));
-              row.insert(new Element("td").updateText(faction.income.W + " w"));
-
+              row.insert(new Element("td").updateText(income_without_scoring.C + " c"));
+              row.insert(new Element("td").updateText(income_without_scoring.W + ' w'));
               let P_class = '';
               if (faction.income.P > faction.MAX_P - faction.P) {
                   P_class = 'faction-info-income-overflow';
               }
               row.insert(new Element("td").insert(
-                  makeTextSpan(faction.income.P + " p", P_class)));
-
+                  makeTextSpan(
+                    income_without_scoring.P + " p",
+                    P_class)));
               let PW_class = '';
               if (faction.income.PW > faction.P1 * 2 + faction.P2) {
                   PW_class = 'faction-info-income-overflow';
               }
               row.insert(new Element("td").insert(
-                  makeTextSpan(faction.income.PW + " pw", PW_class))
+                  makeTextSpan(
+                    income_without_scoring.PW + " pw",
+                    PW_class))
               );
               row.insert(new Element("td"));
               row.insert(new Element('td').insert(
