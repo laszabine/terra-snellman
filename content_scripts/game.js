@@ -303,6 +303,7 @@ function overwrite() {
               var income_vp = {};
               ['BON6', 'BON7', 'BON9', 'FAV12'].forEach( elem => {
                   if (elem in faction && faction[elem] == '1') {
+                    income_vp[elem] = income_vp[elem] || 0;
                     let type;
                     switch (elem.slice(0,3)) {
                       case "BON":
@@ -316,7 +317,7 @@ function overwrite() {
                     for (let buildingType in passvp) {
                       let playerHas = faction.buildings[buildingType].level;
                       let this_vp = passvp[buildingType][playerHas];
-                      income_vp[elem] = this_vp;
+                      income_vp[elem] += this_vp;
                     }
                   }
               });
