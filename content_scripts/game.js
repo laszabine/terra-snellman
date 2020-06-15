@@ -154,57 +154,63 @@ function overwrite() {
           //resourcesDiv.style.float = 'right';
           container.insert(resourcesDiv);
           // 1.1 coins
-          let coinsDiv = new Element('span');
-          coinsDiv.style['margin-right'] = '5px';
-          resourcesDiv.appendChild(coinsDiv);
-          let coins5 = Math.floor(faction.C / 5);
-          let coins2 = Math.floor((faction.C - coins5*5) / 2);
-          let coins1 = faction.C - coins5*5 - coins2*2;
-          let coin5Img = new Element('img');
-          coin5Img.src = urls.coin5;
-          coin5Img.alt = '5c';
-          coin5Img.style['max-height'] = '50px';
-          coin5Img.style['margin-right'] = '2px';
-          let coin2Img = new Element('img');
-          coin2Img.src = urls.coin2;
-          coin2Img.alt = '2c';
-          coin2Img.style['max-height'] = '40px';
-          coin2Img.style['margin-right'] = '2px';
-          let coin1Img = new Element('img');
-          coin1Img.src = urls.coin1;
-          coin1Img.alt = '1c';
-          coin1Img.style['max-height'] = '30px';
-          coin1Img.style['margin-right'] = '2px';
-          for (let f=0; f<coins5; f++) {
-              coinsDiv.appendChild(coin5Img.cloneNode());
-          }
-          for (let f=0; f<coins2; f++) {
-              coinsDiv.appendChild(coin2Img.cloneNode());
-          }
-          for (let f=0; f<coins1; f++) {
-              coinsDiv.appendChild(coin1Img.cloneNode());
+          {
+            let coinsDiv = new Element('span');
+            coinsDiv.style['margin-right'] = '5px';
+            resourcesDiv.appendChild(coinsDiv);
+            let coins5 = Math.floor(faction.C / 5);
+            let coins2 = Math.floor((faction.C - coins5*5) / 2);
+            let coins1 = faction.C - coins5*5 - coins2*2;
+            let coin5Img = new Element('img');
+            coin5Img.src = urls.coin5;
+            coin5Img.alt = '5c';
+            coin5Img.style['max-height'] = '50px';
+            coin5Img.style['margin-right'] = '2px';
+            let coin2Img = new Element('img');
+            coin2Img.src = urls.coin2;
+            coin2Img.alt = '2c';
+            coin2Img.style['max-height'] = '40px';
+            coin2Img.style['margin-right'] = '2px';
+            let coin1Img = new Element('img');
+            coin1Img.src = urls.coin1;
+            coin1Img.alt = '1c';
+            coin1Img.style['max-height'] = '30px';
+            coin1Img.style['margin-right'] = '2px';
+            for (let f=0; f<coins5; f++) {
+                coinsDiv.appendChild(coin5Img.cloneNode());
+            }
+            for (let f=0; f<coins2; f++) {
+                coinsDiv.appendChild(coin2Img.cloneNode());
+            }
+            for (let f=0; f<coins1; f++) {
+                coinsDiv.appendChild(coin1Img.cloneNode());
+            }
           }
           // 1.2 workers
-          let workersDiv = new Element('span');
-          workersDiv.style['margin-right'] = '5px';
-          resourcesDiv.appendChild(workersDiv);
-          let workerImg = new Element('img');
-          workerImg.src = urls.worker;
-          workerImg.alt = '1w';
-          workerImg.height = '40';
-          workerImg.style['margin-right'] = '3px';
-          for (let f=0; f<faction.W; f++) {
-              workersDiv.appendChild(workerImg.cloneNode());
+          {
+            let workersDiv = new Element('span');
+            workersDiv.style['margin-right'] = '5px';
+            resourcesDiv.appendChild(workersDiv);
+            let workerImg = new Element('img');
+            workerImg.src = urls.worker;
+            workerImg.alt = '1w';
+            workerImg.height = '40';
+            workerImg.style['margin-right'] = '3px';
+            for (let f=0; f<faction.W; f++) {
+                workersDiv.appendChild(workerImg.cloneNode());
+            }
           }
           // 1.3 priests
-          let priestsDiv = new Element('span');
-          resourcesDiv.appendChild(priestsDiv);
-          let priestImg = new Element('img');
-          priestImg.src = urls['priest_'+faction.color];
-          priestImg.alt = '1p';
-          priestImg.height = 45;
-          for (let f=0; f<faction.P; f++) {
-              priestsDiv.appendChild(priestImg.cloneNode());
+          {
+            let priestsDiv = new Element('span');
+            resourcesDiv.appendChild(priestsDiv);
+            let priestImg = new Element('img');
+            priestImg.src = urls['priest_'+faction.color];
+            priestImg.alt = '1p';
+            priestImg.height = 45;
+            for (let f=0; f<faction.P; f++) {
+                priestsDiv.appendChild(priestImg.cloneNode());
+            }
           }
           // 1.4. table overview (resources & income)
           let income_id = "income-" + name;
@@ -218,36 +224,129 @@ function overwrite() {
             }
           }
 
+          let row;
+          let vp_breakdown_id;
           // 1.4.1. resources
-          let row = new Element('tr');
-          row.insert(new Element("td").updateText("Resources:"));
-          row.insert(new Element("td").updateText("total"));
-          row.insert(new Element("td").updateText(faction.C + " c"));
-          row.insert(new Element("td").updateText(faction.W + " w"));
-          row.insert(new Element("td").updateText(faction.P + " p"));
-          row.insert(new Element("td").updateText(faction.P3 + " pw"));
-          let vp_id = faction.name + "-vp";
-          let vp_link = makeToggleLink('?', function() { toggleVP(vp_id); });
-          row.insert(new Element("td").updateText(faction.VP + " vp ").insert(vp_link));
-          row.insert(new Element("td", {'style': 'color: #888;'}).updateText((faction.MAX_P - faction.P) + " p"));
-          row.insert(new Element("td", {'style': 'color: #888;'}).updateText(faction.BRIDGE_COUNT + " b"));
-          income.insert(row);
+          {
+            row = new Element('tr');
+            row.insert(new Element("td").updateText("Resources:"));
+            row.insert(new Element("td").updateText("total"));
+            row.insert(new Element("td").updateText(faction.C + " c"));
+            row.insert(new Element("td").updateText(faction.W + " w"));
+            row.insert(new Element("td").updateText(faction.P + " p"));
+            row.insert(new Element("td").updateText(faction.P3 + " pw"));
+            vp_breakdown_id = faction.name + "-vp";
+            row.insert(new Element("td").updateText(faction.VP + " vp "));
+            let vp_link = makeToggleLink('+', function() { toggleVP(vp_breakdown_id); });
+            row.insert(new Element('td').insert(vp_link));
+            row.insert(new Element("td", {'style': 'color: #888;'}).updateText((faction.MAX_P - faction.P) + " p"));
+            row.insert(new Element("td", {'style': 'color: #888;'}).updateText(faction.BRIDGE_COUNT + " b"));
+            income.insert(row);
+          }
           // vp source
           if (faction.vp_source) {
               let vp_breakdown = income;
-              row = new Element("tr", styleDisplayNone(vp_id));
-              row.insert(new Element("td").updateText("VP breakdown:"));
-              vp_breakdown.insert(row);
-              let hr = new Element("tr", styleDisplayNone(vp_id)).insert(new Element("td")).insert(new Element("td", {colspan: 8}).insert(new Element("hr")));
-              //vp_breakdown.insert(hr);
+              let hr = new Element("tr", styleDisplayNone(vp_breakdown_id)).insert(
+                new Element("td")).insert(
+                new Element("td", {colspan: 6}).insert(
+                new Element("hr")));
+              vp_breakdown.insert(hr);
               $H(faction.vp_source).sortBy(function(a) { return -a.value}).each(function(record) {
-                  row = new Element("tr", styleDisplayNone(vp_id));
+                  row = new Element("tr", styleDisplayNone(vp_breakdown_id));
                   row.insert(new Element("td"));
                   row.insert(new Element("td", {colspan: 5}).updateText(record.key));
-                  row.insert(new Element("td").updateText(record.value));
+                  row.insert(new Element("td").updateText(record.value+' vp'));
                   vp_breakdown.insert(row);
               });
               vp_breakdown.insert(hr.cloneNode(true));
+          }
+          // gain when passing
+          let pass_id;
+          let pass_income = {};
+          if (faction.passed == 0) {
+            // calculate sources of pass-vp
+            ['BON6', 'BON7', 'BON9', 'FAV12'].forEach( elem => {
+                if (elem in faction && faction[elem] == '1') {
+                  pass_income[elem] = pass_income[elem] || {};
+                  pass_income[elem].vp = pass_income[elem].vp || 0;
+                  let type;
+                  switch (elem.slice(0,3)) {
+                    case "BON":
+                      type = 'bonus_tiles';
+                      break;
+                    case "FAV":
+                      type = 'favors';
+                      break;
+                  }
+                  let passvp = state[type][elem].pass_vp;
+                  for (let buildingType in passvp) {
+                    let playerHas = faction.buildings[buildingType].level;
+                    let this_vp = passvp[buildingType][playerHas];
+                    pass_income[elem].vp += this_vp;
+                  }
+                }
+            });
+            if (faction.name == "engineers" && faction.buildings.SH.level == 1) {
+              let bridge_vp = 0;
+              for (let i=0; i<state.bridges.length; i++) {
+                let b = state.bridges[i];
+                if (b.color == "gray") {
+                  let hexagon1 = state.map[b.from];
+                  let hexagon2 = state.map[b.to];
+                  if (hexagon1.color == "gray" && hexagon1.building && hexagon2.color == "gray" && hexagon2.building) {
+                    bridge_vp += 3;
+                  }
+                }
+              }
+              pass_income.SH = pass_income.SH || {};
+              pass_income.SH.vp = bridge_vp;
+            }
+            // output
+            if (Object.keys(pass_income).length > 0) {
+              let pass_income_total = {};
+              for (let s in pass_income) {
+                for (let r in pass_income[s]) {
+                  pass_income_total[r] = pass_income_total[r] || 0;
+                  pass_income_total[r] += pass_income[s][r];
+                }
+              }
+              row = new Element('tr');
+              row.insert(new Element('td').updateText("Passing:"));
+              row.insert(new Element('td').updateText('total'));
+              ['C', 'W', 'P', 'PW', 'vp'].forEach(r => {
+                let cell = new Element('td');
+                if (pass_income_total[r]) {
+                  cell.updateText(pass_income_total[r] + ' ' + r.toLowerCase());
+                }
+                row.insert(cell);
+              });
+              pass_id = faction.name + '-pass';
+              let pass_link = makeToggleLink('+', function() { toggleVP(pass_id); });
+              row.insert(new Element('td').insert(pass_link));
+              income.insert(row);
+            }
+          }
+          // passing VP details
+          if (faction.passed == 0 && Object.keys(pass_income).length > 0) {
+            let hr = new Element('tr', styleDisplayNone(pass_id)).insert(
+                new Element('td')).insert(
+                new Element("td", { colspan: 6 }).insert(
+                    new Element("hr")));
+            income.insert(hr);
+            for (let source in pass_income) {
+              row = new Element('tr', styleDisplayNone(pass_id));
+              row.insert(new Element('td'));
+              row.insert(new Element('td').updateText(source));
+              ['C', 'W', 'P', 'PW', 'vp'].forEach(r => {
+                let cell = new Element('td');
+                if (pass_income[source][r]) {
+                  cell.updateText(pass_income[source][r] + ' ' + r.toLowerCase());
+                }
+                row.insert(cell);
+              });
+              income.insert(row);
+            }
+            income.insert(hr.cloneNode(true));
           }
           // vp projection (round 6 only)
           if (faction.vp_projection) {
@@ -284,45 +383,25 @@ function overwrite() {
               row.insert(new Element("td").updateText("Income:"));
               row.insert(new Element("td").updateText("total"));
               row.insert(new Element("td").updateText(faction.income.C + " c"));
-              row.insert(new Element("td").updateText(faction.income.W + " w"));
-
+              row.insert(new Element("td").updateText(faction.income.W + ' w'));
               let P_class = '';
               if (faction.income.P > faction.MAX_P - faction.P) {
                   P_class = 'faction-info-income-overflow';
               }
               row.insert(new Element("td").insert(
-                  makeTextSpan(faction.income.P + " p", P_class)));
-
+                  makeTextSpan(
+                    faction.income.P + " p",
+                    P_class)));
               let PW_class = '';
               if (faction.income.PW > faction.P1 * 2 + faction.P2) {
                   PW_class = 'faction-info-income-overflow';
               }
               row.insert(new Element("td").insert(
-                  makeTextSpan(faction.income.PW + " pw", PW_class))
+                  makeTextSpan(
+                    faction.income.PW + " pw",
+                    PW_class))
               );
-              var income_vp = {};
-              ['BON6', 'BON7', 'BON9', 'FAV12'].forEach( elem => {
-                  if (elem in faction && faction[elem] == '1') {
-                    let type;
-                    switch (elem.slice(0,3)) {
-                      case "BON":
-                        type = 'bonus_tiles';
-                        break;
-                      case "FAV":
-                        type = 'favors';
-                        break;
-                    }
-                    let passvp = state[type][elem].pass_vp;
-                    for (let buildingType in passvp) {
-                      let playerHas = faction.buildings[buildingType].level;
-                      let this_vp = passvp[buildingType][playerHas];
-                      income_vp[elem] = this_vp;
-                    }
-                  }
-              });
-              let total_vp = (Object.keys(income_vp).length === 0 ? 0 : Object.values(income_vp).reduce( (a,b) => a+b));
-              row.insert(new Element('td').updateText(total_vp + ' vp'));
-              row.insert(new Element("td", {colspan: 3}));
+              row.insert(new Element("td"));
               row.insert(new Element('td').insert(
                   makeToggleLink("+", function() { toggleVP(income_id); }))
               );
@@ -347,21 +426,10 @@ function overwrite() {
                   row.insert(new Element("td").updateText(elem.value.PW + ' pw'));
                   income.insert(row);
               });
-
-              for (let tile in income_vp) {
-                row = new Element('tr', styleDisplayNone(income_id));
-                row.insert(new Element('td'));
-                row.insert(new Element('td').updateText(tile));
-                row.insert(new Element('td', {colspan: 4}));
-                row.insert(new Element('td').updateText(income_vp[tile] + ' vp'));
-                income.insert(row);
-              }
-
               if (faction.passed == 0) {
                   row = new Element('tr', {'class': income_id, 'style': 'display: none; color: #888;'});
                   row.insert(new Element("td"));
                   row.insert(new Element("td").updateText('bonus'));
-                  row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
                   row.insert(new Element("td").updateText('?'));
@@ -446,6 +514,7 @@ function overwrite() {
               img.onload = function() {
                 SVGInject(this, {
                   afterInject: function(img, svg) {
+                    fixSvgImageUrl(svg);
                     let backgroundLayer;
                     let lastRoundLayer;
                     // get layers
@@ -462,9 +531,6 @@ function overwrite() {
                         break;
                       }
                     }
-                    // fix urls
-                    fixSvgImageUrl(backgroundLayer);
-                    fixSvgImageUrl(lastRoundLayer);
                     // mouse over
                     if (img.dataset.round < state.round || (img.dataset.round == 6 && state.finished)) {
                         showSvgLayer(backgroundLayer);
@@ -530,6 +596,7 @@ function overwrite() {
       container.onload = function() {
         SVGInject(this, {
           afterInject: function(img, svg) {
+            fixSvgImageUrl(svg);
             let actionTakenLayer;
             // get layers
             let layers = svg.getElementsByTagName('g');
@@ -541,8 +608,6 @@ function overwrite() {
               }
             }
             if (actionTakenLayer) {
-              // fix urls
-              fixSvgImageUrl(actionTakenLayer);
               // show or hide action taken token
               if (state.map[key] && state.map[key].blocked == 1) {
                 showSvgLayer(actionTakenLayer);
@@ -609,54 +674,15 @@ function overwrite() {
       if (name in urls) {
           let imgDiv = new Element('div');
           tile.insert(imgDiv);
-          // let tileCanvas = new Element('canvas');
-          let tileCanvas = new Element('img');
-          if (['BON1', 'BON2', 'FAV6'].includes(name)) {
-              tileCanvas.id = 'action/' + name + '/' + faction;
-          }
-          if (name.startsWith('BON') && faction == 'pool') {
-              tileCanvas.id = 'action/PASS/' + name;
-          }
-          imgDiv.insert(tileCanvas);
-          //tileCanvas.style = 'background: url(' + urls[name] + ')';
-          let actionTakenHeight = 0;
-          let actionTakenWidth = 0;
-          if (name.startsWith('BON')) {
-              tileCanvas.height = 205;
-              tileCanvas.width = 68;
-              actionTakenHeight = 50;
-              actionTakenWidth = 50;
-          } else if (name.startsWith('FAV')) {
-              tileCanvas.height = 85;
-              tileCanvas.width = 128;
-              actionTakenHeight = 41;
-              actionTakenWidth = 79;
-          } else {
-              alert(name);
-          }
-          /*
-          let ctx = tileCanvas.getContext('2d');
-          let tileImg = new Image();
-          tileImg.src = urls[name];
-          tileImg.onload = () => {
-              ctx.drawImage(tileImg, 0, 0, tileCanvas.width, tileCanvas.height);
-              // draw action-is-taken marker over image
-              if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
-                let tileImgTaken = new Image();
-                tileImgTaken.src = urls['ACTTAKEN'];
-                tileImgTaken.onload = () => {
-                    ctx.drawImage(tileImgTaken, 9, 39, actionTakenWidth, actionTakenHeight);
-                }
-              }
-          };
-          */
-          tileCanvas.src = urls[name];
+          let tileCanvas;
 
-          if (tileCanvas.src.substr(-3) == 'svg') {
-
+          if (urls[name].substr(-3) == 'svg') {
+            tileCanvas = new Element('img');
+            tileCanvas.src = urls[name];
             tileCanvas.onload = function() {
               SVGInject(this, {
                 afterInject: function(img, svg) {
+                  fixSvgImageUrl(svg);
                   let actionTakenLayer;
                   // get action-taken layer
                   let layers = svg.getElementsByTagName('g');
@@ -667,8 +693,6 @@ function overwrite() {
                     }
                   }
                   if (actionTakenLayer) {
-                    // fix link to action taken image
-                    fixSvgImageUrl(actionTakenLayer);
                     // mouse over actions
                     if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
                       showSvgLayer(actionTakenLayer);
@@ -685,7 +709,49 @@ function overwrite() {
                 }
               });
             };
+          } else {
+            tileCanvas = new Element('canvas');
+            // tileCanvas.style = 'background: url(' + urls[name] + ')';
+            let ctx = tileCanvas.getContext('2d');
+            let tileImg = new Image();
+            tileImg.src = urls[name];
+            let actionTakenHeight = 0;
+            let actionTakenWidth = 0;
+            if (name.startsWith('BON')) {
+              actionTakenHeight = 50;
+              actionTakenWidth = 50;
+            } else {
+              actionTakenHeight = 41;
+              actionTakenWidth = 79;
+            }
+            tileImg.onload = () => {
+                ctx.drawImage(tileImg, 0, 0, tileCanvas.width, tileCanvas.height);
+                // draw action-is-taken marker over image
+                if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
+                  let tileImgTaken = new Image();
+                  tileImgTaken.src = urls['ACTTAKEN'];
+                  tileImgTaken.onload = () => {
+                      ctx.drawImage(tileImgTaken, 9, 39, actionTakenWidth, actionTakenHeight);
+                  }
+                }
+            };
           }
+          if (['BON1', 'BON2', 'FAV6'].includes(name)) {
+              tileCanvas.id = 'action/' + name + '/' + faction;
+          }
+          if (name.startsWith('BON') && faction == 'pool') {
+              tileCanvas.id = 'action/PASS/' + name;
+          }
+          if (name.startsWith('BON')) {
+              tileCanvas.height = 205;
+              tileCanvas.width = 68;
+          } else if (name.startsWith('FAV')) {
+              tileCanvas.height = 85;
+              tileCanvas.width = 128;
+          } else {
+              alert(name);
+          }
+          imgDiv.insert(tileCanvas);
       }
   }
 
@@ -708,6 +774,14 @@ function overwrite() {
           let tileImg = new Element('img');
           tileImg.src = urls[name];
           tileImg.height = 90;
+          tileImg.width = 90;
+          tileImg.onload = function() {
+            SVGInject(this, {
+              afterInject: function(img, svg) {
+                fixSvgImageUrl(svg);
+              }
+            });
+          };
           let imgDiv = new Element('div');
           imgDiv.insert(tileImg);
           tile.insert(imgDiv);
