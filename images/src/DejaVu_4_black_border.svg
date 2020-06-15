@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="DejaVu_4_black_border.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg2189"
+   version="1.1"
+   viewBox="0 0 77.965767 103.09696"
+   height="103.09696mm"
+   width="77.965767mm">
+  <defs
+     id="defs2183" />
+  <sodipodi:namedview
+     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:window-height="1016"
+     inkscape:window-width="1920"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="370.10028"
+     inkscape:cx="789.7149"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata2186">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(658.50084,188.47129)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Ebene 1">
+    <g
+       style="font-size:134.383px;line-height:1.25;font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif';letter-spacing:0px;word-spacing:0px;stroke-width:3.35959"
+       id="text834"
+       aria-label="4">
+      <path
+         id="path5971"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.35959;stroke-opacity:1"
+         d="m -614.03896,-120.25616 v -52.09966 l -33.46451,52.09966 z m 28.87135,33.202045 h -44.61935 v -6.95537 h 15.748 v -19.225695 h -42.78208 v -7.15222 l 42.91332,-66.40409 h 12.9921 v 66.53533 h 18.70076 v 7.02098 h -18.70076 v 19.225695 h 15.74801 z" />
+    </g>
+  </g>
+</svg>
