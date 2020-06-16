@@ -14,7 +14,7 @@
    version="1.1"
    id="svg2124"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="victorypoint11.svg">
+   sodipodi:docname="victorypoint10.svg">
   <defs
      id="defs2118">
     <linearGradient
@@ -507,7 +507,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -734,17 +734,18 @@
          style="fill:url(#linearGradient3024);fill-opacity:1;stroke:none;stroke-width:0.349661px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
     <g
-       style="font-style:normal;font-weight:normal;font-size:39.5744px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:-5.29167px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.989362;stroke-opacity:1"
+       transform="translate(0,-0.534469)"
+       aria-label="10"
        id="text3090"
-       aria-label="11">
+       style="font-style:normal;font-weight:normal;font-size:39.5744px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:-5.29167px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.989362;stroke-opacity:1">
       <path
-         id="path2184"
+         d="M 122.45751,50.245476 V 47.90734 h 4.86951 V 24.564626 l -5.41056,3.555513 v -2.879193 l 6.51199,-4.367097 h 5.48786 V 47.90734 h 4.88883 v 2.338136 z"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:semi-condensed;font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif Bold Semi-Condensed';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.989362;stroke-opacity:1"
-         d="m 123.67589,49.711197 v -2.338136 h 4.86951 V 24.030347 l -5.41056,3.555513 v -2.879192 l 6.512,-4.367097 h 5.48785 v 27.03349 h 4.88883 v 2.338136 z" />
+         id="path6986" />
       <path
-         id="path2186"
+         d="m 149.45531,48.545013 q 2.08693,0 2.85987,-2.106255 0.77293,-2.106254 0.77293,-10.589244 0,-8.425019 -0.77293,-10.569921 -0.77294,-2.144901 -2.85987,-2.144901 -2.08693,0 -2.85987,2.106254 -0.77294,2.106255 -0.77294,10.608568 0,8.48299 0.77294,10.589244 0.77294,2.106255 2.85987,2.106255 z m 0,2.260842 q -5.19801,0 -7.98058,-3.845364 -2.76325,-3.864687 -2.76325,-11.110977 0,-7.246289 2.76325,-11.110977 2.78257,-3.864688 7.98058,-3.864688 5.17868,0 7.94193,3.864688 2.76325,3.864688 2.76325,11.110977 0,7.24629 -2.76325,11.110977 -2.76325,3.845364 -7.94193,3.845364 z"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:semi-condensed;font-family:'DejaVu Serif';-inkscape-font-specification:'DejaVu Serif Bold Semi-Condensed';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.989362;stroke-opacity:1"
-         d="m 143.15688,49.711197 v -2.338136 h 4.8695 V 24.030347 l -5.41056,3.555513 v -2.879192 l 6.512,-4.367097 h 5.48786 v 27.03349 h 4.88883 v 2.338136 z" />
+         id="path6988" />
     </g>
   </g>
 </svg>
