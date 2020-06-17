@@ -21,7 +21,7 @@ function getImageUrls() {
       'BON7': 'images/bonus07.svg',
       'BON8': 'images/bonus08.svg',
       'BON9': 'images/bonus09.svg',
-      'BON10': 'images/bonus10.png',
+      'BON10': 'images/bonus10.svg',
       'coin1': 'images/src/coin1.svg',
       'coin2': 'images/src/coin2.svg',
       'coin5': 'images/src/coin5.svg',
@@ -79,7 +79,7 @@ function getImageUrls() {
       "TW5": 'images/town5.svg',
       'TW6': 'images/town6.svg',
       'TW7_ship': 'images/town7_ship.svg',
-      'TW7_carpet': 'images/town7_carpet.png',
+      'TW7_carpet': 'images/town7_carpet.svg',
       'TW8': 'images/town8.svg',
       'worker': 'images/src/worker.svg',
   };
