@@ -8,38 +8,38 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="259.88724mm"
-   height="297.733mm"
-   viewBox="0 0 259.88724 297.733"
-   version="1.1"
-   id="svg8"
+   sodipodi:docname="town7_carpet.svg"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="town7_carpet.svg">
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 259.88724 297.733"
+   height="297.733mm"
+   width="259.88724mm">
   <defs
      id="defs2" />
   <sodipodi:namedview
-     inkscape:window-maximized="1"
-     inkscape:window-y="0"
-     inkscape:window-x="0"
-     inkscape:window-height="1016"
-     inkscape:window-width="1920"
-     fit-margin-bottom="0"
-     fit-margin-right="0"
-     fit-margin-left="0"
-     fit-margin-top="0"
-     showgrid="false"
-     inkscape:document-rotation="0"
-     inkscape:current-layer="layer1"
-     inkscape:document-units="mm"
-     inkscape:cy="969.62946"
-     inkscape:cx="546.81312"
-     inkscape:zoom="0.51445126"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
+     id="base"
      pagecolor="#ffffff"
-     id="base" />
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.057805"
+     inkscape:cx="305.79011"
+     inkscape:cy="770.64884"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -53,10 +53,10 @@
     </rdf:RDF>
   </metadata>
   <g
-     transform="translate(-114.98495,24.134357)"
-     id="layer1"
+     inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
-     inkscape:label="Ebene 1">
+     id="layer1"
+     transform="translate(-114.98495,24.134357)">
     <image
        sodipodi:absref="/home/roman/git/terra-snellman/images/src/town_template.svg"
        xlink:href="src/town_template.svg"
@@ -88,15 +88,16 @@
        width="72.723152"
        height="72.722763"
        id="image2187" />
-    <path
-       d="m 183.39121,160.58131 v 11.59412 h -10.82105 v 6.85643 h 10.82105 v 10.89184 h 7.54785 v -10.89184 h 10.97349 v -6.85643 h -10.97349 v -11.59412 z"
-       style="fill:#e8d79a;fill-opacity:1;stroke:#000000;stroke-width:0.986;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1386" />
-    <path
-       sodipodi:nodetypes="cccccc"
-       id="path1393"
-       d="m 210.84226,160.29942 h -4.60963 v -4.25479 l 9.45733,-6.63369 h 5.57872 v 51.07231 H 210.7727 Z"
-       style="fill:#e8d79a;stroke:#000000;stroke-width:0.965;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/plus1_sand.svg"
+       xlink:href="src/plus1_sand.svg"
+       y="148.93527"
+       x="172.31532"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="49.673935"
+       height="52.037189"
+       id="image1683" />
     <image
        sodipodi:absref="/home/roman/git/terra-snellman/images/src/fakir.svg"
        xlink:href="src/fakir.svg"

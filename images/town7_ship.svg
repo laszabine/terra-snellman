@@ -8,38 +8,38 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="259.88724mm"
-   height="297.733mm"
-   viewBox="0 0 259.88724 297.733"
-   version="1.1"
-   id="svg8"
+   sodipodi:docname="town7_ship.svg"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="town7_ship.svg">
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 259.88724 297.733"
+   height="297.733mm"
+   width="259.88724mm">
   <defs
      id="defs2" />
   <sodipodi:namedview
-     inkscape:window-maximized="0"
-     inkscape:window-y="23"
-     inkscape:window-x="26"
-     inkscape:window-height="849"
-     inkscape:window-width="1469"
-     fit-margin-bottom="0"
-     fit-margin-right="0"
-     fit-margin-left="0"
-     fit-margin-top="0"
-     showgrid="false"
-     inkscape:document-rotation="0"
-     inkscape:current-layer="layer1"
-     inkscape:document-units="mm"
-     inkscape:cy="757.87149"
-     inkscape:cx="449.82688"
-     inkscape:zoom="0.48229806"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
+     id="base"
      pagecolor="#ffffff"
-     id="base" />
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.34103623"
+     inkscape:cx="558.81611"
+     inkscape:cy="466.52198"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1469"
+     inkscape:window-height="849"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -53,10 +53,10 @@
     </rdf:RDF>
   </metadata>
   <g
-     transform="translate(-114.98495,24.134357)"
-     id="layer1"
+     inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
-     inkscape:label="Ebene 1">
+     id="layer1"
+     transform="translate(-114.98495,24.134357)">
     <image
        sodipodi:absref="/home/roman/git/terra-snellman/images/src/town_template.svg"
        xlink:href="src/town_template.svg"
@@ -89,16 +89,16 @@
        height="72.722763"
        id="image2187" />
     <g
-       transform="matrix(1.0020474,0,0,0.8497554,4.8004117,83.991126)"
-       id="g1271">
+       id="g1271"
+       transform="matrix(1.0017037,0,0,0.87415467,4.8828843,82.208718)">
       <path
-         id="rect1264"
+         d="m 204.51623,73.563969 h 70.84653 v 71.232761 h -70.84653 z"
          style="fill:#9cc3d4;fill-opacity:1;stroke:#000000;stroke-width:2.06649;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 204.51623,73.563969 h 70.84653 v 71.232761 h -70.84653 z" />
+         id="rect1264" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:1.54987;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path1267"
          d="M 240.11468,145.14755 V 73.786089"
-         id="path1267" />
+         style="fill:none;stroke:#000000;stroke-width:1.54987;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <image
        sodipodi:absref="/home/roman/git/terra-snellman/images/src/marker.svg"
@@ -123,22 +123,22 @@
     <image
        sodipodi:absref="/home/roman/git/terra-snellman/images/src/shipping.svg"
        xlink:href="src/shipping.svg"
-       y="184.36873"
+       y="180.70926"
        x="211.47107"
        preserveAspectRatio="none"
        inkscape:svg-dpi="96"
        width="32.218033"
-       height="17.67692"
+       height="26.098829"
        id="image2643" />
     <image
        sodipodi:absref="/home/roman/git/terra-snellman/images/src/shipping.svg"
        xlink:href="src/shipping.svg"
-       id="image2707"
-       height="17.67692"
+       id="image1174"
+       height="26.098829"
        width="32.218033"
        inkscape:svg-dpi="96"
        preserveAspectRatio="none"
-       x="246.3956"
-       y="184.36873" />
+       x="246.92476"
+       y="180.70926" />
   </g>
 </svg>

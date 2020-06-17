@@ -9,7 +9,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="bonus02.svg"
+   sodipodi:docname="bonus09.svg"
    id="svg8"
    version="1.1"
    viewBox="0 0 132.50757 397.09195"
@@ -23,18 +23,18 @@
      fit-margin-left="0"
      fit-margin-top="0"
      showguides="false"
-     inkscape:window-maximized="1"
-     inkscape:window-y="0"
-     inkscape:window-x="0"
-     inkscape:window-height="1016"
-     inkscape:window-width="1920"
+     inkscape:window-maximized="0"
+     inkscape:window-y="23"
+     inkscape:window-x="26"
+     inkscape:window-height="964"
+     inkscape:window-width="1475"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="787.24647"
-     inkscape:cx="31.945843"
-     inkscape:zoom="0.7"
+     inkscape:cy="983.40619"
+     inkscape:cx="79.281879"
+     inkscape:zoom="0.175"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -65,8 +65,8 @@
        x="2.1431227"
        preserveAspectRatio="none"
        inkscape:svg-dpi="96"
-       width="132.29167"
-       height="396.875"
+       width="132.29201"
+       height="396.87598"
        id="image1094" />
     <image
        sodipodi:absref="/home/roman/git/terra-snellman/images/src/bonus_template_bar.svg"
@@ -77,72 +77,81 @@
        inkscape:svg-dpi="96"
        width="132.50757"
        height="397.09195"
-       id="image1262" />
+       id="image1178" />
     <image
-       sodipodi:absref="/home/roman/git/terra-snellman/images/src/action_bg.svg"
-       xlink:href="src/action_bg.svg"
-       y="156.07663"
-       x="22.927122"
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/victorypoint1.svg"
+       xlink:href="src/victorypoint1.svg"
+       y="214.21162"
+       x="65.978531"
        preserveAspectRatio="none"
        inkscape:svg-dpi="96"
-       width="90.524002"
-       height="90.524002"
-       id="image2051" />
+       width="50.000164"
+       height="49.999901"
+       id="image1906" />
     <image
-       sodipodi:absref="/home/roman/git/terra-snellman/images/src/coin4.svg"
-       xlink:href="src/coin4.svg"
-       y="281.99265"
-       x="36.329872"
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/arrow_right.svg"
+       xlink:href="src/arrow_right.svg"
+       y="-99.949051"
+       x="195.37346"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="18.189907"
+       height="17.916637"
+       id="image2516"
+       transform="rotate(90)" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/pass.svg"
+       xlink:href="src/pass.svg"
+       y="178.93773"
+       x="21.564587"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="29.38092"
+       height="56.603439"
+       id="image2377" />
+    <ellipse
+       ry="2.0213559"
+       rx="2.0213556"
+       cy="203.33839"
+       cx="59.755791"
+       id="path2784"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.957288;stroke-linecap:round" />
+    <ellipse
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.957288;stroke-linecap:round"
+       id="ellipse2786"
+       cx="59.755791"
+       cy="216.03822"
+       rx="2.0213556"
+       ry="2.0213559" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/dwelling_outline.svg"
+       xlink:href="src/dwelling_outline.svg"
+       y="153.71906"
+       x="70.837189"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="37.969578"
+       height="40.611427"
+       id="image3420" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/hand.svg"
+       xlink:href="src/hand.svg"
+       y="343.08563"
+       x="33.829124"
+       preserveAspectRatio="none"
+       inkscape:svg-dpi="96"
+       width="72.198997"
+       height="27.389112"
+       id="image3939" />
+    <image
+       sodipodi:absref="/home/roman/git/terra-snellman/images/src/coin2.svg"
+       xlink:href="src/coin2.svg"
+       y="281.99261"
+       x="36.330124"
        preserveAspectRatio="none"
        inkscape:svg-dpi="96"
        width="62.782001"
        height="62.782001"
-       id="image1002" />
-    <image
-       sodipodi:absref="/home/roman/git/terra-snellman/images/src/hand.svg"
-       xlink:href="src/hand.svg"
-       y="343.08612"
-       x="33.829292"
-       preserveAspectRatio="none"
-       inkscape:svg-dpi="96"
-       width="72.198959"
-       height="27.389097"
-       id="image1497" />
-    <image
-       sodipodi:absref="/home/roman/git/terra-snellman/images/src/cult_combined.svg"
-       xlink:href="src/cult_combined.svg"
-       y="164.92563"
-       x="31.612123"
-       preserveAspectRatio="none"
-       inkscape:svg-dpi="96"
-       width="73.113998"
-       height="73.113998"
-       id="image2989" />
-    <image
-       sodipodi:absref="/home/roman/git/terra-snellman/images/src/dejavu_sans_bold_black_white_border_1.svg"
-       xlink:href="src/dejavu_sans_bold_black_white_border_1.svg"
-       y="182.3022"
-       x="57.263672"
-       preserveAspectRatio="none"
-       inkscape:svg-dpi="96"
-       width="21.636078"
-       height="36.563915"
-       id="image1307" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="Ebene 2"
-     style="display:none">
-    <image
-       sodipodi:absref="/home/roman/git/terra-snellman/images/src/action_taken.svg"
-       xlink:href="src/action_taken.svg"
-       y="78.010002"
-       x="20.784"
-       preserveAspectRatio="none"
-       inkscape:svg-dpi="96"
-       width="90.524002"
-       height="90.524002"
-       id="image1319" />
+       id="image4043" />
   </g>
 </svg>
