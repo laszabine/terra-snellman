@@ -42,6 +42,20 @@ function overwrite() {
 
   var max_width = 1190;
 
+  var townImgHeight = 110;
+  var townDivHeight = townImgHeight + 5;
+  var townDivWidth = townImgHeight;
+
+  var favorImgHeight = townImgHeight;
+  var favorImgWidth = favorImgHeight * 1.5;
+  var favorDivHeight = townDivHeight;
+  var favorDivWidth = favorDivHeight * 1.5;
+
+  var bonusDivHeight = 2*favorDivHeight + 14;
+  var bonusDivWidth = 85;
+  var bonusImgHeight = bonusDivHeight - 2*2;
+  var bonusImgWidth = bonusDivWidth - 2*2;
+
   /* faction board */
   drawRealFaction = function(faction, board) {
       let container = board.parentNode;
@@ -672,39 +686,52 @@ function overwrite() {
           }
           return;
       } else if (name.startsWith("BON")) {
-          board.insert(new Element('div', {'class': 'bonus', 'style': 'height:220px; width:70px;'}));
+          let tileDiv = new Element('div', {class: 'bonus'});
+          tileDiv.style.height = bonusDivHeight + 'px';
+          tileDiv.style.width = bonusDivWidth + 'px';
+          board.insert(tileDiv);
           let div = board.childElements().last();
           renderBonus(div, name, faction);
       } else if (name.startsWith("FAV")) {
-          board.insert(new Element('div', {'class': 'favor', 'style': 'height:103px; width:130px;'}));
+          let tileDiv = new Element('div', {class: 'favor'});
+          tileDiv.style.height = favorDivHeight + 'px';
+          tileDiv.style.width = favorDivWidth + 'px';
+          board.insert(tileDiv);
           let div = board.childElements().last();
           renderFavor(div, name, faction, count);
-          return;
       } else if (name.startsWith("TW")) {
-          board.insert(new Element('div', {'class': 'town', 'style': 'height:103px;'}));
+          let tileDiv = new Element('div', {class: 'town'});
+          tileDiv.style.height = townDivHeight + 'px';
+          tileDiv.style.width = townDivWidth + 'px';
+          board.insert(tileDiv);
           let div = board.childElements().last();
           renderTown(div, name, faction, count);
-          return;
       }
   }
 
   renderTile = function(tile, name, record, faction, count) {
-      tile.insertTextSpan(name);
+      tile.style.position = 'relative';
+      let nameSpan = new Element('span');
+      nameSpan.style.position = 'absolute';
+      nameSpan.style.top = '0px';
+      nameSpan.style.left = '0px';
+      if (name.startsWith('BON')) {
+        nameSpan.style['background-color'] = '#ffd'; // TODO: make this dynamic on the CSS class 'bonus'
+      }
+      let nameText = name;
       if (state.bonus_coins[name] && state.bonus_coins[name].C) {
-          tile.insertTextSpan(" [#{C}c]".interpolate(state.bonus_coins[name]));
+          nameText += " [#{C}c]".interpolate(state.bonus_coins[name]);
       }
       if (count > 1) {
-          tile.insertTextSpan(" (x" + count + ")");
+          nameText += " (x" + count + ")";
       }
-      // hier kommt die sabine
+      nameSpan.updateText(nameText);
       if (name in urls) {
-          let imgDiv = new Element('div');
-          tile.insert(imgDiv);
           let tileCanvas;
-
           if (urls[name].substr(-3) == 'svg') {
             tileCanvas = new Element('img');
             tileCanvas.src = urls[name];
+            tileCanvas.style.float = 'left';
             tileCanvas.onload = function() {
               SVGInject(this, {
                 afterInject: function(img, svg) {
@@ -769,23 +796,29 @@ function overwrite() {
               tileCanvas.id = 'action/PASS/' + name;
           }
           if (name.startsWith('BON')) {
-              tileCanvas.height = 205;
-              tileCanvas.width = 68;
+              tileCanvas.height = bonusImgHeight;
+              tileCanvas.width = bonusImgWidth;
           } else if (name.startsWith('FAV')) {
-              tileCanvas.height = 85;
-              tileCanvas.width = 128;
+              tileCanvas.height = favorImgHeight;
+              tileCanvas.width = favorImgWidth;
           } else {
               alert(name);
           }
-          imgDiv.insert(tileCanvas);
+          tile.insert(tileCanvas);
       }
+      tile.insert(nameSpan);
   }
 
   renderTown = function(tile, name, faction, count) {
+      tile.style.position = 'relative';
+      let nameSpan = new Element('span');
+      nameSpan.style.position = 'absolute';
+      nameSpan.style.top = '0px';
+      nameSpan.style.left = '0px';
       if (count != 1) {
-          tile.insertTextSpan(name + " (x" + count + ")");
+          nameSpan.updateText(name + " (x" + count + ")");
       } else {
-          tile.insertTextSpan(name);
+          nameSpan.updateText(name);
       }
       if (name == 'TW7') {
         let username = document.cookie.match(/session-username=([A-Za-z0-9._-]+)/);
@@ -798,9 +831,10 @@ function overwrite() {
       }
       if (name in urls) {
           let tileImg = new Element('img');
+          tileImg.style.float = 'left';
           tileImg.src = urls[name];
-          tileImg.height = 90;
-          tileImg.width = 90;
+          tileImg.height = townImgHeight;
+          tileImg.width = townImgHeight;
           tileImg.onload = function() {
             SVGInject(this, {
               afterInject: function(img, svg) {
@@ -808,10 +842,9 @@ function overwrite() {
               }
             });
           };
-          let imgDiv = new Element('div');
-          imgDiv.insert(tileImg);
-          tile.insert(imgDiv);
+          tile.insert(tileImg);
       }
+      tile.insert(nameSpan);
   }
 
   /* actions */
