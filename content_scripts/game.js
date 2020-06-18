@@ -217,11 +217,24 @@ function overwrite() {
           let income = new Element('table', {'class': 'income-table', 'id': income_id});
           resourcesDiv.insert(income);
 
-          function styleDisplayNone(className) {
-            return {
-              'class': className,
-              'style': 'display: none;'
+          function styleDisplayNone(className, prop) {
+            prop = prop || {};
+            prop.class = className;
+            prop.style = prop.style || '';
+            if (prop.style.length > 0 && !prop.style.trim().substr(-1) == ';') {
+              prop.style += ';';
             }
+            prop.style += 'display: none;';
+            return prop;
+          }
+          function styleAlignRight(prop) {
+            prop = prop || {};
+            prop.style = prop.style || '';
+            if (prop.style.length > 0 && !prop.style.trim().substr(-1) == ';') {
+              prop.style += ';';
+            }
+            prop.style += 'text-align: right';
+            return prop;
           }
 
           let row;
@@ -231,12 +244,12 @@ function overwrite() {
             row = new Element('tr');
             row.insert(new Element("td").updateText("Resources:"));
             row.insert(new Element("td").updateText("total"));
-            row.insert(new Element("td").updateText(faction.C + " c"));
-            row.insert(new Element("td").updateText(faction.W + " w"));
-            row.insert(new Element("td").updateText(faction.P + " p"));
-            row.insert(new Element("td").updateText(faction.P3 + " pw"));
+            row.insert(new Element("td", styleAlignRight()).updateText(faction.C + " c"));
+            row.insert(new Element("td", styleAlignRight()).updateText(faction.W + " w"));
+            row.insert(new Element("td", styleAlignRight()).updateText(faction.P + " p"));
+            row.insert(new Element("td", styleAlignRight()).updateText(faction.P3 + " pw"));
             vp_breakdown_id = faction.name + "-vp";
-            row.insert(new Element("td").updateText(faction.VP + " vp "));
+            row.insert(new Element("td", styleAlignRight()).updateText(faction.VP + " vp "));
             let vp_link = makeToggleLink('+', function() { toggleVP(vp_breakdown_id); });
             row.insert(new Element('td').insert(vp_link));
             row.insert(new Element("td", {'style': 'color: #888;'}).updateText((faction.MAX_P - faction.P) + " p"));
@@ -255,7 +268,7 @@ function overwrite() {
                   row = new Element("tr", styleDisplayNone(vp_breakdown_id));
                   row.insert(new Element("td"));
                   row.insert(new Element("td", {colspan: 5}).updateText(record.key));
-                  row.insert(new Element("td").updateText(record.value+' vp'));
+                  row.insert(new Element("td", styleAlignRight()).updateText(record.value+' vp'));
                   vp_breakdown.insert(row);
               });
               vp_breakdown.insert(hr.cloneNode(true));
@@ -263,7 +276,7 @@ function overwrite() {
           // gain when passing
           let pass_id;
           let pass_income = {};
-          if (faction.passed == 0) {
+          if (faction.passed == 0 && !state.finished == 1) {
             // calculate sources of pass-vp
             ['BON6', 'BON7', 'BON9', 'FAV12'].forEach( elem => {
                 if (elem in faction && faction[elem] == '1') {
@@ -314,7 +327,7 @@ function overwrite() {
               row.insert(new Element('td').updateText("Passing:"));
               row.insert(new Element('td').updateText('total'));
               ['C', 'W', 'P', 'PW', 'vp'].forEach(r => {
-                let cell = new Element('td');
+                let cell = new Element('td', styleAlignRight());
                 if (pass_income_total[r]) {
                   cell.updateText(pass_income_total[r] + ' ' + r.toLowerCase());
                 }
@@ -338,7 +351,7 @@ function overwrite() {
               row.insert(new Element('td'));
               row.insert(new Element('td').updateText(source));
               ['C', 'W', 'P', 'PW', 'vp'].forEach(r => {
-                let cell = new Element('td');
+                let cell = new Element('td', styleAlignRight());
                 if (pass_income[source][r]) {
                   cell.updateText(pass_income[source][r] + ' ' + r.toLowerCase());
                 }
@@ -355,7 +368,7 @@ function overwrite() {
               row = new Element('tr');
               row.insert(new Element('td').updateText('VP projection:'));
               row.insert(new Element('td', {colspan: 5}).updateText('total'));
-              row.insert(new Element('td').updateText(faction.vp_projection.total + ' vp'));
+              row.insert(new Element('td', styleAlignRight()).updateText(faction.vp_projection.total + ' vp'));
               row.insert(new Element('td').insert(makeToggleLink("+", function() { toggleVP(vp_proj_id) })));
               vp_proj.insert(row);
 
@@ -370,8 +383,19 @@ function overwrite() {
 
                   var row = new Element('tr', styleDisplayNone(vp_proj_id));
                   row.insert(new Element("td"));
-                  row.insert(new Element("td", {colspan: 5}).updateText(elem.key));
-                  row.insert(new Element("td", {colspan: 3}).updateText(elem.value));
+                  let keyText = elem.key;
+                  let valText = elem.value;
+                  if (elem.key == 'network') {
+                    console.log(elem.value);
+                    let val = elem.value.match(/([0-9]+) (\[[0-9]+\/[0-9]+\])/);
+                    console.log(val);
+                    let networkVp = val[1];
+                    let networkSize = val[2];
+                    keyText += ' ' + networkSize;
+                    valText = networkVp;
+                  }
+                  row.insert(new Element("td", {colspan: 5}).updateText(keyText));
+                  row.insert(new Element("td", styleAlignRight()).updateText(valText + ' vp'));
                   vp_proj.insert(row);
               });
               vp_proj.insert(hr.cloneNode(true));
@@ -381,13 +405,13 @@ function overwrite() {
               row = new Element('tr');
               row.insert(new Element("td").updateText("Income:"));
               row.insert(new Element("td").updateText("total"));
-              row.insert(new Element("td").updateText(faction.income.C + " c"));
-              row.insert(new Element("td").updateText(faction.income.W + ' w'));
+              row.insert(new Element("td", styleAlignRight()).updateText(faction.income.C + " c"));
+              row.insert(new Element("td", styleAlignRight()).updateText(faction.income.W + ' w'));
               let P_class = '';
               if (faction.income.P > faction.MAX_P - faction.P) {
                   P_class = 'faction-info-income-overflow';
               }
-              row.insert(new Element("td").insert(
+              row.insert(new Element("td", styleAlignRight()).insert(
                   makeTextSpan(
                     faction.income.P + " p",
                     P_class)));
@@ -395,7 +419,7 @@ function overwrite() {
               if (faction.income.PW > faction.P1 * 2 + faction.P2) {
                   PW_class = 'faction-info-income-overflow';
               }
-              row.insert(new Element("td").insert(
+              row.insert(new Element("td", styleAlignRight()).insert(
                   makeTextSpan(
                     faction.income.PW + " pw",
                     PW_class))
@@ -419,20 +443,20 @@ function overwrite() {
                   row = new Element('tr', styleDisplayNone(income_id));
                   row.insert(new Element("td"));
                   row.insert(new Element("td").updateText(elem.key));
-                  row.insert(new Element("td").updateText(elem.value.C + ' c'));
-                  row.insert(new Element("td").updateText(elem.value.W + ' w'));
-                  row.insert(new Element("td").updateText(elem.value.P + ' p'));
-                  row.insert(new Element("td").updateText(elem.value.PW + ' pw'));
+                  row.insert(new Element("td", styleAlignRight()).updateText(elem.value.C + ' c'));
+                  row.insert(new Element("td", styleAlignRight()).updateText(elem.value.W + ' w'));
+                  row.insert(new Element("td", styleAlignRight()).updateText(elem.value.P + ' p'));
+                  row.insert(new Element("td", styleAlignRight()).updateText(elem.value.PW + ' pw'));
                   income.insert(row);
               });
               if (faction.passed == 0) {
                   row = new Element('tr', {'class': income_id, 'style': 'display: none; color: #888;'});
                   row.insert(new Element("td"));
                   row.insert(new Element("td").updateText('bonus'));
-                  row.insert(new Element("td").updateText('?'));
-                  row.insert(new Element("td").updateText('?'));
-                  row.insert(new Element("td").updateText('?'));
-                  row.insert(new Element("td").updateText('?'));
+                  row.insert(new Element("td", styleAlignRight()).updateText('? c'));
+                  row.insert(new Element("td", styleAlignRight()).updateText('? w'));
+                  row.insert(new Element("td", styleAlignRight()).updateText('? p'));
+                  row.insert(new Element("td", styleAlignRight()).updateText('? pw'));
                   income.insert(row);
               }
               income.insert(hr.cloneNode(true));
