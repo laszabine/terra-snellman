@@ -355,13 +355,12 @@ function overwrite() {
               row = new Element('tr');
               row.insert(new Element('td').updateText('VP projection:'));
               row.insert(new Element('td', {colspan: 5}).updateText('total'));
-              row.insert(new Element('td').updateText(faction.vp_projection.total + ' vp ').insert(
-                  makeToggleLink("?", function() { toggleVP(vp_proj_id) }))
-              );
+              row.insert(new Element('td').updateText(faction.vp_projection.total + ' vp'));
+              row.insert(new Element('td').insert(makeToggleLink("+", function() { toggleVP(vp_proj_id) })));
               vp_proj.insert(row);
 
               let hr = Element('tr', styleDisplayNone(vp_proj_id)).insert(new Element("td")).insert(
-                  new Element("td", { colspan: 8 }).insert(
+                  new Element("td", { colspan: 6 }).insert(
                       new Element("hr")))
               vp_proj.insert(hr);
               $H(faction.vp_projection).each(function(elem, ind) {
@@ -827,7 +826,7 @@ function overwrite() {
                       case "ACTC":
                       case "ACTG":
                       case "ACTS":
-                          alert('This is not implemented yet!');
+                          // alert('This is not implemented yet!');
                           break;
                       case "ACTE":
                           let actionData = state.actions.ACTE;
