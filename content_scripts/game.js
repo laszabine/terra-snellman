@@ -372,32 +372,35 @@ function overwrite() {
               row.insert(new Element('td').insert(makeToggleLink("+", function() { toggleVP(vp_proj_id) })));
               vp_proj.insert(row);
 
-              let hr = Element('tr', styleDisplayNone(vp_proj_id)).insert(new Element("td")).insert(
+              let hr = Element('tr', styleDisplayNone(vp_proj_id)).insert(
+                new Element("td")).insert(
                   new Element("td", { colspan: 6 }).insert(
                       new Element("hr")))
               vp_proj.insert(hr);
-              $H(faction.vp_projection).each(function(elem, ind) {
-                  if (!elem.value || elem.key == "total") {
-                      return;
-                  }
-
-                  var row = new Element('tr', styleDisplayNone(vp_proj_id));
-                  row.insert(new Element("td"));
-                  let keyText = elem.key;
-                  let valText = elem.value;
-                  if (elem.key == 'network') {
-                    console.log(elem.value);
-                    let val = elem.value.match(/([0-9]+) (\[[0-9]+\/[0-9]+\])/);
-                    console.log(val);
-                    let networkVp = val[1];
-                    let networkSize = val[2];
-                    keyText += ' ' + networkSize;
-                    valText = networkVp;
-                  }
-                  row.insert(new Element("td", {colspan: 5}).updateText(keyText));
-                  row.insert(new Element("td", styleAlignRight()).updateText(valText + ' vp'));
-                  vp_proj.insert(row);
+              ['FIRE', 'WATER', 'EARTH', 'AIR'].forEach(cult => {
+                let row = new Element('tr', styleDisplayNone(vp_proj_id));
+                row.insert(new Element("td"));
+                row.insert(new Element("td", {colspan: 5}).updateText(cult));
+                row.insert(new Element("td", styleAlignRight()).updateText(faction.vp_projection[cult] + ' vp'));
+                vp_proj.insert(row);
               });
+              ['network'].forEach(score => {
+                let match = faction.vp_projection[score].match(/([0-9]+) (\[[0-9]+\/[0-9]+\])/);
+                let vp = match[1];
+                let size = match[2];
+                let row = new Element('tr', styleDisplayNone(vp_proj_id));
+                row.insert(new Element("td"));
+                row.insert(new Element("td", {colspan: 5}).updateText(score + ' ' + size));
+                row.insert(new Element("td", styleAlignRight()).updateText(vp + ' vp'));
+                vp_proj.insert(row);
+              });
+              if (faction.vp_projection.resources) {
+                let row = new Element('tr', styleDisplayNone(vp_proj_id));
+                row.insert(new Element("td"));
+                row.insert(new Element("td", {colspan: 5}).updateText('resources'));
+                row.insert(new Element("td", styleAlignRight()).updateText(faction.vp_projection.resources + ' vp'));
+                vp_proj.insert(row);
+              }
               vp_proj.insert(hr.cloneNode(true));
           }
           // 1.4.2. income
