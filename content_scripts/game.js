@@ -395,7 +395,8 @@ function overwrite() {
                 let row = new Element('tr', styleDisplayNone(vp_proj_id));
                 row.insert(new Element("td"));
                 row.insert(new Element("td", {colspan: 5}).updateText(cult));
-                row.insert(new Element("td", styleAlignRight()).updateText(faction.vp_projection[cult] + ' vp'));
+                let cultScore = faction.vp_projection[cult] || 0;
+                row.insert(new Element("td", styleAlignRight()).updateText(cultScore + ' vp'));
                 vp_proj.insert(row);
               });
               ['network'].forEach(score => {
