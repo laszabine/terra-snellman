@@ -40,42 +40,57 @@ init = function(root) {
 function overwrite() {
   console.log("overwriting functions!");
 
-  var max_width = 1190;
+  drawFaction = function(name) {
+    let faction = state.factions[name];
+    let color = faction.color;
+    let container = new Element('div', { class: 'faction-board' });
+    container.id = faction.name;
+    let title = factionDisplayName(faction);
+    if (faction.passed) {
+      container.style.opacity = '0.5';
+      title = new Element("span").insert(title).insert(
+          makeTextSpan(", passed"));
+    }
+    if (faction.dropped) {
+      container.style.opacity = '0.25';
+      title = new Element("span").insert(title).insert(
+          makeTextSpan(", dropped"));
+    }
+    if (faction.start_player) {
+      title = new Element("span").insert(title).insert(
+          makeTextSpan(", start player"));
+    }
+    let header = new Element('div');
+    header.style.padding = '1px 1px 1px 1px';
+    header.style['margin-bottom'] = '5px';
+    header.style['background-color'] = colors[color];
+    header.style.color = contrastColor[color];
+    header.insert(title);
+    container.insert(header);
+    if (!faction.placeholder) {
+      drawRealFaction(faction, container);
+    }
 
-  var townImgHeight = 110;
-  var townDivHeight = townImgHeight + 5;
-  var townDivWidth = townImgHeight;
+    renderTreasury(container, faction, name);
 
-  var favorImgHeight = townImgHeight;
-  var favorImgWidth = favorImgHeight * 1.5;
-  var favorDivHeight = townDivHeight;
-  var favorDivWidth = favorDivHeight * 1.5;
+    $("factions").insert(container);
 
-  var bonusDivHeight = 2*favorDivHeight + 14;
-  var bonusDivWidth = 85;
-  var bonusImgHeight = bonusDivHeight - 2*2;
-  var bonusImgWidth = bonusDivWidth - 2*2;
+  }
 
   /* faction board */
-  drawRealFaction = function(faction, board) {
-      let container = board.parentNode;
-      container.id = faction.name;
-      container.style.width = max_width + 'px';
-      if (faction.passed) {
-          board.style.opacity = 1;
-          container.style.opacity = 0.5;
-      }
+  drawRealFaction = function(faction, container) {
       let name = faction.name;
       let factionBoardCanvasWidth = 620;
       let factionBoardCanvasHeight = 399;
       // faction board
       {
           let factionBoardCanvas = new Element('canvas');
-          board.insert(factionBoardCanvas);
+          container.insert(factionBoardCanvas);
           //factionBoardCanvas.style.float = 'left';
           factionBoardCanvas.style.background = 'url(' + urls['faction_'+name] + ')';
           factionBoardCanvas.style.opacity = 1;
-          factionBoardCanvas.style['margin-top'] = '5px';
+          factionBoardCanvas.style.float = 'left';
+          factionBoardCanvas.style['margin-right'] = '20px';
           factionBoardCanvas.width = factionBoardCanvasWidth;
           factionBoardCanvas.height = factionBoardCanvasHeight;
           let ctx = factionBoardCanvas.getContext('2d');
@@ -164,8 +179,6 @@ function overwrite() {
       // resources
       {
           let resourcesDiv = new Element('div');
-          //resourcesDiv.style.width = (max_width - factionBoardCanvasWidth - 10) + 'px'; // same as faction board image
-          //resourcesDiv.style.float = 'right';
           container.insert(resourcesDiv);
           // 1.1 coins
           {
@@ -671,9 +684,6 @@ function overwrite() {
       if (count < 1) {
           return;
       }
-      if (faction == 'pool') {
-        board.style.width = max_width + 'px'; // because I don't know where else to put it
-      }
 
       if (name.startsWith("ACT")) {
           // remove the ACT-tiles for faction-specific actions; (keep the power actions!)
@@ -688,164 +698,171 @@ function overwrite() {
           return;
       } else if (name.startsWith("BON")) {
           let tileDiv = new Element('div', {class: 'bonus'});
-          tileDiv.style.height = bonusDivHeight + 'px';
-          tileDiv.style.width = bonusDivWidth + 'px';
           board.insert(tileDiv);
           let div = board.childElements().last();
           renderBonus(div, name, faction);
       } else if (name.startsWith("FAV")) {
           let tileDiv = new Element('div', {class: 'favor'});
-          tileDiv.style.height = favorDivHeight + 'px';
-          tileDiv.style.width = favorDivWidth + 'px';
           board.insert(tileDiv);
           let div = board.childElements().last();
           renderFavor(div, name, faction, count);
       } else if (name.startsWith("TW")) {
+        let renderCount;
+        if (faction == 'pool') {
+          renderCount = 1;
+        } else {
+          renderCount = count;
+        }
+        for (let i=0; i<renderCount; i++) {
           let tileDiv = new Element('div', {class: 'town'});
-          tileDiv.style.height = townDivHeight + 'px';
-          tileDiv.style.width = townDivWidth + 'px';
           board.insert(tileDiv);
           let div = board.childElements().last();
           renderTown(div, name, faction, count);
+        }
       }
   }
 
-  renderTile = function(tile, name, record, faction, count) {
-      tile.style.position = 'relative';
-      let nameSpan = new Element('span');
-      nameSpan.style.position = 'absolute';
-      nameSpan.style.top = '0px';
-      nameSpan.style.left = '0px';
-      if (name.startsWith('BON')) {
-        nameSpan.style['background-color'] = '#ffd'; // TODO: make this dynamic on the CSS class 'bonus'
-      }
-      let nameText = name;
-      if (state.bonus_coins[name] && state.bonus_coins[name].C) {
-          nameText += " [#{C}c]".interpolate(state.bonus_coins[name]);
-      }
-      if (count > 1) {
-          nameText += " (x" + count + ")";
-      }
-      nameSpan.updateText(nameText);
-      if (name in urls) {
-          let tileCanvas;
-          if (urls[name].substr(-3) == 'svg') {
-            tileCanvas = new Element('img');
-            tileCanvas.src = urls[name];
-            tileCanvas.style.float = 'left';
-            tileCanvas.onload = function() {
-              SVGInject(this, {
-                afterInject: function(img, svg) {
-                  fixSvgImageUrl(svg);
-                  let actionTakenLayer;
-                  // get action-taken layer
-                  let layers = svg.getElementsByTagName('g');
-                  for (let i in layers) {
-                    if (layers[i].id && layers[i].id.startsWith('ActionTaken')) {
-                      actionTakenLayer = layers[i];
-                      break;
-                    }
-                  }
-                  if (actionTakenLayer) {
-                    // mouse over actions
-                    if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
-                      showSvgLayer(actionTakenLayer);
-                      svg.onmouseover = function() {
-                        hideSvgLayer(actionTakenLayer);
-                      };
-                      svg.onmouseout = function() {
-                        showSvgLayer(actionTakenLayer);
-                      }
-                    } else {
-                      hideSvgLayer(actionTakenLayer);
-                    }
-                  }
+  renderBonus = function(div, name, faction) {
+    let nameSpan = new Element('div');
+    let nameText = name;
+    if (state.bonus_coins[name] && state.bonus_coins[name].C) {
+        nameText += " [#{C}c]".interpolate(state.bonus_coins[name]);
+    }
+    nameSpan.updateText(nameText);
+    div.insert(nameSpan);
+
+    if (name in urls) {
+        let tileImg;
+        tileImg = new Element('img');
+        tileImg.src = urls[name];
+        tileImg.height = 230;
+        tileImg.width = 80;
+        tileImg.onload = function() {
+          SVGInject(this, {
+            afterInject: function(img, svg) {
+              fixSvgImageUrl(svg);
+              let actionTakenLayer;
+              // get action-taken layer
+              let layers = svg.getElementsByTagName('g');
+              for (let i in layers) {
+                if (layers[i].id && layers[i].id.startsWith('ActionTaken')) {
+                  actionTakenLayer = layers[i];
+                  break;
                 }
-              });
-            };
-          } else {
-            tileCanvas = new Element('canvas');
-            // tileCanvas.style = 'background: url(' + urls[name] + ')';
-            let ctx = tileCanvas.getContext('2d');
-            let tileImg = new Image();
-            tileImg.src = urls[name];
-            let actionTakenHeight = 0;
-            let actionTakenWidth = 0;
-            if (name.startsWith('BON')) {
-              actionTakenHeight = 50;
-              actionTakenWidth = 50;
-            } else {
-              actionTakenHeight = 41;
-              actionTakenWidth = 79;
-            }
-            tileImg.onload = () => {
-                ctx.drawImage(tileImg, 0, 0, tileCanvas.width, tileCanvas.height);
-                // draw action-is-taken marker over image
+              }
+              if (actionTakenLayer) {
+                // mouse over actions
                 if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
-                  let tileImgTaken = new Image();
-                  tileImgTaken.src = urls['ACTTAKEN'];
-                  tileImgTaken.onload = () => {
-                      ctx.drawImage(tileImgTaken, 9, 39, actionTakenWidth, actionTakenHeight);
+                  showSvgLayer(actionTakenLayer);
+                  svg.onmouseover = function() {
+                    hideSvgLayer(actionTakenLayer);
+                  };
+                  svg.onmouseout = function() {
+                    showSvgLayer(actionTakenLayer);
                   }
+                } else {
+                  hideSvgLayer(actionTakenLayer);
                 }
-            };
-          }
-          if (['BON1', 'BON2', 'FAV6'].includes(name)) {
-              tileCanvas.id = 'action/' + name + '/' + faction;
-          }
-          if (name.startsWith('BON') && faction == 'pool') {
-              tileCanvas.id = 'action/PASS/' + name;
-          }
-          if (name.startsWith('BON')) {
-              tileCanvas.height = bonusImgHeight;
-              tileCanvas.width = bonusImgWidth;
-          } else if (name.startsWith('FAV')) {
-              tileCanvas.height = favorImgHeight;
-              tileCanvas.width = favorImgWidth;
-          } else {
-              alert(name);
-          }
-          tile.insert(tileCanvas);
-      }
-      tile.insert(nameSpan);
+              }
+            }
+          });
+        };
+        if (faction == 'pool') {
+          tileImg.id = 'action/PASS/' + name;
+        } else if (['BON1', 'BON2'].includes(name)) {
+          tileImg.id = 'action/' + name + '/' + faction;
+        }
+        div.insert(tileImg);
+    }
+  }
+
+  renderFavor = function(div, name, faction, count) {
+    let nameSpan = new Element('div');
+    nameSpan.style.position = 'absolute';
+    let nameText = name;
+    if (count > 1) {
+        nameText += " (x" + count + ")";
+    }
+    nameSpan.updateText(nameText);
+    if (name in urls) {
+        let tileImg;
+        tileImg = new Element('img');
+        tileImg.src = urls[name];
+        tileImg.style.float = 'left';
+        tileImg.height = 110;
+        tileImg.width = 165;
+        tileImg.onload = function() {
+          SVGInject(this, {
+            afterInject: function(img, svg) {
+              fixSvgImageUrl(svg);
+              let actionTakenLayer;
+              // get action-taken layer
+              let layers = svg.getElementsByTagName('g');
+              for (let i in layers) {
+                if (layers[i].id && layers[i].id.startsWith('ActionTaken')) {
+                  actionTakenLayer = layers[i];
+                  break;
+                }
+              }
+              if (actionTakenLayer) {
+                // mouse over actions
+                if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
+                  showSvgLayer(actionTakenLayer);
+                  svg.onmouseover = function() {
+                    hideSvgLayer(actionTakenLayer);
+                  };
+                  svg.onmouseout = function() {
+                    showSvgLayer(actionTakenLayer);
+                  }
+                } else {
+                  hideSvgLayer(actionTakenLayer);
+                }
+              }
+            }
+          });
+        };
+        if (['FAV6'].includes(name) && faction != 'pool') {
+            tileImg.id = 'action/' + name + '/' + faction;
+        }
+        div.insert(tileImg);
+    }
+    div.insert(nameSpan);
   }
 
   renderTown = function(tile, name, faction, count) {
-      tile.style.position = 'relative';
-      let nameSpan = new Element('span');
-      nameSpan.style.position = 'absolute';
-      nameSpan.style.top = '0px';
-      nameSpan.style.left = '0px';
-      if (count != 1) {
-          nameSpan.updateText(name + " (x" + count + ")");
+    let nameSpan = new Element('div');
+    nameSpan.style.position = 'absolute';
+    let nameSpanText = name;
+    if (faction == 'pool' && count > 1) {
+      nameSpanText += " (x" + count + ")";
+    }
+    nameSpan.updateText(nameSpanText);
+
+    if (name == 'TW7') {
+      let username = document.cookie.match(/session-username=([A-Za-z0-9._-]+)/);
+      username = (username ? username[1] : '');
+      if (faction == 'fakirs' || (faction == 'pool' && 'fakirs' in state.factions && state.factions.fakirs.username == username)) {
+        name += '_carpet';
       } else {
-          nameSpan.updateText(name);
+        name += '_ship';
       }
-      if (name == 'TW7') {
-        let username = document.cookie.match(/session-username=([A-Za-z0-9._-]+)/);
-        username = (username ? username[1] : '');
-        if (faction == 'fakirs' || (faction == 'pool' && 'fakirs' in state.factions && state.factions.fakirs.username == username)) {
-          name += '_carpet';
-        } else {
-          name += '_ship';
-        }
-      }
-      if (name in urls) {
-          let tileImg = new Element('img');
-          tileImg.style.float = 'left';
-          tileImg.src = urls[name];
-          tileImg.height = townImgHeight;
-          tileImg.width = townImgHeight;
-          tileImg.onload = function() {
-            SVGInject(this, {
-              afterInject: function(img, svg) {
-                fixSvgImageUrl(svg);
-              }
-            });
-          };
-          tile.insert(tileImg);
-      }
-      tile.insert(nameSpan);
+    }
+    if (name in urls) {
+        let tileImg = new Element('img');
+        tileImg.style.float = 'left';
+        tileImg.src = urls[name];
+        tileImg.height = 110;
+        tileImg.width = 110;
+        tileImg.onload = function() {
+          SVGInject(this, {
+            afterInject: function(img, svg) {
+              fixSvgImageUrl(svg);
+            }
+          });
+        };
+        tile.insert(tileImg);
+    }
+    tile.insert(nameSpan);
   }
 
   /* actions */
@@ -1137,8 +1154,6 @@ function overwrite() {
     svgInjectScript.language = 'javascript';
     document.head.appendChild(svgInjectScript);
 
-    $('header').style['max-width'] = max_width + 'px';
-    $('action_required').style['max-width'] = max_width + 'px';
 
     preview();
   }

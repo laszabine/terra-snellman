@@ -1,0 +1,36 @@
+div.faction-board {
+  width: 1190px;
+}
+
+div.bonus {
+  width: 85px;
+  height: 243px;
+}
+
+
+div.favor {
+  position: relative;
+  width: 173px;
+  height: 115px;
+}
+
+div.town {
+  position: relative;
+  width: 110px;
+  height: 115px;
+}
+div.pool {
+  width: 1190px;
+}
+
+div#action_required {
+  max-width: 1190px;
+}
+
+div#next_game {
+  max-width: 1190px;
+}
+
+div#header {
+  max-width: 1190px;
+}
