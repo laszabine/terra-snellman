@@ -1128,14 +1128,13 @@ function overwrite() {
             </canvas> \
           </div> \
       <tr> \
-        <td> \
-        <td> <a style="color: black" href="#" onclick="toggleColorBlindMode()">Toggle color blind mode</a> \
-      <tr> \
         <td colspan=2> \
           <div style="display: inline-block; vertical-align: top"> \
             <div id="shared-actions"></div> \
-            <div id="turn-order"></div> \
           </div> \
+      <tr> \
+        <td> <div id="turn-order"></div> \
+        <td> <a style="color: black" href="#" onclick="toggleColorBlindMode()">Toggle color blind mode</a> \
     </table> \
     <div id="menu" class="menu" style="display: none"></div> \
     <div id="preview_status"></div> \
