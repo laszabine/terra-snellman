@@ -305,7 +305,7 @@ function overwrite() {
           let pass_income = {};
           if (faction.passed == 0 && !state.finished == 1) {
             // calculate sources of pass-vp
-            ['BON6', 'BON7', 'BON9', 'FAV12'].forEach( elem => {
+            ['BON6', 'BON7', 'BON9', 'BON10', 'FAV12'].forEach( elem => {
                 if (elem in faction && faction[elem] == '1') {
                   pass_income[elem] = pass_income[elem] || {};
                   pass_income[elem].vp = pass_income[elem].vp || 0;
@@ -319,10 +319,15 @@ function overwrite() {
                       break;
                   }
                   let passvp = state[type][elem].pass_vp;
-                  for (let buildingType in passvp) {
-                    let playerHas = faction.buildings[buildingType].level;
-                    let this_vp = passvp[buildingType][playerHas];
-                    pass_income[elem].vp += this_vp;
+                  for (let vpSource in passvp) {
+                    let playerHas;
+                    if (vpSource == 'ship') {
+                      playerHas = faction[vpSource].level;
+                    } else if (vpSource in faction.buildings) {
+                      playerHas = faction.buildings[vpSource].level;
+                    }
+                    let gainVp = passvp[vpSource][playerHas];
+                    pass_income[elem].vp += gainVp;
                   }
                 }
             });
