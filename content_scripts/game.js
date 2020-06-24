@@ -417,15 +417,17 @@ function overwrite() {
                 row.insert(new Element("td", styleAlignRight()).updateText(cultScore + ' vp'));
                 vp_proj.insert(row);
               });
-              ['network'].forEach(score => {
-                let match = faction.vp_projection[score].match(/([0-9]+) (\[[0-9]+\/[0-9]+\])/);
-                let vp = match[1];
-                let size = match[2];
-                let row = new Element('tr', styleDisplayNone(vp_proj_id));
-                row.insert(new Element("td"));
-                row.insert(new Element("td", {colspan: 5}).updateText(score + ' ' + size));
-                row.insert(new Element("td", styleAlignRight()).updateText(vp + ' vp'));
-                vp_proj.insert(row);
+              ['network', 'connected-clusters', 'connected-distance'].forEach(score => {
+                if (faction.vp_projection[score]) {
+                  let match = faction.vp_projection[score].match(/([0-9]+) (\[.+\])/);
+                  let vp = match[1];
+                  let size = match[2];
+                  let row = new Element('tr', styleDisplayNone(vp_proj_id));
+                  row.insert(new Element("td"));
+                  row.insert(new Element("td", {colspan: 5}).updateText(score + ' ' + size));
+                  row.insert(new Element("td", styleAlignRight()).updateText(vp + ' vp'));
+                  vp_proj.insert(row);
+                }
               });
               if (faction.vp_projection.resources) {
                 let row = new Element('tr', styleDisplayNone(vp_proj_id));
