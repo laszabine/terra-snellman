@@ -1,46 +1,7 @@
-var init_orig = init;
 
-var init_mod;
-
-init = function(root) {
-  var isInit = true;
-
-  function evaluateStateOptions(root) {
-    let implementedOptions = [
-      'email-notify',
-      'errata-cultist-power',
-      'mini-expansion-1',
-      'shipping-bonus',
-      'strict-chaosmagician-sh',
-      'strict-darkling-sh',
-      'strict-leech',
-      'temple-scoring-tile',
-      'variable-turn-order',
-    ];
-    if (isInit) {
-      if (Object.keys(state.options).every(val => implementedOptions.includes(val))) {
-        console.log("all options are compatible with sabine's twist");
-        overwrite();
-        init_mod(root);
-      }
-      isInit = false;
-    }
-  }
-
-  // draw is what gets executed in the AJAX request's onSuccess (for non-saving)
-  let draw_ = draw;
-  draw = function(n) {
-    evaluateStateOptions(root); // overwrite & call new init
-    draw_(n);
-  }
-  // this is what sets off the AJAX request
-  init_orig(root);
-}
-
-function overwrite() {
-  console.log("overwriting functions!");
-
-  drawFaction = function(name) {
+  var drawFaction_orig = drawFaction;
+  var drawFaction_mod;
+  drawFaction_mod = function(name) {
     let faction = state.factions[name];
     let color = faction.color;
     let container = new Element('div', { class: 'faction-board' });
@@ -68,7 +29,7 @@ function overwrite() {
     header.insert(title);
     container.insert(header);
     if (!faction.placeholder) {
-      drawRealFaction(faction, container);
+      drawRealFaction_mod(faction, container);
     }
 
     renderTreasury(container, faction, name);
@@ -76,9 +37,32 @@ function overwrite() {
     $("factions").insert(container);
 
   }
+  drawFaction = function(name) {
+    let implementedFactions = [
+      'alchemists',
+      'auren',
+      'chaosmagicians',
+      'cultists',
+      'darklings',
+      'dwarves',
+      'engineers',
+      'fakirs',
+      'giants',
+      'halflings',
+      'mermaids',
+      'nomads',
+      'swarmlings',
+      'witches',
+    ]
+    if (implementedFactions.includes(name)) {
+      drawFaction_mod(name);
+    } else {
+      drawFaction_orig(name);
+    }
+  }
 
   /* faction board */
-  drawRealFaction = function(faction, container) {
+  var drawRealFaction_mod = function(faction, container) {
       let name = faction.name;
       let factionBoardCanvasWidth = 620;
       let factionBoardCanvasHeight = 399;
@@ -277,7 +261,7 @@ function overwrite() {
             row.insert(new Element("td", styleAlignRight()).updateText(faction.P3 + " pw"));
             vp_breakdown_id = faction.name + "-vp";
             row.insert(new Element("td", styleAlignRight()).updateText(faction.VP + " vp "));
-            let vp_link = makeToggleLink('+', function() { toggleVP(vp_breakdown_id); });
+            let vp_link = makeToggleLink('+', function() { toggleVP_mod(vp_breakdown_id); });
             row.insert(new Element('td').insert(vp_link));
             row.insert(new Element("td", {'style': 'color: #888;'}).updateText((faction.MAX_P - faction.P) + " p"));
             row.insert(new Element("td", {'style': 'color: #888;'}).updateText(faction.BRIDGE_COUNT + " b"));
@@ -366,7 +350,7 @@ function overwrite() {
                 row.insert(cell);
               });
               pass_id = faction.name + '-pass';
-              let pass_link = makeToggleLink('+', function() { toggleVP(pass_id); });
+              let pass_link = makeToggleLink('+', function() { toggleVP_mod(pass_id); });
               row.insert(new Element('td').insert(pass_link));
               income.insert(row);
             }
@@ -401,7 +385,7 @@ function overwrite() {
               row.insert(new Element('td').updateText('VP projection:'));
               row.insert(new Element('td', {colspan: 5}).updateText('total'));
               row.insert(new Element('td', styleAlignRight()).updateText(faction.vp_projection.total + ' vp'));
-              row.insert(new Element('td').insert(makeToggleLink("+", function() { toggleVP(vp_proj_id) })));
+              row.insert(new Element('td').insert(makeToggleLink("+", function() { toggleVP_mod(vp_proj_id) })));
               vp_proj.insert(row);
 
               let hr = Element('tr', styleDisplayNone(vp_proj_id)).insert(
@@ -464,7 +448,7 @@ function overwrite() {
               );
               row.insert(new Element("td"));
               row.insert(new Element('td').insert(
-                  makeToggleLink("+", function() { toggleVP(income_id); }))
+                  makeToggleLink("+", function() { toggleVP_mod(income_id); }))
               );
               income.insert(row);
           }
@@ -526,15 +510,13 @@ function overwrite() {
       }
   }
 
-  toggleVP = function(className) {
+  toggleVP_mod = function(className) {
       let tds = document.getElementsByClassName(className);
       let elems = Array.prototype.slice.call(tds);
       elems.forEach(elem => {
         elem.style.display = (elem.style.display == 'none' ? '' : 'none');
       });
   }
-
-  renderColorCycle = function(faction, parent) {}
 
   /* tiles */
   drawScoringTiles = function() {
@@ -1109,7 +1091,7 @@ function overwrite() {
   }
 
   /* init */
-  init_mod = function(root) {
+  init = function(root) {
     root.innerHTML = ' \
     <table style="border-style: none" id="main-data"> \
       <tr> \
@@ -1160,7 +1142,10 @@ function overwrite() {
     svgInjectScript.language = 'javascript';
     document.head.appendChild(svgInjectScript);
 
+    loadGame(document.location.host, document.location.pathname);
+    fetchGames($("user-info"), "user", "running", showActiveGames);
 
-    preview();
+    setInterval(function() {
+        fetchGames($("user-info"), "user", "running", showActiveGames);
+    }, 5*60*1000);
   }
-}
