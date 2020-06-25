@@ -1090,6 +1090,45 @@
       return row;
   }
 
+  addTakeTileButtons = function(parent, index, prefix, id) {
+      var div = new Element("div", { "id": "leech-" + index + "-" + id,
+                                     "style": "padding-left: 2em" });
+      var count = 0;
+      $H(state.pool).sortBy(naturalSortKey).each(function(tile) {
+          if (tile.value < 1 || !tile.key.startsWith(prefix)) {
+              return;
+          }
+
+          if (prefix == "FAV" &&
+              state.factions[currentFaction] &&
+              state.factions[currentFaction][tile.key] > 0) {
+              return;
+          }
+
+          var container = new Element("div", {"style": "display: inline-block"});
+
+          var button = new Element("button").updateText(tile.key);
+          button.onclick = function() {
+              gainResource(index, '', tile.key, id);
+          };
+          container.insert(button);
+          container.insert(new Element("br"));
+
+          renderTreasuryTile(container, 'pool',
+                             tile.key, state.pool[tile.key]);
+
+          div.insert(container);
+          ++count;
+      });
+      if (prefix == "FAV" && count == 0) {
+          var container = new Element("div", {"style": "display: inline-block"});
+          div.insert(container);
+          container.insert(makeDeclineButton("GAIN_FAVOR", 1));
+      }
+      parent.insert(div);
+  }
+
+
   /* init */
   init = function(root) {
     root.innerHTML = ' \
