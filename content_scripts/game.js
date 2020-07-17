@@ -406,7 +406,7 @@
                 'connected-clusters',
                 'connected-distance',
                 'building-on-edge',
-                'sa-sh-distance'
+                'connected-sa-sh-distance'
               ].forEach(score => {
                 if (faction.vp_projection[score]) {
                   let match = faction.vp_projection[score].match(/([0-9]+) (\[.+\])/);
