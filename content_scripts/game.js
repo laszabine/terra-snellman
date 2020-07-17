@@ -401,7 +401,13 @@
                 row.insert(new Element("td", styleAlignRight()).updateText(cultScore + ' vp'));
                 vp_proj.insert(row);
               });
-              ['network', 'connected-clusters', 'connected-distance', 'building-on-edge'].forEach(score => {
+              [
+                'network',
+                'connected-clusters',
+                'connected-distance',
+                'building-on-edge',
+                'sa-sh-distance'
+              ].forEach(score => {
                 if (faction.vp_projection[score]) {
                   let match = faction.vp_projection[score].match(/([0-9]+) (\[.+\])/);
                   let vp = match[1];
