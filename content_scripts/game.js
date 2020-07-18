@@ -547,12 +547,26 @@
 
       scoringTileIds.push('scoring_final');
 
+      for (let x of [
+        'connected-distance',
+        'connected-sa-sh-distance',
+        'building-on-edge',
+        'connected-clusters'
+      ]) {
+        if (state.final_scoring && state.final_scoring[x]) {
+          let newkey = x.replace(/-/g, '_');
+          newkey = 'scoring_final_' + newkey;
+          scoringTileIds.push(newkey);
+          break;
+        }
+      }
+
       let roundNum = 0;
       scoringTileIds.each(function (elem) {
           roundNum++;
           let img = new Image();
           img.width = 140;
-          if (roundNum != 7) {
+          if (roundNum < 7) {
             img.height = 78;
           }
           img.alt = elem;
