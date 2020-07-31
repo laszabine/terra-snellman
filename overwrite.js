@@ -133,7 +133,7 @@ function overwriteFunctions(details) {
 
       // output the svg functions
       console.log('appending custom svg functions');
-      fileToFilter(filter, 'static/svg.js');
+      fileToFilter(filter, 'include/svg.js');
     }
 
     // output the new content, which overwrites the original content
