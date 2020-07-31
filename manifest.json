@@ -17,18 +17,6 @@
     "https://terra.snellman.net/*"
   ],
 
-  "content_scripts": [
-    {
-      "matches": [
-        "https://terra.snellman.net/faction/*",
-        "https://terra.snellman.net/game/*"
-      ],
-      "js": [
-        "content_scripts/game.js"
-      ]
-    }
-  ],
-
   "background": {
     "scripts": [
       "overwrite.js"
