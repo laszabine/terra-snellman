@@ -1076,10 +1076,10 @@
       let row = addAdvanceToMovePicker_(picker, faction);
       let canvas = document.getElementById(faction.name).getElementsByTagName('canvas')[0];
       if (faction.allowed_actions) {
-          if (faction.dig && faction.dig.advance_cost && canAfford(faction, [faction.dig.advance_cost], 1)) {
+          if (faction.dig && (faction.dig.level < faction.dig.max_level) && faction.dig.advance_cost && canAfford(faction, [faction.dig.advance_cost], 1)) {
               markActionAsPossible(canvas, "ADV1", "ADV1/"+faction.name);
           }
-          if (faction.ship && faction.ship.advance_cost && canAfford(faction, [faction.ship.advance_cost], 1)) {
+          if (faction.ship && (faction.ship.level < faction.ship.max_level) && faction.ship.advance_cost && canAfford(faction, [faction.ship.advance_cost], 1)) {
               markActionAsPossible(canvas, "ADV2", "ADV2/"+faction.name);
           }
       }
