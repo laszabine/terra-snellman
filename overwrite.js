@@ -3,7 +3,6 @@ function getImageUrls() {
   let str = 'const urls = {';
   let urls = {
       'EXT_BASE_URL': '',
-      'script_svg': 'content_scripts/svg.js',
       'libSvgInject': 'lib/svg-inject.js',
       'ACT1': 'images/action1.svg',
       'ACT2': 'images/action2.svg',
@@ -138,7 +137,7 @@ function overwriteFunctions(details) {
     }
 
     // output the new content, which overwrites the original content
-    let path = 'content_scripts/' + filename;
+    let path = 'overwrite/' + filename;
     console.log('appending the contents of '+path);
     fileToFilter(filter, path, function() {
       // clean up
@@ -156,7 +155,5 @@ browser.webRequest.onBeforeRequest.addListener(
     urls: [
     "*://terra.snellman.net/stc/game.js*",
     "*://terra.snellman.net/stc/style.css*",
-    ]
-  },
   ["blocking"]
 );
