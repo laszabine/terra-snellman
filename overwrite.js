@@ -153,7 +153,9 @@ browser.webRequest.onBeforeRequest.addListener(
   overwriteFunctions,
   {
     urls: [
-    "*://terra.snellman.net/stc/game.js*",
-    "*://terra.snellman.net/stc/style.css*",
+      "*://terra.snellman.net/stc/game.js*",
+      "*://terra.snellman.net/stc/style.css*"
+    ]
+  },
   ["blocking"]
 );
