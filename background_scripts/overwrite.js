@@ -155,6 +155,7 @@ browser.webRequest.onBeforeRequest.addListener(
     urls: [
       "*://terra.snellman.net/stc/game.js*",
       "*://terra.snellman.net/stc/style.css*"
+      , "*://terra.snellman.net/stc/faction.js*"
     ]
   },
   ["blocking"]
