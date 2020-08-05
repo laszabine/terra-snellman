@@ -19,7 +19,7 @@
 
   "background": {
     "scripts": [
-      "overwrite.js"
+      "background_scripts/overwrite.js"
     ]
   },
 
