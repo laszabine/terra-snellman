@@ -136,6 +136,13 @@ function overwriteFunctions(details) {
       fileToFilter(filter, 'include/svg.js');
     }
 
+    if (filename == 'faction.js' || filename == 'index.js') {
+      
+      // output the notification functions
+      console.log('appending custom notification functions');
+      fileToFilter(filter, 'include/notification.js');
+    }
+
     // output the new content, which overwrites the original content
     let path = 'overwrite/' + filename;
     console.log('appending the contents of '+path);
@@ -156,6 +163,7 @@ browser.webRequest.onBeforeRequest.addListener(
       "*://terra.snellman.net/stc/game.js*",
       "*://terra.snellman.net/stc/style.css*"
       , "*://terra.snellman.net/stc/faction.js*"
+      , "*://terra.snellman.net/stc/index.js*"
     ]
   },
   ["blocking"]
