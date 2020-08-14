@@ -71,6 +71,41 @@
           "version": "1.5.9",
           "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.5.9/snellman_prettification-1.5.9-an+fx.xpi",
           "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.5.9"
+        },
+        {
+          "version": "1.5.10",
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.5.10/snellman_prettification-1.5.10-an+fx.xpi",
+          "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.5.10"
+        },
+        {
+          "version": "1.5.11",
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.5.11/snellman_prettification-1.5.11-an+fx.xpi",
+          "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.5.11"
+        },
+        {
+          "version": "1.5.12",
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.5.12/snellman_prettification-1.5.12-an+fx.xpi",
+          "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.5.12"
+        },
+        {
+          "version": "1.5.13",
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.5.13/snellman_prettification-1.5.13-an+fx.xpi",
+          "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.5.13"
+        },
+        {
+          "version": "1.5.14",
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.5.14/snellman_prettification-1.5.14-an+fx.xpi",
+          "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.5.14"
+        },
+        {
+          "version": "1.6",
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.6/snellman_prettification-1.6-an+fx.xpi",
+          "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.6"
+        },
+        {
+          "version": "1.6.1",
+          "update_link": "https://github.com/rarusel/terra-snellman/releases/download/v1.6.1/snellman_prettification-1.6.1-an+fx.xpi",
+          "update_info_url": "https://github.com/rarusel/terra-snellman/releases/tag/v1.6.1"
         }
       ]
     }

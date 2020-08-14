@@ -401,7 +401,13 @@
                 row.insert(new Element("td", styleAlignRight()).updateText(cultScore + ' vp'));
                 vp_proj.insert(row);
               });
-              ['network', 'connected-clusters', 'connected-distance'].forEach(score => {
+              [
+                'network',
+                'connected-clusters',
+                'connected-distance',
+                'building-on-edge',
+                'connected-sa-sh-distance'
+              ].forEach(score => {
                 if (faction.vp_projection[score]) {
                   let match = faction.vp_projection[score].match(/([0-9]+) (\[.+\])/);
                   let vp = match[1];
@@ -541,12 +547,26 @@
 
       scoringTileIds.push('scoring_final');
 
+      for (let x of [
+        'connected-distance',
+        'connected-sa-sh-distance',
+        'building-on-edge',
+        'connected-clusters'
+      ]) {
+        if (state.final_scoring && state.final_scoring[x]) {
+          let newkey = x.replace(/-/g, '_');
+          newkey = 'scoring_final_' + newkey;
+          scoringTileIds.push(newkey);
+          break;
+        }
+      }
+
       let roundNum = 0;
       scoringTileIds.each(function (elem) {
           roundNum++;
           let img = new Image();
           img.width = 140;
-          if (roundNum != 7) {
+          if (roundNum < 7) {
             img.height = 78;
           }
           img.alt = elem;
@@ -1056,10 +1076,17 @@
       let row = addAdvanceToMovePicker_(picker, faction);
       let canvas = document.getElementById(faction.name).getElementsByTagName('canvas')[0];
       if (faction.allowed_actions) {
+<<<<<<< HEAD:content_scripts/game.js
           if (faction.dig && faction.dig.level < faction.dig.max_level && faction.dig.advance_cost && canAfford(faction, [faction.dig.advance_cost], 1)) {
               markActionAsPossible(canvas, "ADV1", "ADV1/"+faction.name);
           }
           if (faction.ship && faction.ship.level < faction.ship.max_level && faction.ship.advance_cost && canAfford(faction, [faction.ship.advance_cost], 1)) {
+=======
+          if (faction.dig && (faction.dig.level < faction.dig.max_level) && faction.dig.advance_cost && canAfford(faction, [faction.dig.advance_cost], 1)) {
+              markActionAsPossible(canvas, "ADV1", "ADV1/"+faction.name);
+          }
+          if (faction.ship && (faction.ship.level < faction.ship.max_level) && faction.ship.advance_cost && canAfford(faction, [faction.ship.advance_cost], 1)) {
+>>>>>>> b1a39f06f84fea891f1d40efeee166ae4ce9c498:overwrite/game.js
               markActionAsPossible(canvas, "ADV2", "ADV2/"+faction.name);
           }
       }

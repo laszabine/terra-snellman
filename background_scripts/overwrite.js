@@ -3,7 +3,6 @@ function getImageUrls() {
   let str = 'const urls = {';
   let urls = {
       'EXT_BASE_URL': '',
-      'script_svg': 'content_scripts/svg.js',
       'libSvgInject': 'lib/svg-inject.js',
       'ACT1': 'images/action1.svg',
       'ACT2': 'images/action2.svg',
@@ -71,6 +70,10 @@ function getImageUrls() {
       'SCORE9': 'images/scoring9.svg',
       'scoring_bg': 'images/src/scoring_bg.svg',
       'scoring_final': 'images/scoring_final.jpg',
+      'scoring_final_connected_distance': 'images/scoring_final_connected-distance.png',
+      'scoring_final_connected_sa_sh_distance': 'images/scoring_final_connected-sa-sh-distance.png',
+      'scoring_final_building_on_edge': 'images/scoring_final_building-on-edge.png',
+      'scoring_final_connected_clusters': 'images/scoring_final_connected-clusters.png',
       'scoring_last_round': 'images/src/scoring_last_round.svg',
       "TW1": 'images/town1.svg',
       "TW2": 'images/town2.svg',
@@ -130,11 +133,18 @@ function overwriteFunctions(details) {
 
       // output the svg functions
       console.log('appending custom svg functions');
-      fileToFilter(filter, 'static/svg.js');
+      fileToFilter(filter, 'include/svg.js');
+    }
+
+    if (filename == 'faction.js' || filename == 'index.js') {
+      
+      // output the notification functions
+      console.log('appending custom notification functions');
+      fileToFilter(filter, 'include/notification.js');
     }
 
     // output the new content, which overwrites the original content
-    let path = 'content_scripts/' + filename;
+    let path = 'overwrite/' + filename;
     console.log('appending the contents of '+path);
     fileToFilter(filter, path, function() {
       // clean up
@@ -150,8 +160,10 @@ browser.webRequest.onBeforeRequest.addListener(
   overwriteFunctions,
   {
     urls: [
-    "*://terra.snellman.net/stc/game.js*",
-    "*://terra.snellman.net/stc/style.css*",
+      "*://terra.snellman.net/stc/game.js*",
+      "*://terra.snellman.net/stc/style.css*"
+      , "*://terra.snellman.net/stc/faction.js*"
+      , "*://terra.snellman.net/stc/index.js*"
     ]
   },
   ["blocking"]
