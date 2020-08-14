@@ -910,10 +910,40 @@
               if (left<x && x<right && top<y && y<bottom) {
                   switch (name) {
                       case "ACTA":
+                          title = "Advance 2 spaces on 1 cult track";
+                          menu_items = {
+                            "Advance": {
+                                "fun": function() { appendAndPreview('action ACTA'); },
+                                "label": '',
+                            }
+                          };
+                          break;
                       case "ACTC":
+                          title = "Double turn";
+                          menu_items = {
+                              "Take a double turn": {
+                                  "fun": function() { appendAndPreview('action ACTC'); },
+                                  "label": '',
+                              }
+                          };
+                          break;
                       case "ACTG":
+                          title = "Terraform";
+                          menu_items = {
+                              "Get 2 spades": {
+                                  "fun": function() { appendAndPreview('action ACTG'); },
+                                  "label": '',
+                              }
+                          };
+                          break;
                       case "ACTS":
-                          // alert('This is not implemented yet!');
+                          title = "Upgrade to TP";
+                          menu_items = {
+                              "Upgrade to TP": {
+                                  "fun": function() { appendAndPreview('action ACTS'); },
+                                  "label": '', 
+                              }
+                          };
                           break;
                       case "ACTE":
                           let actionData = state.actions.ACTE;
@@ -1076,17 +1106,10 @@
       let row = addAdvanceToMovePicker_(picker, faction);
       let canvas = document.getElementById(faction.name).getElementsByTagName('canvas')[0];
       if (faction.allowed_actions) {
-<<<<<<< HEAD:content_scripts/game.js
-          if (faction.dig && faction.dig.level < faction.dig.max_level && faction.dig.advance_cost && canAfford(faction, [faction.dig.advance_cost], 1)) {
-              markActionAsPossible(canvas, "ADV1", "ADV1/"+faction.name);
-          }
-          if (faction.ship && faction.ship.level < faction.ship.max_level && faction.ship.advance_cost && canAfford(faction, [faction.ship.advance_cost], 1)) {
-=======
           if (faction.dig && (faction.dig.level < faction.dig.max_level) && faction.dig.advance_cost && canAfford(faction, [faction.dig.advance_cost], 1)) {
               markActionAsPossible(canvas, "ADV1", "ADV1/"+faction.name);
           }
           if (faction.ship && (faction.ship.level < faction.ship.max_level) && faction.ship.advance_cost && canAfford(faction, [faction.ship.advance_cost], 1)) {
->>>>>>> b1a39f06f84fea891f1d40efeee166ae4ce9c498:overwrite/game.js
               markActionAsPossible(canvas, "ADV2", "ADV2/"+faction.name);
           }
       }

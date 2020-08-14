@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Snellman Prettification",
-  "version": "1.6.1",
+  "version": "1.6.2",
 
   "description": "Modifies the display of games at terra.snellman.net by adding images from the board game",
   "browser_specific_settings": {
