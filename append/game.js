@@ -746,38 +746,56 @@
         tileImg.src = urls[name];
         tileImg.height = 230;
         tileImg.width = 80;
-        tileImg.onload = function() {
-          SVGInject(this, {
-            afterInject: function(img, svg) {
-              fixSvgImageUrl(svg);
-              let actionTakenLayer;
-              // get action-taken layer
-              let layers = svg.getElementsByTagName('g');
-              for (let i in layers) {
-                if (layers[i].id && layers[i].id.startsWith('ActionTaken')) {
-                  actionTakenLayer = layers[i];
-                  break;
-                }
+        if (name == 'BON1') {
+
+          if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
+            tileImg.class = "action_possible"
+          } else {
+            tileImg.class = "action_taken"
+          }
+          tileImg.onload = function() {
+            SVGInject(this, {
+              afterInject: function(img, svg) {
+                fixSvgImageUrl(svg);
               }
-              if (actionTakenLayer) {
-                // mouse over actions
-                if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
-                  showSvgLayer(actionTakenLayer);
-                  svg.onmouseover = function() {
-                    hideSvgLayer(actionTakenLayer);
-                  };
-                  svg.onmouseout = function() {
-                    showSvgLayer(actionTakenLayer);
+            });
+          };
+
+        } else {
+          tileImg.onload = function() {
+            SVGInject(this, {
+              afterInject: function(img, svg) {
+                fixSvgImageUrl(svg);
+                let actionTakenLayer;
+                // get action-taken layer
+                let layers = svg.getElementsByTagName('g');
+                for (let i in layers) {
+                  if (layers[i].id && layers[i].id.startsWith('ActionTaken')) {
+                    actionTakenLayer = layers[i];
+                    break;
                   }
-                } else {
-                  hideSvgLayer(actionTakenLayer);
+                }
+                if (actionTakenLayer) {
+                  // mouse over actions
+                  if (state.map[name + '/' + faction] && state.map[name + '/' + faction].blocked == 1) {
+                    showSvgLayer(actionTakenLayer);
+                    svg.onmouseover = function() {
+                      hideSvgLayer(actionTakenLayer);
+                    };
+                    svg.onmouseout = function() {
+                      showSvgLayer(actionTakenLayer);
+                    }
+                  } else {
+                    hideSvgLayer(actionTakenLayer);
+                  }
                 }
               }
-            }
-          });
-        };
+            });
+          };
+        }
         if (faction == 'pool') {
           tileImg.id = 'action/PASS/' + name;
+          tileImg.class = tileImg.class + " " + "pass_possible";
         } else if (['BON1', 'BON2'].includes(name)) {
           tileImg.id = 'action/' + name + '/' + faction;
         }
@@ -941,7 +959,7 @@
                           menu_items = {
                               "Upgrade to TP": {
                                   "fun": function() { appendAndPreview('action ACTS'); },
-                                  "label": '', 
+                                  "label": '',
                               }
                           };
                           break;

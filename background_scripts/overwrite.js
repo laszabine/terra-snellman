@@ -106,8 +106,8 @@ async function fileToFilter(filter, path, function_onloadend) {
   reader.readAsText(file);
 }
 
-function overwriteFunctions(details) {
-  console.log(details.url + " was requested")
+function appendFunctions(details) {
+  console.log(details.url + " was requested; appending")
   let filename = details.url.match(/[^/\.]*\.(js|css)/i)[0];
 
   let filter = browser.webRequest.filterResponseData(details.requestId);
@@ -117,51 +117,54 @@ function overwriteFunctions(details) {
   filter.ondata = async function(event) {
 
     // output the original content
-    console.log('outputting original content');
-    let orig_gamejs = decoder.decode(event.data, {stream: true});
-    await filter.write(encoder.encode(orig_gamejs));
+    console.log('appending', filename, 'outputting original content');
+    let orig = decoder.decode(event.data, {stream: true});
+    await filter.write(encoder.encode(orig));
 
   };
   filter.onstop = async function(event) {
+    console.log('appending', filename, 'begin onstop');
 
     if (filename == 'game.js') {
 
       // output the image urls
-      console.log('appending urls to assets in extension');
+      console.log('appending', filename, 'appending urls to assets in extension');
       let imgUrls = getImageUrls();
       await filter.write(encoder.encode(imgUrls));
 
       // output the svg functions
-      console.log('appending custom svg functions');
-      fileToFilter(filter, 'include/svg.js');
+      console.log('appending', filename, 'appending custom svg functions');
+      await fileToFilter(filter, 'include/svg.js');
     }
 
     if (filename == 'faction.js' || filename == 'index.js') {
-      
+
       // output the notification functions
-      console.log('appending custom notification functions');
-      fileToFilter(filter, 'include/notification.js');
+      console.log('appending', filename, 'appending custom notification functions');
+      await fileToFilter(filter, 'include/notification.js');
     }
 
     // output the new content, which overwrites the original content
-    let path = 'overwrite/' + filename;
-    console.log('appending the contents of '+path);
-    fileToFilter(filter, path, function() {
+    let path = 'append/' + filename;
+    console.log('appending', filename, 'appending the contents of '+path);
+    await fileToFilter(filter, path, function() {
       // clean up
       filter.disconnect();
       console.log("finished parsing " + filename);
     });
+
+    console.log('appending', filename, 'end onstop');
   };
+
   // things here will happen while the filter is receiving data
   return {};
 }
 
 browser.webRequest.onBeforeRequest.addListener(
-  overwriteFunctions,
+  appendFunctions,
   {
     urls: [
-      "*://terra.snellman.net/stc/game.js*",
-      "*://terra.snellman.net/stc/style.css*"
+        "*://terra.snellman.net/stc/game.js*"
       , "*://terra.snellman.net/stc/faction.js*"
       , "*://terra.snellman.net/stc/index.js*"
     ]

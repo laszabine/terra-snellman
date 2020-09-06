@@ -14,7 +14,7 @@
   "permissions": [
     "webRequest",
     "webRequestBlocking",
-    "https://terra.snellman.net/*",
+    "*://terra.snellman.net/*",
     "notifications"
   ],
 
@@ -27,6 +27,15 @@
       ],
       "js": [
         "content_scripts/notify-passalong.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://terra.snellman.net/game/*",
+        "https://terra.snellman.net/faction/*"
+      ],
+      "css": [
+        "include/extensionstyle.css"
       ]
     }
   ],
