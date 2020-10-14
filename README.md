@@ -56,4 +56,4 @@ You can find more information here: https://extensionworkshop.com/documentation/
 
 ## Get in touch
 
-For discussion and questions join our [Matrix](https://matrix.org/) channel at [#terra-snellman:1m.at](https://matrix.to/#/#terra-snellman:1m.at).
+For discussion and questions join our [Matrix](https://matrix.org/) room at [#terra-snellman:1m.at](https://matrix.to/#/#terra-snellman:1m.at).
