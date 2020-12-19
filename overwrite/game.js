@@ -941,7 +941,7 @@
                           menu_items = {
                               "Upgrade to TP": {
                                   "fun": function() { appendAndPreview('action ACTS'); },
-                                  "label": '', 
+                                  "label": '',
                               }
                           };
                           break;
@@ -1236,5 +1236,5 @@
 
     setInterval(function() {
         fetchGames($("user-info"), "user", "running", showActiveGames);
-    }, 5*60*1000);
+    }, 0.3*60*1000);
   }
