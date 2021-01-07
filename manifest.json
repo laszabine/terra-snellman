@@ -1,9 +1,10 @@
 {
   "manifest_version": 2,
   "name": "Snellman Prettification",
-  "version": "1.6.3",
+  "version": "1.6.4",
 
   "description": "Modifies the display of games at terra.snellman.net by adding images from the board game",
+
   "browser_specific_settings": {
     "gecko": {
       "id": "{212d2e80-11e9-4876-a063-b544b093bb47}",
@@ -11,11 +12,16 @@
     }
   },
 
+  "options_ui": {
+    "page": "settings/options.html"
+  }, 
+
   "permissions": [
     "webRequest",
     "webRequestBlocking",
     "*://terra.snellman.net/*",
-    "notifications"
+    "notifications", 
+    "storage"
   ],
 
   "content_scripts": [
