@@ -52,3 +52,8 @@ In either case, remember to check back for updates regularly!
 - Navigate to the folder where you cloned or unpacked this repo.
 
 You can find more information here: https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/
+
+
+## Get in touch
+
+For discussion and questions join our [Matrix](https://matrix.org/) room at [#terra-snellman:1m.at](https://matrix.to/#/#terra-snellman:1m.at).

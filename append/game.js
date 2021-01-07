@@ -1254,5 +1254,5 @@
 
     setInterval(function() {
         fetchGames($("user-info"), "user", "running", showActiveGames);
-    }, 5*60*1000);
+    }, 0.3*60*1000);
   }
