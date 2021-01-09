@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Snellman Prettification",
-  "version": "1.6.4",
+  "version": "1.6.5",
 
   "description": "Modifies the display of games at terra.snellman.net by adding images from the board game",
 
@@ -32,7 +32,8 @@
         "https://terra.snellman.net/faction/*"
       ],
       "js": [
-        "content_scripts/notify-passalong.js"
+        "content_scripts/notify-passalong.js", 
+        "content_scripts/read-settings.js" 
       ]
     },
     {

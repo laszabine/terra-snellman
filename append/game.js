@@ -1252,7 +1252,49 @@
     loadGame(document.location.host, document.location.pathname);
     fetchGames($("user-info"), "user", "running", showActiveGames);
 
-    setInterval(function() {
+    //let timeout_sec = 5*60; // default value: 5 min
+    let timeout_sec = 10; // default value: 10 s
+    let intervalId = myLoop(timeout_sec); 
+
+    window.addEventListener("message", function(event) {
+      
+      if (event.data &&
+          event.data.task == "timeout-response") 
+      {
+        console.log("received a response for timeout from content script", event.data);
+        console.log(`old timeout = ${timeout_sec}, new timeout = ${event.data.timeout_sec}`);
+        if (timeout_sec != event.data.timeout_sec) {
+      
+          // the value changed
+          timeout_sec = event.data.timeout_sec;
+          console.log("received new timeout value", timeout_sec);
+          
+          // restart the interval with the new value
+          console.log("stopping running interval id", intervalId);
+          clearInterval(intervalId);
+          intervalId = myLoop(timeout_sec);
+          console.log("new interval id", intervalId);
+        }
+        // else: keep the running interval running
+      }
+    });
+
+    function myLoop(seconds) {
+      console.log(`fetching games, and setting interval to ${seconds} seconds`);
+      
+      return setInterval(function() {
+
+        console.log("requesting current timeout value");
+        window.postMessage({
+            task: "timeout-request"
+          }, "*"
+        );
+
+        console.log("fetching games");
         fetchGames($("user-info"), "user", "running", showActiveGames);
-    }, 0.3*60*1000);
+        
+      }, seconds*1000);
+    }
+
+  
   }
